@@ -1,0 +1,18 @@
+{
+  "name": "gk-web/realtime-chat",
+  "description": "PHP multi-room WebSocket chat for course 503073",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "php": "^8.3",
+    "ext-pdo": "*",
+    "ext-pdo_sqlite": "*",
+    "ext-mbstring": "*",
+    "workerman/workerman": "^5.2"
+  },
+  "require-dev": { "phpunit/phpunit": "^11.5" },
+  "autoload": { "psr-4": { "App\\": "src/", "Protocols\\": "src/Protocols/" } },
+  "autoload-dev": { "psr-4": { "Tests\\": "tests/" } },
+  "scripts": { "test": "phpunit", "seed": "php database/seed.php", "lint": "php tools/lint.php" },
+  "config": { "sort-packages": true, "allow-plugins": {} }
+}

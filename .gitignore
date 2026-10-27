@@ -1,0 +1,16 @@
+/.env
+/vendor/
+/storage/*
+!/storage/.gitkeep
+/tmp/
+/.phpunit.cache/
+/node_modules/
+/output/
+/.playwright-cli/
+/github-handoff/
+/submission/*.zip
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+__pycache__/
+*.pyc

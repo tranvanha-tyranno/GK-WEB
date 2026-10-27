@@ -1,0 +1,9 @@
+.git
+.env
+vendor
+storage
+tmp
+output
+submission
+node_modules
+github-handoff
