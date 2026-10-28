@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "actualUi": true,
+  "historyLoadedBeforeScreenshot": true,
+  "noDomFabrication": true,
+  "screenshots": [
+    "EV-06-chat-desktop.png",
+    "EV-07-chat-mobile.png"
+  ]
+}
