@@ -27,6 +27,7 @@
                 <p id="login-error" class="form-error" role="alert" hidden></p>
                 <button class="button button-primary login-submit" type="submit" id="login-submit" disabled><span>Đăng nhập vào không gian chung</span><span aria-hidden="true">→</span></button>
             </form>
+            <p class="register-link">Chưa có tài khoản? <a href="/register">Tạo tài khoản mới</a></p>
             <div class="demo-accounts">
                 <span class="eyebrow">BẠN MUỐN DÙNG THỬ?</span>
                 <p>Chọn tài khoản mẫu để điền nhanh thông tin.</p>

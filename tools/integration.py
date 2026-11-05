@@ -100,6 +100,40 @@ def auth():
         return 'HTTP 401/403/404/400, cookie rotation/flags, anonymous/tampered/revoked cookie and bad Origin all checked.'
     finally: c.close()
 
+def registration():
+    c=Client(None)
+    try:
+        old_cookie=c.http.cookies.get('chat_session')
+        response=c.post('/api/auth/register',{'username':'qa_new_user','displayName':'QA New User','password':'qa-safe-password-2026'})
+        assert response.status_code==201,response.text
+        data=response.json()['data'];assert data['user']['username']=='qa_new_user' and data['user']['displayName']=='QA New User'
+        assert c.http.cookies.get('chat_session')!=old_cookie
+        c.csrf=data['csrfToken'];assert c.http.get('/api/rooms').status_code==200
+        duplicate=c.post('/api/auth/register',{'username':'qa_new_user','displayName':'Another Name','password':'qa-safe-password-2026'})
+        assert duplicate.status_code==409,duplicate.text
+        invalid=c.post('/api/auth/register',{'username':'x','displayName':'QA User','password':'qa-safe-password-2026'})
+        assert invalid.status_code==400,invalid.text
+        return 'Registration validates username/password, creates a hashed user, rotates the anonymous session, and rejects duplicates.'
+    finally:c.close()
+
+def removed_social_features():
+    alice, bob = Client('alice'), Client('bob')
+    try:
+        for mode in ('nearby', 'random'):
+            assert alice.http.get(f'/api/people?mode={mode}').status_code == 400
+        assert alice.post('/api/location', {'enabled': False}).status_code == 404
+        assert alice.post('/api/friends', {'userId': 2, 'action': 'send'}).status_code == 200
+        people = bob.http.get('/api/people?mode=all').json()['data']['people']
+        incoming = next(person for person in people if person['username'] == 'alice')
+        assert incoming['relation'] == 'incoming'
+        assert 'distanceKm' not in incoming
+        requests = bob.http.get('/api/people?mode=requests').json()['data']['people']
+        assert any(person['username'] == 'alice' and person['relation'] == 'incoming' for person in requests)
+        assert bob.post('/api/friends', {'userId': 1, 'action': 'accept'}).status_code == 200
+        return 'Nearby/random filters and location endpoint rejected; the invitation filter and accept action remain available.'
+    finally:
+        alice.close(); bob.close()
+
 def chat_rooms():
     a,b=Client('alice'),Client('bob')
     try:
@@ -110,6 +144,8 @@ def chat_rooms():
         second=receive(y,'chat:new',predicate=lambda p:p['content']==content)
         assert first==second
         assert any(m['id']==first['id'] for m in b.http.get('/api/rooms/1/messages').json()['data'])
+        older=a.http.get(f"/api/rooms/1/messages?limit=10&beforeId={first['id']}").json()['data'];assert all(m['id']<first['id'] for m in older)
+        matches=a.http.get('/api/rooms/1/messages/search?q='+content).json()['data'];assert any(m['id']==first['id'] for m in matches['messages']) and not matches['hasMore']
         no_event(y,'chat:new')
         join(y,2); send(x,'typing:set',{'roomId':1,'isTyping':True})
         send(x,'chat:send',{'roomId':1,'content':'isolation-'+content}); receive(x,'chat:new')
@@ -120,6 +156,44 @@ def chat_rooms():
         join(y,1); join(y,1)
         return 'Bidirectional sender echo, receiver ID equality, SQL persistence, isolation, invalid membership and idempotent join verified.'
     finally:a.close();b.close()
+
+def direct_and_group_management():
+    a,b,c=Client('alice'),Client('bob'),Client('charlie')
+    try:
+        assert a.post('/api/friends',{'userId':2,'action':'send'}).status_code==200
+        assert b.post('/api/friends',{'userId':1,'action':'accept'}).status_code==200
+        direct_a=a.post('/api/direct-messages',{'userId':2});direct_b=b.post('/api/direct-messages',{'userId':1})
+        assert direct_a.status_code==201 and direct_b.status_code==201
+        direct_id=direct_a.json()['data']['id'];assert direct_id==direct_b.json()['data']['id']
+        rooms_a=a.http.get('/api/rooms').json()['data'];rooms_b=b.http.get('/api/rooms').json()['data']
+        assert next(r for r in rooms_a if r['id']==direct_id)['name']=='Trò chuyện với Bob Tran'
+        assert next(r for r in rooms_b if r['id']==direct_id)['name']=='Trò chuyện với Alice Nguyen'
+        assert c.http.get(f'/api/rooms/{direct_id}/messages').status_code==404
+        x,y=a.socket(),b.socket();join(x,direct_id);join(y,direct_id)
+        marker='direct-message-'+str(time.time_ns());send(x,'chat:send',{'roomId':direct_id,'content':marker})
+        dm_a=receive(x,'chat:new',predicate=lambda p:p['content']==marker);dm_b=receive(y,'chat:new',predicate=lambda p:p['content']==marker);assert dm_a==dm_b
+        assert a.post('/api/friends',{'userId':3,'action':'send'}).status_code==200
+        assert c.post('/api/friends',{'userId':1,'action':'accept'}).status_code==200
+        made=a.post('/api/groups',{'name':'Managed test group','memberIds':[2]});assert made.status_code==200,made.text
+        room_id=made.json()['data']['id'];bob_group=b.socket();join(bob_group,room_id)
+        details=a.http.get(f'/api/groups/{room_id}').json()['data'];assert len(details['members'])==2 and details['isOwner']
+        assert a.post('/api/groups/manage',{'roomId':room_id,'action':'rename','name':'Renamed test group'}).status_code==200
+        assert a.post('/api/groups/manage',{'roomId':room_id,'action':'add','userId':3}).status_code==200
+        assert any(r['id']==room_id for r in c.http.get('/api/rooms').json()['data'])
+        assert a.post('/api/groups/manage',{'roomId':room_id,'action':'remove','userId':2}).status_code==200
+        deadline=time.monotonic()+2.5;closed=False
+        while time.monotonic()<deadline:
+            try:
+                bob_group.settimeout(max(.05,deadline-time.monotonic()));bob_group.recv()
+            except (websocket.WebSocketConnectionClosedException,websocket.WebSocketException):closed=True;break
+            except websocket.WebSocketTimeoutException:pass
+        assert closed,'Removed member socket stayed connected'
+        assert b.http.get(f'/api/rooms/{room_id}/messages').status_code==404
+        assert c.post('/api/groups/manage',{'roomId':room_id,'action':'leave'}).status_code==200
+        deleted=a.post('/api/groups/manage',{'roomId':room_id,'action':'delete'});assert deleted.status_code==200 and deleted.json()['data']['deleted']
+        assert c.http.get(f'/api/rooms/{room_id}/messages').status_code==404
+        return 'Direct messages are private and unique; group rename/add/remove/leave/delete work; removed members lose history and live socket access.'
+    finally:a.close();b.close();c.close()
 
 def presence_typing():
     c=Client('charlie')
@@ -225,7 +299,10 @@ def rate_limit():
 
 def run():
     case('TC-01/02/03/15','Authentication and security boundaries',auth)
+    case('TC-SOCIAL-REMOVE','Removed location and invitation filters',removed_social_features)
+    case('TC-REG','Registration and session rotation',registration)
     case('TC-04/05/07','Persistence, room isolation and join',chat_rooms)
+    case('TC-DM/GROUP','Direct chat and group lifecycle',direct_and_group_management)
     case('TC-06/12','Multi-tab presence and typing TTL',presence_typing)
     case('TC-09/10','Protocol and Unicode boundaries',invalid_payloads)
     case('TC-14','Logout closes all session sockets',logout)

@@ -18,6 +18,7 @@
                     <div id="tools-panel" class="tools-panel" role="group" aria-label="Công cụ phòng" hidden>
                         <span class="menu-heading">PHÒNG TRÒ CHUYỆN</span>
                         <button type="button" id="show-members" aria-label="Xem thành viên"><span>Thành viên</span><span id="member-count" class="menu-count">0</span></button>
+                        <button type="button" id="manage-group" hidden><span>Quản lý nhóm</span><span aria-hidden="true">⚙</span></button>
                         <button type="button" id="export-messages" aria-label="Xuất hội thoại"><span>Xuất hội thoại</span><span aria-hidden="true">↓</span></button>
                         <div class="menu-divider"></div>
                         <span class="menu-heading">GIAO DIỆN</span>
@@ -29,8 +30,9 @@
                 </div>
             </div>
         </header>
-        <div id="search-panel" class="search-panel" hidden><label class="search-field" for="message-search"><input id="message-search" type="search" placeholder="Tìm trong tin nhắn đã tải…" autocomplete="off" aria-label="Tìm tin nhắn"><kbd>Ctrl K</kbd></label><button type="button" id="close-search" class="header-icon" aria-label="Đóng tìm kiếm" title="Đóng tìm kiếm">×</button></div>
+        <div id="search-panel" class="search-panel" hidden><label class="search-field" for="message-search"><input id="message-search" type="search" placeholder="Tìm toàn bộ lịch sử…" autocomplete="off" aria-label="Tìm tin nhắn"><kbd>Ctrl K</kbd></label><button type="button" id="close-search" class="header-icon" aria-label="Đóng tìm kiếm" title="Đóng tìm kiếm">×</button></div>
         <div id="history-summary" class="search-summary" hidden><span id="history-label" role="status"></span></div>
+        <div class="history-load"><button id="load-older" type="button" hidden>Tải tin nhắn cũ hơn</button></div>
         <section id="messages" class="messages" role="log" aria-live="polite" aria-label="Tin nhắn" aria-relevant="additions"><div class="empty-state">Đang tải cuộc trò chuyện…</div></section>
         <button id="jump-latest" class="jump-latest" type="button" hidden>↓ Về tin nhắn mới nhất</button>
         <div id="typing-indicator" class="typing-indicator" aria-live="polite"></div>
@@ -46,15 +48,14 @@
     </main>
 </div>
 <dialog id="members-dialog" class="app-dialog"><div class="dialog-heading"><h2>Thành viên trong phòng</h2><button type="button" data-close-dialog aria-label="Đóng danh sách thành viên">×</button></div><ul id="mobile-member-list" class="member-list"></ul></dialog>
-<dialog id="help-dialog" class="app-dialog"><div class="dialog-heading"><h2>Sử dụng Relay</h2><button type="button" data-close-dialog aria-label="Đóng hướng dẫn">×</button></div><dl class="shortcut-list"><dt>Enter</dt><dd>Gửi tin nhắn</dd><dt>Shift + Enter</dt><dd>Xuống dòng</dd><dt>Ctrl / ⌘ + K</dt><dd>Mở tìm kiếm trong phòng</dd><dt>Esc</dt><dd>Đóng công cụ, tìm kiếm hoặc cửa sổ</dd></dl><p>Rê chuột lên tin nhắn để hiện Trả lời và Sao chép. Trên điện thoại, chạm vào tin nhắn. Khi dùng bàn phím, chuyển tiêu điểm tới tin nhắn để hiện thao tác.</p><p>Bản nháp lưu riêng từng phòng trong thẻ trình duyệt. Trả lời chèn trích dẫn văn bản; cả trích dẫn tính vào giới hạn 500 ký tự. Tìm kiếm và xuất hội thoại áp dụng cho tin đã tải.</p><p>Khi nối lại, ứng dụng khôi phục tối đa 50 tin gần nhất. Tin gửi chưa rõ kết quả cần kiểm tra trước khi gửi lại.</p></dialog>
+<dialog id="help-dialog" class="app-dialog"><div class="dialog-heading"><h2>Sử dụng Relay</h2><button type="button" data-close-dialog aria-label="Đóng hướng dẫn">×</button></div><dl class="shortcut-list"><dt>Enter</dt><dd>Gửi tin nhắn</dd><dt>Shift + Enter</dt><dd>Xuống dòng</dd><dt>Ctrl / ⌘ + K</dt><dd>Mở tìm kiếm trong phòng</dd><dt>Esc</dt><dd>Đóng công cụ, tìm kiếm hoặc cửa sổ</dd></dl><p>Rê chuột lên tin nhắn để hiện Trả lời và Sao chép. Trên điện thoại, chạm vào tin nhắn. Khi dùng bàn phím, chuyển tiêu điểm tới tin nhắn để hiện thao tác.</p><p>Bản nháp được lưu riêng theo tài khoản và phòng trên trình duyệt. Trả lời chèn trích dẫn văn bản; cả trích dẫn tính vào giới hạn 500 ký tự. Tìm kiếm và xuất áp dụng cho toàn bộ lịch sử.</p><p>Khi nối lại, ứng dụng khôi phục tin gần nhất và cho phép tải các trang cũ hơn. Tin gửi chưa rõ kết quả cần kiểm tra trước khi gửi lại.</p></dialog>
 
 <dialog id="friends-dialog" class="app-dialog social-dialog" aria-labelledby="friends-title">
   <div class="dialog-heading"><div><span class="social-eyebrow">KẾT NỐI TRÊN RELAY</span><h2 id="friends-title">Bạn bè & khám phá</h2></div><button type="button" data-close-dialog aria-label="Đóng bạn bè">×</button></div>
   <label class="social-search" for="people-search"><span aria-hidden="true">⌕</span><input id="people-search" aria-label="Tìm bạn bè" type="search" maxlength="100" placeholder="Tìm tên hoặc tên đăng nhập…" autocomplete="off"></label>
   <div class="social-tabs" role="group" aria-label="Lọc bạn bè">
-    <button type="button" data-people-mode="all" aria-pressed="true">Tất cả</button><button type="button" data-people-mode="friends" aria-pressed="false">Bạn bè</button><button type="button" data-people-mode="requests" aria-pressed="false">Lời mời</button><button type="button" data-people-mode="suggestions" aria-pressed="false">Gợi ý</button><button type="button" data-people-mode="nearby" aria-pressed="false">Lân cận</button><button type="button" data-people-mode="random" aria-pressed="false">Ngẫu nhiên</button>
+    <button type="button" data-people-mode="all" aria-pressed="true">Tất cả</button><button type="button" data-people-mode="friends" aria-pressed="false">Bạn bè</button><button type="button" data-people-mode="requests" aria-pressed="false">Lời mời</button><button type="button" data-people-mode="suggestions" aria-pressed="false">Gợi ý</button>
   </div>
-  <div id="location-panel" class="location-panel" hidden><p>Khám phá người trong bán kính 10 km. Chỉ những người cũng bật chia sẻ mới xuất hiện. Vị trí có hiệu lực 24 giờ; người khác chỉ thấy khoảng cách gần đúng.</p><div class="social-inline"><button type="button" id="share-location" class="social-button primary">Chia sẻ vị trí</button><button type="button" id="stop-location" class="social-button">Tắt chia sẻ</button></div></div>
   <div class="social-list-heading"><p id="people-description">Tìm một người bạn và bắt đầu kết nối.</p><button id="refresh-people" type="button" class="social-button" aria-label="Làm mới danh sách bạn bè">↻</button></div>
   <p id="social-notice" class="social-notice" role="status" hidden></p>
   <ul id="people-list" class="people-list" aria-label="Danh sách người dùng" aria-live="polite"></ul>
@@ -62,4 +63,14 @@
 <dialog id="group-dialog" class="app-dialog social-dialog" aria-labelledby="group-title">
   <div class="dialog-heading"><div><span class="social-eyebrow">CÙNG NHAU TRÒ CHUYỆN</span><h2 id="group-title">Tạo nhóm mới</h2></div><button type="button" data-close-dialog aria-label="Đóng tạo nhóm">×</button></div>
   <form id="create-group-form"><label class="social-field" for="group-name">Tên nhóm<input id="group-name" required minlength="2" maxlength="60" placeholder="Ví dụ: Nhóm đồ án Web" autocomplete="off"></label><div class="social-list-heading"><p>Thêm bạn bè <span id="group-selected">0 / 30</span></p></div><p class="social-hint">Chỉ thành viên được chọn mới xem được nhóm. Bạn có thể tạo nhóm riêng cho mình trước.</p><div id="group-friends" class="group-friends"></div><p id="group-error" class="social-notice" role="alert" hidden></p><div class="social-footer"><span id="group-total">1 thành viên, gồm bạn</span><button id="create-group-submit" type="submit" class="social-button primary">Tạo nhóm ↗</button></div></form>
+</dialog>
+<dialog id="manage-group-dialog" class="app-dialog social-dialog" aria-labelledby="manage-group-title">
+  <div class="dialog-heading"><div><span class="social-eyebrow">CÀI ĐẶT PHÒNG</span><h2 id="manage-group-title">Quản lý nhóm</h2></div><button type="button" data-close-dialog aria-label="Đóng quản lý nhóm">×</button></div>
+  <p id="manage-group-loading" class="social-hint" role="status" aria-live="polite" hidden>Đang tải thông tin nhóm…</p>
+  <button id="retry-manage-group" type="button" class="social-button" hidden>Tải lại thông tin nhóm</button>
+  <form id="rename-group-form"><label class="social-field" for="manage-group-name">Tên nhóm<input id="manage-group-name" required minlength="2" maxlength="60"></label><button id="rename-group-submit" type="submit" class="social-button primary">Lưu tên nhóm</button></form>
+  <div class="social-list-heading"><p>Thành viên</p><span id="manage-group-count"></span></div><ul id="manage-group-members" class="people-list"></ul>
+  <form id="add-group-member-form" class="group-add-member"><label class="social-field" for="add-group-member">Thêm bạn bè<select id="add-group-member"></select></label><button id="add-group-member-submit" type="submit" class="social-button primary">Thêm thành viên</button></form>
+  <p id="manage-group-error" class="social-notice" role="alert" hidden></p>
+  <div class="social-footer"><span id="manage-group-hint"></span><button id="leave-group" type="button" class="social-button">Rời nhóm</button><button id="delete-group" type="button" class="social-button danger">Xóa nhóm</button></div>
 </dialog>

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <meta name="description" content="Relay — không gian trò chuyện nhóm theo thời gian thực, dễ sử dụng và hoàn toàn bằng tiếng Việt.">
-    <title><?= $page === 'chat' ? 'Không gian làm việc' : 'Đăng nhập' ?> · Relay</title>
+    <title><?= $page === 'chat' ? 'Không gian làm việc' : ($page === 'register' ? 'Tạo tài khoản' : 'Đăng nhập') ?> · Relay</title>
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/assets/css/app.css">
     <link rel="stylesheet" href="/assets/css/readability.css">

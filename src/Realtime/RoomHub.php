@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 namespace App\Realtime;
+use App\Repositories\RoomRepository;
 
 final class RoomHub
 {
@@ -8,6 +9,15 @@ final class RoomHub
     private array $peers = [];
     public function attach(Peer $peer): void { $this->peers[$peer->id] = $peer; }
     public function all(): array { return array_values($this->peers); }
+    public function pruneUnauthorized(RoomRepository $rooms): void
+    {
+        foreach ($this->all() as $peer) {
+            if ($peer->roomId !== null && !$rooms->canAccess($peer->roomId, (int)$peer->user()['id'])) {
+                $peer->close();
+                $this->detach($peer);
+            }
+        }
+    }
     public function detach(Peer $peer): void
     {
         $old = $peer->roomId;

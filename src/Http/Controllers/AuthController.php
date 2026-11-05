@@ -40,6 +40,24 @@ final class AuthController
         $this->setCookie($issued);
         JsonResponse::data(['user' => UserRepository::present($user), 'csrfToken' => $issued['csrfToken']]);
     }
+    public function register(array $input, array $session): never
+    {
+        $username = $input['username'] ?? null;
+        $displayName = $input['displayName'] ?? null;
+        $password = $input['password'] ?? null;
+        if (!is_string($username) || !is_string($displayName) || !is_string($password)) { throw new HttpError(400, 'INVALID_PAYLOAD', 'Vui lòng điền đầy đủ thông tin tài khoản.'); }
+        $username = strtolower(trim($username)); $displayName = trim($displayName);
+        if (!preg_match('/\A[a-z0-9][a-z0-9._-]{2,31}\z/D', $username)) { throw new HttpError(400, 'INVALID_USERNAME', 'Tên đăng nhập cần 3–32 ký tự: chữ thường, số, dấu chấm, gạch ngang hoặc gạch dưới.'); }
+        if (mb_strlen($displayName) < 2 || mb_strlen($displayName) > 60 || preg_match('/[\x00-\x1f\x7f]/u', $displayName)) { throw new HttpError(400, 'INVALID_DISPLAY_NAME', 'Tên hiển thị cần từ 2 đến 60 ký tự.'); }
+        if (strlen($password) < 12 || strlen($password) > 256) { throw new HttpError(400, 'INVALID_PASSWORD', 'Mật khẩu cần từ 12 đến 256 byte.'); }
+        if ($this->app->users->findByUsername($username) !== null) { throw new HttpError(409, 'USERNAME_EXISTS', 'Tên đăng nhập đã được sử dụng. Hãy chọn tên khác.'); }
+        try { $id = $this->app->users->create($username, $displayName, Password::hash($password)); }
+        catch (\PDOException $error) { throw new HttpError(409, 'USERNAME_EXISTS', 'Tên đăng nhập đã được sử dụng. Hãy chọn tên khác.'); }
+        $user = $this->app->users->findByUsername($username);
+        if ($user === null) { throw new HttpError(503, 'REGISTRATION_FAILED', 'Không thể tạo tài khoản. Vui lòng thử lại.'); }
+        $issued = $this->app->sessions->issue($id, $session['id']); $this->setCookie($issued);
+        JsonResponse::data(['user' => UserRepository::present($user), 'csrfToken' => $issued['csrfToken']], 201);
+    }
     public function logout(array $session): never
     {
         $this->app->sessions->revoke($session['id']);

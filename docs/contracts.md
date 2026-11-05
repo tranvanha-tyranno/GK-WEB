@@ -9,9 +9,17 @@ Mọi ID là số nguyên JSON. Phản hồi HTTP có dạng `{ "data": ... }` h
 | GET | `/api/health` | Không cần | `{status:"ok"}` |
 | GET | `/api/auth/me` | Cookie nếu có | `{user:User|null,csrfToken:string}`; tạo phiên khách khi cần |
 | POST | `/api/auth/login` | JSON `{username,password}` + Origin/CSRF | `{user:User,csrfToken:string}`; cookie mới, thu hồi phiên cũ |
+| POST | `/api/auth/register` | `{username,displayName,password}` + Origin/CSRF | `{user:User,csrfToken:string}`; tạo tài khoản và phiên đã đăng nhập |
 | POST | `/api/auth/logout` | Origin/CSRF, đã đăng nhập | `{ok:true}`; thu hồi phiên trước khi xóa cookie |
-| GET | `/api/rooms` | Đã đăng nhập | `[{id,name}]` |
-| GET | `/api/rooms/{id}/messages?limit=50` | Đã đăng nhập; limit 1..50 | Các tin mới nhất, trả theo ID tăng dần |
+| GET | `/api/rooms` | Đã đăng nhập | Phòng công khai, nhóm riêng và tin nhắn riêng mà user có quyền xem |
+| GET | `/api/people?mode=all\|friends\|requests\|suggestions&q=...` | Đã đăng nhập; tìm kiếm tùy chọn | Danh sách người và trạng thái quan hệ; chế độ khác bị từ chối |
+| POST | `/api/friends` | `{userId,action}` với action `send`, `accept`, `remove` + Origin/CSRF | Gửi/nhận lời mời và quản lý bạn bè; lời mời chờ được xử lý trong danh sách Tất cả |
+| GET | `/api/rooms/{id}/messages?limit=50&beforeId=N` | Đã đăng nhập; limit 1..50 | Tin trước mốc ID; bỏ `beforeId` để lấy tin mới nhất; trả theo ID tăng dần |
+| GET | `/api/rooms/{id}/messages/search?q=...&limit=50&beforeId=N` | Đã đăng nhập; quyền phòng | `{messages:Message[],hasMore:bool}`; tìm toàn bộ lịch sử theo nội dung/tên người gửi, không phân biệt dấu |
+| POST | `/api/direct-messages` | `{userId}` + Origin/CSRF; hai người đã kết bạn | `{id,name,private,direct}`; mở hoặc lấy phòng riêng dùng chung |
+| POST | `/api/groups` | `{name,memberIds}` + Origin/CSRF | Tạo nhóm riêng và thêm người đã kết bạn |
+| GET | `/api/groups/{id}` | Đã đăng nhập; là thành viên nhóm | Thông tin nhóm, chủ nhóm, thành viên và bạn có thể mời |
+| POST | `/api/groups/manage` | `{roomId,action,...}` + Origin/CSRF | Đổi tên/thêm/xóa thành viên; thành viên rời hoặc chủ nhóm xóa nhóm |
 | GET | `/api/benchmark/rooms/{id}/messages?afterId=N` | Đã đăng nhập, bật chế độ đo | Sau mốc ID, tối đa 1000 tin/lần; chỉ phục vụ công cụ so sánh |
 
 Mã HTTP: 400 cho dữ liệu sai; 401 chưa đăng nhập; 403 sai Origin/CSRF; 404 không có phòng/đường dẫn; 413 thân yêu cầu quá lớn; 503 dịch vụ không sẵn sàng. Sau Upgrade, lỗi WebSocket dùng `system:error`, không phải phản hồi HTTP. Đăng nhập sai luôn trả thông báo chung. API polling mặc định tắt ở ứng dụng thường.
@@ -33,8 +41,8 @@ Các mã lỗi giữ nguyên để máy khách xử lý: `INVALID_PAYLOAD`, `ROO
 
 Nội dung được cắt khoảng trắng Unicode, không rỗng, tối đa 500 mã ký tự. JSON tối đa 8192 byte UTF-8; thư viện chừa tối đa 14 byte tiêu đề khung và ứng dụng kiểm tra lại tin đã ghép. Giới hạn 20 tin được chấp nhận/tài khoản/cửa sổ trượt 60 giây, dùng chung mọi socket. Ping mỗi 20 giây, không nhận pong khoảng 55–56 giây thì đóng. Kiểm tra phiên trước sự kiện, trước giao tin và mỗi giây.
 
-Khi tham gia, máy chủ cập nhật thành viên rồi gửi `room:joined`. Trình duyệt nhận sự kiện trực tiếp vào Map theo ID trong lúc tải lịch sử, gộp kết quả và bỏ phản hồi cũ sau đổi phòng. Lịch sử chỉ 50 tin; không bảo đảm lấy đủ mọi tin khi ngoại tuyến lâu. Không tự gửi lại tin chưa rõ kết quả.
+Khi tham gia, máy chủ cập nhật thành viên rồi gửi `room:joined`. Trình duyệt nhận sự kiện trực tiếp vào Map theo ID trong lúc tải lịch sử, gộp kết quả và bỏ phản hồi cũ sau đổi phòng. Mỗi trang lịch sử tối đa 50 tin; `beforeId` dùng để tải trang cũ, tìm kiếm và xuất có thể duyệt toàn bộ lịch sử. Không tự gửi lại tin chưa rõ kết quả.
 
-Các repository PDO chịu trách nhiệm SQL có tham số: `latest(roomId,limit=50)`, `create(userId,roomId,content)`, `after(roomId,afterId)` trả đúng cấu trúc Message. `SessionService` ký cookie, chỉ lưu băm token, xử lý phiên khách/đăng nhập, xoay phiên và thu hồi dùng chung. Mỗi tiến trình mở PDO riêng sau khi khởi động worker.
+Các repository PDO chịu trách nhiệm SQL có tham số: `latest(roomId,limit=50)`, `before(roomId,beforeId,limit)`, `search(roomId,term,limit,beforeId)`, `create(userId,roomId,content)`, `after(roomId,afterId)` trả đúng cấu trúc Message hoặc kết quả tìm kiếm. `SessionService` ký cookie, chỉ lưu băm token, xử lý phiên khách/đăng nhập, xoay phiên và thu hồi dùng chung. Mỗi tiến trình mở PDO riêng sau khi khởi động worker.
 
-Tên phòng lưu trong API vẫn là `General`, `Engineering`, `Study group`; trình duyệt ánh xạ thành Trò chuyện chung, Kỹ thuật, Nhóm học tập. Tìm kiếm, bản nháp, giao diện và xuất tệp chạy ở máy khách; không mở thêm API hoặc thay quy tắc phân quyền.
+Tên phòng lưu trong API vẫn là `General`, `Engineering`, `Study group`; trình duyệt ánh xạ thành Trò chuyện chung, Kỹ thuật, Nhóm học tập. Bản nháp, giao diện và xuất tệp chạy ở máy khách; phân trang/tìm kiếm phía máy chủ vẫn áp dụng cùng quyền truy cập phòng.
