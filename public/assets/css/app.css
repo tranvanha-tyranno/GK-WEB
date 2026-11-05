@@ -1,11 +1,11 @@
 @import url('/assets/css/fonts.css');
 :root{
- --body:#FAF8F4;--surface:#FFFFFF;--sidebar:#F4F1EC;--soft:#F1EDE6;--border:#E4DED3;
+ --body:#F2F7F0;--surface:#FFFFFF;--sidebar:#E8F0E6;--soft:#E1EBDD;--border:#D3DFCE;
  --own-surface:color-mix(in srgb,var(--soft) 40%,var(--body));
- --ink:#22302A;--muted:#6E7268;--accent:#BC4B1E;--accent-hover:#A03F16;--on-accent:#FFFFFF;
- --online:#2F7D5B;--error:#B3382E;--pending:#B07C2E;
- --avatar-sage:#DCE3DA;--avatar-sage-ink:#33503F;--avatar-clay:#F0DED2;--avatar-clay-ink:#8A4A22;--avatar-stone:#E5E1D8;--avatar-stone-ink:#4A463C;
- --story-bg:#22302A;--story-ink:#FAF8F4;--story-muted:#C5CEC4;--story-surface:#2C3B33;--story-border:#506055;--backdrop:#17151299;
+ --ink:#1C2E21;--muted:#5A6E5C;--accent:#1F7A38;--accent-hover:#1A6830;--on-accent:#FFFFFF;
+ --online:var(--accent);--error:#C0453A;--pending:#C08A2D;
+ --avatar-sage:#DCE8D8;--avatar-sage-ink:#33502F;--avatar-clay:#CFE3D0;--avatar-clay-ink:#2C5233;--avatar-stone:#E3E8CF;--avatar-stone-ink:#4F5C28;
+ --story-bg:#1C2E21;--story-ink:#F2F7F0;--story-muted:#C1D0BC;--story-surface:#2A3D2E;--story-border:#4B604C;--backdrop:#13171199;
  color-scheme:light;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);font-synthesis:none;line-height:1.5;background:var(--body)
 }
 
