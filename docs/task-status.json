@@ -1,0 +1,205 @@
+{
+  "A02": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "composer.json",
+      "Dockerfile",
+      "docs/contracts.md"
+    ]
+  },
+  "A03": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "evidence/logs/phpunit.xml",
+      "evidence/logs/integration.json"
+    ]
+  },
+  "A04": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "evidence/logs/integration.json",
+      "src/Http/Controllers/RoomController.php"
+    ]
+  },
+  "A05": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "evidence/logs/clean-install.json",
+      "evidence/logs/runtime-verification.json",
+      "deploy/README.md"
+    ]
+  },
+  "A06": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "README.md",
+      "tools/benchmark/run.py",
+      "evidence/logs/clean-install.json"
+    ]
+  },
+  "A07": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "docs/report.md",
+      "docs/references.md",
+      "submission/report.docx"
+    ]
+  },
+  "A08": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "submission/report.docx",
+      "submission/report.pdf"
+    ]
+  },
+  "B01": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "resources/views/chat.php",
+      "public/assets/css/app.css",
+      "docs/report.md"
+    ]
+  },
+  "B02": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "evidence/logs/browser-acceptance.json",
+      "public/assets/js/api.js"
+    ]
+  },
+  "B03": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "evidence/logs/integration.json",
+      "evidence/logs/browser-acceptance.json"
+    ]
+  },
+  "B04": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "evidence/logs/browser-acceptance.json",
+      "evidence/screenshots/EV-07-chat-mobile.png"
+    ]
+  },
+  "B05": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "docs/comparison.md",
+      "evidence/raw/benchmark-summary.json"
+    ]
+  },
+  "B06": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "docs/report.md",
+      "evidence/charts/delivery-delay.png"
+    ]
+  },
+  "B07": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "submission/report.pdf",
+      "docs/report-review.md"
+    ]
+  },
+  "C01": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "database/schema.sql",
+      "database/seed.php",
+      "evidence/logs/clean-install.json"
+    ]
+  },
+  "C02": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "evidence/logs/phpunit.xml",
+      "src/Repositories/MessageRepository.php"
+    ]
+  },
+  "C03": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "evidence/logs/integration.json",
+      "src/Realtime/Gateway.php"
+    ]
+  },
+  "C04": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "evidence/logs/integration.json",
+      "src/Realtime/RoomHub.php"
+    ]
+  },
+  "C05": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "evidence/logs/runtime-verification.json",
+      "evidence/logs/integration.json"
+    ]
+  },
+  "C06": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "evidence/raw/benchmark-summary.json",
+      "evidence/logs/concurrent.json"
+    ]
+  },
+  "C07": {
+    "status": "done",
+    "verifiedBy": "Codex kiểm tra tự động và trực quan ngày 22/10/2026; xem nhật ký riêng cho bản cập nhật",
+    "evidence": [
+      "docs/report.md",
+      "evidence/diagrams/architecture.png",
+      "evidence/diagrams/erd.png"
+    ]
+  },
+  "A01": {
+    "status": "pending-human-or-institutional",
+    "reason": "Thông tin lớp/cơ sở đào tạo để trống theo yêu cầu; người dùng cần xác nhận hạn và đăng ký trình bày. Đã chuẩn bị kế hoạch, nguồn và bố cục."
+  },
+  "A09": {
+    "status": "pending-human-or-institutional",
+    "reason": "Đã có ghi chú và câu hỏi tập luyện; thành viên thật cần thực hiện thuyết trình theo quy định môn học."
+  },
+  "A10": {
+    "status": "pending-human-or-institutional",
+    "reason": "Đã có gói nguồn và danh mục; nộp chính thức và biên nhận là thao tác của người dùng, chưa thực hiện."
+  },
+  "B08": {
+    "status": "pending-human-or-institutional",
+    "reason": "Đã có 12 slide chỉnh sửa được, PDF và lời trình bày; còn video có âm thanh ba thành viên thật."
+  },
+  "B09": {
+    "status": "pending-human-or-institutional",
+    "reason": "Đã kiểm tra trình duyệt/bố cục; còn trình bày thật, video cuối và rà tệp đã tải lên."
+  },
+  "C08": {
+    "status": "pending-human-or-institutional",
+    "reason": "Đã chuẩn bị cài sạch, test, bảng minh chứng và danh mục; xác nhận đóng góp phải do thành viên thật điền."
+  },
+  "C09": {
+    "status": "pending-human-or-institutional",
+    "reason": "Đã có ghi chú thiết kế/test và kiểm tra kỹ thuật; còn trình bày thật và rà video cuối."
+  }
+}

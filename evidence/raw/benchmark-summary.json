@@ -1,0 +1,118 @@
+{
+  "environment": {
+    "python": "3.11.9",
+    "os": "Windows-10-10.0.26200-SP0",
+    "baseUrl": "http://localhost:8088",
+    "generatedAt": "2026-10-21T21:14:08Z",
+    "quickSmokeOnly": false,
+    "measurement": "Same Python perf_counter at WS sender and HTTP/WS receiver; delay includes delivery, storage, polling wait and scheduling. JSON bytes exclude framing, HTTP headers and TLS."
+  },
+  "runs": [
+    {
+      "transport": "polling",
+      "run": 1,
+      "durationSeconds": 120,
+      "intervalSeconds": 6,
+      "sent": 20,
+      "received": 20,
+      "timeouts": 0,
+      "medianMs": 490.3490000288002,
+      "p95Ms": 674.2980999406427,
+      "httpRequests": 120,
+      "applicationJsonBytesReceived": 4725,
+      "websocketMessagesReceived": 0,
+      "errors": []
+    },
+    {
+      "transport": "websocket",
+      "run": 1,
+      "durationSeconds": 120,
+      "intervalSeconds": 6,
+      "sent": 20,
+      "received": 20,
+      "timeouts": 0,
+      "medianMs": 20.832500013057142,
+      "p95Ms": 62.98999988939613,
+      "httpRequests": 0,
+      "applicationJsonBytesReceived": 8827,
+      "websocketMessagesReceived": 62,
+      "errors": []
+    },
+    {
+      "transport": "websocket",
+      "run": 2,
+      "durationSeconds": 120,
+      "intervalSeconds": 6,
+      "sent": 20,
+      "received": 20,
+      "timeouts": 0,
+      "medianMs": 17.626999993808568,
+      "p95Ms": 146.00559999234974,
+      "httpRequests": 0,
+      "applicationJsonBytesReceived": 8827,
+      "websocketMessagesReceived": 62,
+      "errors": []
+    },
+    {
+      "transport": "polling",
+      "run": 2,
+      "durationSeconds": 120,
+      "intervalSeconds": 6,
+      "sent": 20,
+      "received": 20,
+      "timeouts": 0,
+      "medianMs": 504.51645004795864,
+      "p95Ms": 637.6343000447378,
+      "httpRequests": 120,
+      "applicationJsonBytesReceived": 4740,
+      "websocketMessagesReceived": 0,
+      "errors": []
+    },
+    {
+      "transport": "polling",
+      "run": 3,
+      "durationSeconds": 120,
+      "intervalSeconds": 6,
+      "sent": 20,
+      "received": 20,
+      "timeouts": 0,
+      "medianMs": 452.9485999373719,
+      "p95Ms": 563.3131000213325,
+      "httpRequests": 120,
+      "applicationJsonBytesReceived": 4740,
+      "websocketMessagesReceived": 0,
+      "errors": []
+    },
+    {
+      "transport": "websocket",
+      "run": 3,
+      "durationSeconds": 120,
+      "intervalSeconds": 6,
+      "sent": 20,
+      "received": 20,
+      "timeouts": 0,
+      "medianMs": 23.73014995828271,
+      "p95Ms": 78.35089997388422,
+      "httpRequests": 0,
+      "applicationJsonBytesReceived": 8827,
+      "websocketMessagesReceived": 62,
+      "errors": []
+    }
+  ],
+  "idle": [
+    {
+      "transport": "polling",
+      "durationSeconds": 60,
+      "httpRequests": 60,
+      "websocketApplicationEvents": 0,
+      "note": "Protocol heartbeat ping/pong is not included in application event count."
+    },
+    {
+      "transport": "websocket",
+      "durationSeconds": 60,
+      "httpRequests": 0,
+      "websocketApplicationEvents": 0,
+      "note": "Protocol heartbeat ping/pong is not included in application event count."
+    }
+  ]
+}

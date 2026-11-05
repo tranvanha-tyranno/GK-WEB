@@ -1,0 +1,10 @@
+{
+  "reportPages": 34,
+  "embeddedReportImages": 6,
+  "externalReportRelationships": 0,
+  "outOfPageTextBoxes": [],
+  "slidesPages": 12,
+  "reportExporter": "Microsoft Word native COM",
+  "slideExporter": "Microsoft PowerPoint native COM",
+  "canonicalRenderAttempt": "render_docx.py unavailable: pdf2image missing; native Word PDF rasterized with PyMuPDF instead"
+}

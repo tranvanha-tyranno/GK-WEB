@@ -1,0 +1,14 @@
+[
+  {
+    "id": "TC-16",
+    "status": "PASS",
+    "detail": "Stored marker survived real PHP-FPM/Workerman restart in named SQLite volume; session remained valid; new socket rejoined.",
+    "messageId": 8
+  },
+  {
+    "id": "TC-12-heartbeat",
+    "status": "PASS",
+    "elapsedSeconds": 55.828,
+    "detail": "Client intentionally never sent pong; server closed raw TCP connection within 60 seconds."
+  }
+]

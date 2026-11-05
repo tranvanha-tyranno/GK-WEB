@@ -1,0 +1,7 @@
+{
+  "transport": "websocket",
+  "durationSeconds": 60,
+  "httpRequests": 0,
+  "websocketApplicationEvents": 0,
+  "note": "Protocol heartbeat ping/pong is not included in application event count."
+}

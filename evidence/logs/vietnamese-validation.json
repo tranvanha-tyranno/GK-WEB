@@ -1,0 +1,134 @@
+{
+  "completedAt": "2026-10-29T00:24:07.355996+07:00",
+  "timezone": "Asia/Saigon",
+  "status": "PASS",
+  "checks": {
+    "phpLint": {
+      "status": "PASS",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "app",
+        "composer",
+        "lint"
+      ],
+      "exitCode": 0,
+      "output": "Syntax valid: 42 PHP files."
+    },
+    "phpUnit": {
+      "status": "PASS",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "app",
+        "composer",
+        "test"
+      ],
+      "exitCode": 0,
+      "output": "PHPUnit 11.5.57 by Sebastian Bergmann and contributors.\n\nRuntime:       PHP 8.3.36\nConfiguration: /app/phpunit.xml\n\n............................                                      28 / 28 (100%)\n\nTime: 00:03.165, Memory: 8.00 MB\n\nOK (28 tests, 78 assertions)"
+    },
+    "composerManifest": {
+      "status": "PASS",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "app",
+        "composer",
+        "validate",
+        "--strict"
+      ],
+      "exitCode": 0,
+      "output": "./composer.json is valid"
+    },
+    "ui": {
+      "status": "PASS",
+      "evidence": "evidence/logs/vietnamese-ui.json",
+      "cases": 11,
+      "checkedAt": "2026-10-28T17:21:25.902Z"
+    },
+    "login": {
+      "status": "PASS",
+      "evidence": "evidence/logs/vietnamese-login.json",
+      "cases": 4,
+      "checkedAt": null
+    },
+    "browserRegression": {
+      "status": "PASS",
+      "evidence": "evidence/logs/vietnamese-browser.json",
+      "cases": 7,
+      "checkedAt": "2026-10-28T16:59:42.817Z"
+    },
+    "integration": {
+      "status": "PASS",
+      "evidence": "evidence/logs/vietnamese-integration.json",
+      "cases": 7,
+      "checkedAt": "2026-10-28T17:03:06Z"
+    },
+    "artifacts": {
+      "status": "PASS",
+      "evidence": "evidence/logs/vietnamese-artifacts.json",
+      "reportPages": 22,
+      "slides": 12
+    }
+  },
+  "sourceSha256": {
+    "public/index.php": "09e85837ed5e265ee6736e5df312951f53cdd2f520ba71ccdad58384f2860c0d",
+    "public/assets/favicon.svg": "f6bad6cf643559654b55b46b38c75d995c97e2e3c6b0d6d96037fcf8058f67f7",
+    "public/assets/css/app.css": "fc09b901423ab8c9573817a0d12c9b77d73e31e39181f7de7d62dd1ccfec6a70",
+    "public/assets/css/fonts.css": "89d849c2d7ba75fdc82b9f27497d57a728125a1c51b0d79f1b1eb220aeedb4ed",
+    "public/assets/css/readability.css": "42acf9ea223cc7af8607b4f56f9dd09d29ca00b951c39adbb395d3549fe82e76",
+    "public/assets/css/workspace.css": "0605b14412f95c0610b228abf6e55e32cec7c7238ba2c9484de79b679ef5cbef",
+    "public/assets/js/api.js": "ce15b9a7a1f56572cc7f0c3bb1618d1d4a03fa4aafdebb7bd3831d284b2a2b94",
+    "public/assets/js/app.js": "408780411cec69dee3c4dbb565e3b09f091177b3ada9c78d44fc8e7d5395b27c",
+    "public/assets/js/chat.js": "cbfdad48e53a1c0cbf01acf2d2e6cd5f40c4acca2d089a3ef06b0d9ff4205995",
+    "public/assets/js/preferences.js": "cc598556c94f8a93e60e26b382cb16b1c4be8d79c77a534bd785def5168782e8",
+    "public/assets/js/socket.js": "84eebcfe6bbf56032c7db41bc01bdb369e2594e9020c029677f32dd044727b5c",
+    "resources/views/chat.php": "6a0ed0ba2e9d41f88aeca66a4c03c8024039cf14f0ee0f03a9cbcde4846672c6",
+    "resources/views/layout.php": "37d34549b560092130d780599e5fcd5851703f2e9dab13fb8224d90c58dacb5d",
+    "resources/views/login.php": "57ab24a3259a7cbd4c038b39c101b7515ffee31d4768adcd904324a7d54091eb",
+    "src/Application.php": "102ce5e690e338d75a3b9189855f46e890fc0f139c776d3119031e47f447a74c",
+    "src/Auth/Password.php": "078ffcc554dffb0445c30272e01f7ca6ecd26c821bf065758986c4b1a2d2ab48",
+    "src/Auth/SessionService.php": "84a86c0bbc9272d0b1c7ce2c8049d8e6888eac2908fa444a3d647267da64f438",
+    "src/Database/Connection.php": "42314f8e0646980af15928bbc437d2cbf26fd8f901b87baa14d9b9bc4f9ffb5c",
+    "src/Http/HttpError.php": "60c30386cf5c2610636f2873088be199b0e4149be1acb7a080342b2434654ea2",
+    "src/Http/JsonResponse.php": "283b80c39d4d4952e7db5c6b203c4d4be46ee268c76936d6aa030cb1c6e0fd0b",
+    "src/Http/Router.php": "132ee517a74384a7f517aaed1d1e63123d6fa857aea5c856cb8884c91713b158",
+    "src/Http/Controllers/AuthController.php": "62f1ee155d3ce9a6e9426a1b58ca53c4974a5c38e8ead86739bc2f8a24e00646",
+    "src/Http/Controllers/PageController.php": "39abb2dc1369268b9a5aece9d1b0a32b752723a93cbd797530f10708925bb465",
+    "src/Http/Controllers/RoomController.php": "0c17154ae620d33c1b4b7e7ba6e91747838b1dee0f16ee54edf183bf3773501f",
+    "src/Http/Middleware/Csrf.php": "a9fc172f810b4e560d1c221ad3cfdff74411e4e7cda90e2dc6136cc7645c2fb5",
+    "src/Http/Middleware/RequireUser.php": "fe79e174406a12f6f94ac105e9fe7eea42626e1624949be042a2a7ba8c62efb0",
+    "src/Protocols/TextWebsocket.php": "f22d4467cd746e5faa98b1c63e04c1c3335155731f29f211608664a2787f3e1a",
+    "src/Realtime/EventHandler.php": "e811f17325e0f601b1ce3d5a1fa9427dc3df5069d0b2f5298fe7ba576da68e63",
+    "src/Realtime/Gateway.php": "2a7462e6e947468102997f4eabe845ce8cdcf74d684b020918314982e3ae3a95",
+    "src/Realtime/Peer.php": "eb06816885b7238464d145bdb428c8084cf0317543f610f154eb8dc0f8589783",
+    "src/Realtime/RateLimiter.php": "39e84487bdc37fb09560e3826637e9c46655decba00a435d41157ea8935343f8",
+    "src/Realtime/RoomHub.php": "6d10d66b5ed25523c55bcedb0eae64eb2c19f2008535a8d1e93d00876eeb1d84",
+    "src/Repositories/MessageRepository.php": "f686da843ac102bd00199a83e14d763c4ab891a98c7df9f3440ec72a4e195282",
+    "src/Repositories/RoomRepository.php": "3ba8fea33511de5db77e36974b7e722e706d51e683099a359b4dcb4c6ecd8f93",
+    "src/Repositories/SessionRepository.php": "940764c59b6be29001a570adf86eb8df2260aa5a2382ed917bc7ec5d4c61eec3",
+    "src/Repositories/UserRepository.php": "e480f6b4aca047de83aacf3ec181375143f09bf56c33775bb96c38962a191203",
+    "src/Services/ChatService.php": "1d739c847a7a07f75bf5ad0623af0583088c922d65d3cd2423a143bd4891e8a6",
+    "src/Shared/Protocol.php": "5ad10f2a40d05a3d18f66278ff96b5d1cd58d42bc3ffcf13afca0ab0467690ab",
+    "src/Shared/ProtocolError.php": "c1fb796bf0c946a3977ba2ecdace344b20c1ebdf9ad7d016a6aff5fee32ad67a",
+    "src/Shared/Validator.php": "2d931f11ac8ee93d096a9bb8de66526281fe279cbc430cb148fc3a8ea2143c1f",
+    "bin/localize-demo.php": "91a0fddd7d4cfa480ee7bbe996912660a1ef1ff31650487b4b018a542f0a8344",
+    "bin/reset-demo.php": "425d59c9f1b06db86581ce689c27db026abd7a38859ef4eaba3bf25a27efa2be",
+    "bin/ws-server.php": "4dd039a83bee3804bd27961fde153ad35245a1b82a7ccd644e2135898d2cabad",
+    "database/schema.sql": "6e1f02cb9f8613cacf0089e9d08717a55864fed54d55bde3ec656f2175513c27",
+    "database/seed.php": "b6b1527ea173854c1ac9e6900fe40b259651504dcbbe7b777ed2ca73e811ad12"
+  },
+  "limits": [
+    "Một worker và SQLite ghi đồng bộ",
+    "Khôi phục tối đa 50 tin mới nhất",
+    "Tìm và xuất chỉ tin đã tải",
+    "Chưa kiểm chứng TLS công khai",
+    "Video thành viên thật và nộp chính thức chưa thực hiện"
+  ]
+}

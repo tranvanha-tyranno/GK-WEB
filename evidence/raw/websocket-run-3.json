@@ -1,0 +1,179 @@
+{
+  "summary": {
+    "transport": "websocket",
+    "run": 3,
+    "durationSeconds": 120,
+    "intervalSeconds": 6,
+    "sent": 20,
+    "received": 20,
+    "timeouts": 0,
+    "medianMs": 23.73014995828271,
+    "p95Ms": 78.35089997388422,
+    "httpRequests": 0,
+    "applicationJsonBytesReceived": 8827,
+    "websocketMessagesReceived": 62,
+    "errors": []
+  },
+  "messages": [
+    {
+      "marker": "bench-websocket-3-1792617885945558800:00",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 185,
+      "elapsedMs": 21.945200045593083
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:01",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 186,
+      "elapsedMs": 36.81970003526658
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:02",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 187,
+      "elapsedMs": 13.436299981549382
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:03",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 188,
+      "elapsedMs": 13.74070008751005
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:04",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 189,
+      "elapsedMs": 62.70379992201924
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:05",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 190,
+      "elapsedMs": 24.084199918434024
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:06",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 191,
+      "elapsedMs": 26.06989990454167
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:07",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 192,
+      "elapsedMs": 50.780000048689544
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:08",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 193,
+      "elapsedMs": 23.376099998131394
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:09",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 194,
+      "elapsedMs": 22.41199999116361
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:10",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 195,
+      "elapsedMs": 7.097300025634468
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:11",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 196,
+      "elapsedMs": 82.4029000941664
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:12",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 197,
+      "elapsedMs": 14.813299989327788
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:13",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 198,
+      "elapsedMs": 43.604500009678304
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:14",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 199,
+      "elapsedMs": 78.35089997388422
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:15",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 200,
+      "elapsedMs": 20.007099956274033
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:16",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 201,
+      "elapsedMs": 8.74139997176826
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:17",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 202,
+      "elapsedMs": 65.79060002695769
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:18",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 203,
+      "elapsedMs": 12.819199939258397
+    },
+    {
+      "marker": "bench-websocket-3-1792617885945558800:19",
+      "transport": "websocket",
+      "run": 3,
+      "status": "received",
+      "messageId": 204,
+      "elapsedMs": 29.067699913866818
+    }
+  ]
+}

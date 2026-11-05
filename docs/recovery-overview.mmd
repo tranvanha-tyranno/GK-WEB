@@ -1,0 +1,7 @@
+flowchart TB
+    connect["Kết nối WebSocket"] -->|"open"| join["Tham gia phòng đã chọn"]
+    join -->|"đã xác nhận"| merge["Tải lịch sử và gộp ID"]
+    merge --> ready["Sẵn sàng trò chuyện"]
+    ready -->|"mất kết nối"| retry["Khóa gửi và kết nối lại"]
+    retry -->|"1, 2, 4, 8, 10 giây"| connect
+    ready -->|"đăng xuất hoặc phiên sai"| stop["Dừng thử lại và đăng xuất"]

@@ -1,37 +1,41 @@
-# English rehearsal questions
+# Câu hỏi luyện thuyết trình
 
-## Role A
+## Vai trò A
 
-**Why keep HTTP when WebSocket exists?** Login and historical queries have bounded request/response semantics. WebSocket handles independent live events; choosing it does not invalidate HTTP.
+**Vì sao vẫn dùng HTTP?** Đăng nhập và lấy lịch sử có yêu cầu/phản hồi hữu hạn. WebSocket xử lý sự kiện trực tiếp độc lập; hai cơ chế bổ sung cho nhau.
 
-**Does 101 authenticate a user forever?** No. The HTTP/1.1 status confirms protocol upgrade. The gateway separately checks the session, and active connections remain subject to revocation and event/room authorization.
+**HTTP 101 có xác thực mãi mãi không?** Không. Đây là xác nhận nâng cấp giao thức HTTP/1.1. Gateway kiểm tra phiên riêng; kết nối đang mở vẫn bị thu hồi và kiểm tra quyền từng sự kiện/phòng.
 
-**Is masking encryption?** No. Client frame masking is a protocol requirement; TLS is needed for encrypted WSS communication.
+**Masking có phải mã hóa không?** Không. Che mặt nạ khung phía máy khách là yêu cầu giao thức; cần TLS cho WSS được mã hóa.
 
-**How do PHP-FPM and Workerman share a login?** A common signed cookie and session service resolve records in shared SQLite; each process opens its own PDO connection.
+**PHP-FPM và Workerman dùng chung đăng nhập thế nào?** Cookie ký chung và dịch vụ phiên tra SQLite chung; mỗi tiến trình mở kết nối PDO riêng.
 
-## Role B
+## Vai trò B
 
-**Why not SSE?** SSE is useful for server-only streams. Relay has independent upstream/downstream chat and typing events, making a bidirectional channel convenient. HTTP sending plus SSE receiving is still a valid alternative design.
+**Vì sao không chọn SSE?** SSE phù hợp luồng từ máy chủ. Relay có chat và đang nhập hai chiều độc lập nên WS thuận tiện. Gửi HTTP kết hợp nhận SSE vẫn hợp lệ.
 
-**Why can history and live events overlap?** A message may be stored while a snapshot request is in progress. Both paths use a stored ID, so a map merges the duplicate representation. A generation/room guard rejects an old room's delayed response.
+**Vì sao lịch sử và sự kiện trực tiếp bị trùng?** Tin có thể được lưu trong lúc tải lịch sử. Hai đường có cùng ID DB, Map gộp thành một. Bộ đếm thế hệ/phòng bỏ kết quả phòng cũ đến muộn.
 
-**Does reconnect guarantee every missed message returns?** No. Only the newest 50 are restored, and the application has no durable replay cursor or exactly-once protocol.
+**Kết nối lại có lấy đủ mọi tin không?** Không, chỉ 50 tin mới nhất. Chưa có con trỏ phát lại bền vững hoặc giao thức bảo đảm đúng một lần.
 
-**Why not resend a message automatically?** A disconnect can occur after storage but before the sender sees the echo. Retrying without an idempotency key could create another stored record.
+**Vì sao không tự gửi lại?** Có thể đã lưu nhưng mất kết nối trước khi người gửi thấy phản hồi. Thử lại khi chưa có khóa chống trùng có thể tạo bản ghi thứ hai.
 
-## Role C
+**Tìm kiếm và bản nháp hoạt động ở đâu?** Tìm không dấu trên tin đã tải ở trình duyệt. Bản nháp dùng sessionStorage tách theo tài khoản/phòng/thẻ; lựa chọn màu và mật độ dùng localStorage. Lỗi bộ nhớ không làm hỏng chat.
 
-**Why save before broadcast?** Otherwise browsers can see a message that fails to persist. The failure-injection unit test verifies no broadcast and no successful-message budget consumption after a failed insert.
+**Trả lời có phải tin riêng không?** Không, chỉ thêm trích dẫn văn bản vào tin gửi chung trong phòng; tính cả phần đó vào giới hạn 500 mã ký tự.
 
-**Why exactly one worker?** Room and rate state live in that worker's memory. More workers need shared state and pub/sub; changing a number alone would split the room view and limits.
+## Vai trò C
 
-**What does the concurrency test prove?** Ten messages reached all joined receivers at 2/10/20 sockets. It is functional fanout, not a production throughput or unique-user capacity benchmark.
+**Vì sao lưu trước khi phát?** Tránh người nhận thấy tin chưa lưu được. Bài kiểm tra gây lỗi ghi chứng minh không phát và không trừ lượt gửi thành công khi INSERT thất bại.
 
-**What do the latency values measure?** One Python monotonic clock observes send to receive across validation/storage/transport/scheduling; polling also includes its next-request wait. The small local runs and shared host do not establish general network latency or production performance.
+**Vì sao một worker?** Phòng và bộ đếm nằm trong RAM của worker. Tăng worker cần trạng thái chung và pub/sub; chỉ đổi con số sẽ chia rời phòng và giới hạn.
 
-**How does SQLite affect the event loop?** Synchronous writes can block callbacks under contention. WAL helps read/write coexistence but does not remove the single-writer tradeoff or justify large-scale claims.
+**Kiểm tra đồng thời chứng minh gì?** Mười tin tới đủ socket ở mức 2/10/20 kết nối. Đây là tính đúng của phát tin, không phải thông lượng production hoặc số người độc lập tối đa.
 
-## Every member
+**Số đo độ trễ gồm gì?** Đồng hồ đơn điệu trong Python đo từ gửi đến nhận, bao gồm kiểm tra, lưu, truyền và lịch điều phối; polling thêm chờ lượt hỏi. Mẫu local nhỏ và máy chạy chung không đại diện hiệu năng tổng quát.
 
-Trace one requirement to its source module, test result, report section and live demonstration. Explain one defect or harness problem that was actually found and how it was retested. Name one limitation and a concrete extension without pretending it is already implemented.
+**SQLite ảnh hưởng vòng lặp sự kiện thế nào?** Ghi đồng bộ có thể chặn callback khi tranh chấp. WAL giúp đọc/ghi cùng tồn tại, không bỏ giới hạn một bên ghi.
+
+## Mọi thành viên
+
+Chọn một yêu cầu và chỉ ra mã nguồn, bài kiểm tra, mục báo cáo và thao tác demo tương ứng. Giải thích một lỗi thực sự đã phát hiện, cách sửa và cách kiểm tra lại. Nêu một giới hạn cùng hướng mở rộng cụ thể, phân biệt rõ với phần đã có.

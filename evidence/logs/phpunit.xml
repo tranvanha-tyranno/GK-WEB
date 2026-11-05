@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="/app/phpunit.xml" tests="28" assertions="78" errors="0" failures="0" skipped="0" time="5.468356">
+    <testsuite name="Relay" tests="28" assertions="78" errors="0" failures="0" skipped="0" time="5.468356">
+      <testsuite name="Tests\Auth\SessionTest" file="/app/tests/Auth/SessionTest.php" tests="6" assertions="14" errors="0" failures="0" skipped="0" time="3.701652">
+        <testcase name="testAnonymousSessionAndSignedCookie" file="/app/tests/Auth/SessionTest.php" line="13" class="Tests\Auth\SessionTest" classname="Tests.Auth.SessionTest" assertions="5" time="2.639350"/>
+        <testcase name="testLoginRotationAndRevocationAreSharedAcrossServices" file="/app/tests/Auth/SessionTest.php" line="22" class="Tests\Auth\SessionTest" classname="Tests.Auth.SessionTest" assertions="4" time="0.196221"/>
+        <testcase name="testExpiredSessionIsNotResolved" file="/app/tests/Auth/SessionTest.php" line="30" class="Tests\Auth\SessionTest" classname="Tests.Auth.SessionTest" assertions="2" time="0.146096"/>
+        <testcase name="testCsrfRejectsWrongOriginEvenWithCorrectToken" file="/app/tests/Auth/SessionTest.php" line="36" class="Tests\Auth\SessionTest" classname="Tests.Auth.SessionTest" assertions="1" time="0.418351"/>
+        <testcase name="testCsrfRejectsIncorrectToken" file="/app/tests/Auth/SessionTest.php" line="41" class="Tests\Auth\SessionTest" classname="Tests.Auth.SessionTest" assertions="1" time="0.136975"/>
+        <testcase name="testAnonymousCannotUseProtectedApi" file="/app/tests/Auth/SessionTest.php" line="46" class="Tests\Auth\SessionTest" classname="Tests.Auth.SessionTest" assertions="1" time="0.164660"/>
+      </testsuite>
+      <testsuite name="Tests\Database\MessageRepositoryTest" file="/app/tests/Database/MessageRepositoryTest.php" tests="3" assertions="8" errors="0" failures="0" skipped="0" time="0.540701">
+        <testcase name="testLatestReturnsNewestFiftyInAscendingOrderAndDoesNotLeakRooms" file="/app/tests/Database/MessageRepositoryTest.php" line="9" class="Tests\Database\MessageRepositoryTest" classname="Tests.Database.MessageRepositoryTest" assertions="5" time="0.271349"/>
+        <testcase name="testSqlLikeTextIsStoredAsDataAndCursorWorks" file="/app/tests/Database/MessageRepositoryTest.php" line="18" class="Tests\Database\MessageRepositoryTest" classname="Tests.Database.MessageRepositoryTest" assertions="2" time="0.141437"/>
+        <testcase name="testForeignKeysRejectUnknownUser" file="/app/tests/Database/MessageRepositoryTest.php" line="25" class="Tests\Database\MessageRepositoryTest" classname="Tests.Database.MessageRepositoryTest" assertions="1" time="0.127915"/>
+      </testsuite>
+      <testsuite name="Tests\Realtime\ChatTest" file="/app/tests/Realtime/ChatTest.php" tests="6" assertions="41" errors="0" failures="0" skipped="0" time="1.224435">
+        <testcase name="testPresenceDeduplicatesTabsAndBroadcastIsIsolated" file="/app/tests/Realtime/ChatTest.php" line="16" class="Tests\Realtime\ChatTest" classname="Tests.Realtime.ChatTest" assertions="5" time="0.178323"/>
+        <testcase name="testSwitchRoomCleansTypingAndMembershipAndExpiryWorks" file="/app/tests/Realtime/ChatTest.php" line="29" class="Tests\Realtime\ChatTest" classname="Tests.Realtime.ChatTest" assertions="4" time="0.256033"/>
+        <testcase name="testSlidingWindowIsPerUserAndBoundaryExpires" file="/app/tests/Realtime/ChatTest.php" line="37" class="Tests\Realtime\ChatTest" classname="Tests.Realtime.ChatTest" assertions="24" time="0.298343"/>
+        <testcase name="testSavesBeforeBroadcastAndCannotSpoofRoom" file="/app/tests/Realtime/ChatTest.php" line="45" class="Tests\Realtime\ChatTest" classname="Tests.Realtime.ChatTest" assertions="4" time="0.205479"/>
+        <testcase name="testPersistenceFailureDoesNotBroadcastOrConsumeRateLimit" file="/app/tests/Realtime/ChatTest.php" line="54" class="Tests\Realtime\ChatTest" classname="Tests.Realtime.ChatTest" assertions="3" time="0.128503"/>
+        <testcase name="testEventHandlerRejectsNonexistentRoom" file="/app/tests/Realtime/ChatTest.php" line="65" class="Tests\Realtime\ChatTest" classname="Tests.Realtime.ChatTest" assertions="1" time="0.157754"/>
+      </testsuite>
+      <testsuite name="Tests\Realtime\ValidatorTest" file="/app/tests/Realtime/ValidatorTest.php" tests="13" assertions="15" errors="0" failures="0" skipped="0" time="0.001567">
+        <testcase name="testUnicodeCodePointsAndWhitespace" file="/app/tests/Realtime/ValidatorTest.php" line="9" class="Tests\Realtime\ValidatorTest" classname="Tests.Realtime.ValidatorTest" assertions="3" time="0.000353"/>
+        <testcase name="testEnvelopeNormalizesChatContent" file="/app/tests/Realtime/ValidatorTest.php" line="15" class="Tests\Realtime\ValidatorTest" classname="Tests.Realtime.ValidatorTest" assertions="1" time="0.000143"/>
+        <testsuite name="Tests\Realtime\ValidatorTest::testInvalidEventsAreRejected" tests="11" assertions="11" errors="0" failures="0" skipped="0" time="0.001072">
+          <testcase name="testInvalidEventsAreRejected with data set #0" file="/app/tests/Realtime/ValidatorTest.php" line="21" class="Tests\Realtime\ValidatorTest" classname="Tests.Realtime.ValidatorTest" assertions="1" time="0.000200"/>
+          <testcase name="testInvalidEventsAreRejected with data set #1" file="/app/tests/Realtime/ValidatorTest.php" line="21" class="Tests\Realtime\ValidatorTest" classname="Tests.Realtime.ValidatorTest" assertions="1" time="0.000111"/>
+          <testcase name="testInvalidEventsAreRejected with data set #2" file="/app/tests/Realtime/ValidatorTest.php" line="21" class="Tests\Realtime\ValidatorTest" classname="Tests.Realtime.ValidatorTest" assertions="1" time="0.000085"/>
+          <testcase name="testInvalidEventsAreRejected with data set #3" file="/app/tests/Realtime/ValidatorTest.php" line="21" class="Tests\Realtime\ValidatorTest" classname="Tests.Realtime.ValidatorTest" assertions="1" time="0.000091"/>
+          <testcase name="testInvalidEventsAreRejected with data set #4" file="/app/tests/Realtime/ValidatorTest.php" line="21" class="Tests\Realtime\ValidatorTest" classname="Tests.Realtime.ValidatorTest" assertions="1" time="0.000075"/>
+          <testcase name="testInvalidEventsAreRejected with data set #5" file="/app/tests/Realtime/ValidatorTest.php" line="21" class="Tests\Realtime\ValidatorTest" classname="Tests.Realtime.ValidatorTest" assertions="1" time="0.000076"/>
+          <testcase name="testInvalidEventsAreRejected with data set #6" file="/app/tests/Realtime/ValidatorTest.php" line="21" class="Tests\Realtime\ValidatorTest" classname="Tests.Realtime.ValidatorTest" assertions="1" time="0.000078"/>
+          <testcase name="testInvalidEventsAreRejected with data set #7" file="/app/tests/Realtime/ValidatorTest.php" line="21" class="Tests\Realtime\ValidatorTest" classname="Tests.Realtime.ValidatorTest" assertions="1" time="0.000078"/>
+          <testcase name="testInvalidEventsAreRejected with data set #8" file="/app/tests/Realtime/ValidatorTest.php" line="21" class="Tests\Realtime\ValidatorTest" classname="Tests.Realtime.ValidatorTest" assertions="1" time="0.000079"/>
+          <testcase name="testInvalidEventsAreRejected with data set #9" file="/app/tests/Realtime/ValidatorTest.php" line="21" class="Tests\Realtime\ValidatorTest" classname="Tests.Realtime.ValidatorTest" assertions="1" time="0.000075"/>
+          <testcase name="testInvalidEventsAreRejected with data set #10" file="/app/tests/Realtime/ValidatorTest.php" line="21" class="Tests\Realtime\ValidatorTest" classname="Tests.Realtime.ValidatorTest" assertions="1" time="0.000124"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

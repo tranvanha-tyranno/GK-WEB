@@ -1,0 +1,179 @@
+{
+  "summary": {
+    "transport": "polling",
+    "run": 3,
+    "durationSeconds": 120,
+    "intervalSeconds": 6,
+    "sent": 20,
+    "received": 20,
+    "timeouts": 0,
+    "medianMs": 452.9485999373719,
+    "p95Ms": 563.3131000213325,
+    "httpRequests": 120,
+    "applicationJsonBytesReceived": 4740,
+    "websocketMessagesReceived": 0,
+    "errors": []
+  },
+  "messages": [
+    {
+      "marker": "bench-polling-3-1792617760404848200:00",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 165,
+      "elapsedMs": 563.3131000213325
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:01",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 166,
+      "elapsedMs": 465.9332000883296
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:02",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 167,
+      "elapsedMs": 461.16000006441027
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:03",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 168,
+      "elapsedMs": 460.4961998993531
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:04",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 169,
+      "elapsedMs": 460.0276000564918
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:05",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 170,
+      "elapsedMs": 475.25679995305836
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:06",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 171,
+      "elapsedMs": 451.44929992966354
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:07",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 172,
+      "elapsedMs": 445.0576000381261
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:08",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 173,
+      "elapsedMs": 450.90880000498146
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:09",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 174,
+      "elapsedMs": 458.0873000668362
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:10",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 175,
+      "elapsedMs": 454.4478999450803
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:11",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 176,
+      "elapsedMs": 442.6429000450298
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:12",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 177,
+      "elapsedMs": 479.07509992364794
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:13",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 178,
+      "elapsedMs": 426.77120002917945
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:14",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 179,
+      "elapsedMs": 426.6922000097111
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:15",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 180,
+      "elapsedMs": 622.0037000020966
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:16",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 181,
+      "elapsedMs": 439.3226000247523
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:17",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 182,
+      "elapsedMs": 435.5651999358088
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:18",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 183,
+      "elapsedMs": 428.85600007139146
+    },
+    {
+      "marker": "bench-polling-3-1792617760404848200:19",
+      "transport": "polling",
+      "run": 3,
+      "status": "received",
+      "messageId": 184,
+      "elapsedMs": 441.86669995542616
+    }
+  ]
+}

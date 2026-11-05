@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "archiveSha256AtInstall": "0c0858f5e35146655b7d4fa30743cb841a50d0f8a44f8c20d71b2d6c5e43e0bc",
+  "project": "relay-final",
+  "url": "http://localhost:8091",
+  "freshSecret": true,
+  "freshNamedVolume": true,
+  "installedFromLock": true,
+  "originalVendorExcluded": true,
+  "phpunit": "28 tests / 78 assertions PASS",
+  "loginAndWebSocketChat": true,
+  "messageId": 5,
+  "note": "Final application source installed in a separate directory and fresh Compose project. Later documentation-only packaging changes do not alter application code; archive content is checked separately."
+}

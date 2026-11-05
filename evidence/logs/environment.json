@@ -1,0 +1,12 @@
+{
+    "hostOS":  "Microsoft Windows NT 10.0.26200.0",
+    "docker":  "29.5.3",
+    "ramGiB":  15.71,
+    "note":  "Local exploratory measurement on a shared development host; build/render activity was not excluded. No CPU/RAM time-series sampled.",
+    "compose":  "5.1.4",
+    "cpu":  {
+                "Name":  "12th Gen Intel(R) Core(TM) i7-1255U",
+                "NumberOfCores":  10,
+                "NumberOfLogicalProcessors":  12
+            }
+}

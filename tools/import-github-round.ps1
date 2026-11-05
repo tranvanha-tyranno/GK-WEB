@@ -1,4 +1,4 @@
-param(
+﻿param(
     [Parameter(Mandatory = $true)][ValidateRange(1, 3)][int]$Round,
     [Parameter(Mandatory = $true)][string]$Repo,
     [switch]$Preview
@@ -35,16 +35,16 @@ foreach ($entry in $manifest.files) {
         if (-not (Test-Path -LiteralPath $target -PathType Leaf)) { throw "Target is not a file: $relative" }
         $targetHash = (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash.ToLowerInvariant()
         if ($targetHash -ne $sourceHash) { throw "Different file already exists; merge it manually: $relative" }
-        Write-Host "Already present: $relative"
+        Write-Host "Đã có: $relative"
     } else {
         $copies += [PSCustomObject]@{ Source = $source; Target = $target; Path = $relative }
     }
 }
 
-Write-Host ("Member {0}, round {1}: {2} new files" -f $package.member, $Round, $copies.Count)
+Write-Host ("Thành viên {0}, đợt {1}: {2} tệp mới" -f $package.member, $Round, $copies.Count)
 if ($Preview) {
     $copies | ForEach-Object { Write-Host $_.Path }
-    Write-Host 'Preview only. No files copied.'
+    Write-Host 'Chỉ xem trước. Chưa sao chép tệp.'
     exit 0
 }
 foreach ($copy in $copies) {
@@ -52,6 +52,6 @@ foreach ($copy in $copies) {
     [void][IO.Directory]::CreateDirectory($parent)
     Copy-Item -LiteralPath $copy.Source -Destination $copy.Target
 }
-Write-Host 'Imported. Review the files and checks before creating your own commit.'
+Write-Host 'Đã nhập. Rà soát tệp và kiểm tra trước khi tạo commit của bạn.'
 & git -C $repoPath status --short
 if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect imported changes.' }

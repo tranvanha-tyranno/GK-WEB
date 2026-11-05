@@ -1,53 +1,52 @@
-# English presentation and recording kit
+# Hướng dẫn thuyết trình và ghi hình
 
-The editable 12-slide deck includes English speaker notes for A/B/C. A clean transcript is generated in `submission/recording-kit/script.md`. Names/IDs/class/instructor remain blank by the user's instruction. Each real member must speak in the final video; no synthetic attendance, student voice or completed recording is claimed.
+Bộ slide 12 trang và ghi chú A/B/C đã được chuyển sang tiếng Việt theo yêu cầu ngày 28/10/2026. Bản lời nói ở `submission/recording-kit/script.md`. Họ tên, mã sinh viên, lớp và giảng viên để trống để điền thông tin thật. Tài liệu yêu cầu môn học gốc có quy định trình bày tiếng Anh; bản tiếng Việt này hỗ trợ chuẩn bị, cần đối chiếu quy định khi ghi video nộp chính thức.
 
-## Target recording structure
+## Khung thời gian luyện tập
 
-| Time target | Speaker role | Action |
+| Mốc dự kiến | Người trình bày | Nội dung |
 | --- | --- | --- |
-| 00:00-01:00 | A | Introduce topic, scope and actual team |
-| 01:00-03:00 | A | Explain HTTP/WS, 101, identity/security and run command |
-| 03:00-04:30 | C | Architecture, durable/transient state and persist-before-broadcast |
-| 04:30-07:30 | B | Two separate profiles, bidirectional General chat, room separation, presence and typing |
-| 07:30-09:00 | B | Offline/online recovery, phone layout, literal script text |
-| 09:00-11:30 | C | Persisted marker after restart, validation/rate limit, code explanation and test results |
-| 11:30-12:30 | C | Six-run comparison, method and meaningful limitations |
-| 12:30-13:00 | B | User experience and limits, not a production capacity claim |
-| 13:00-14:00 | A | Future work, source/README/evidence locations and conclusion |
+| 00:00–01:00 | A | Giới thiệu đề tài, phạm vi, thành viên thật |
+| 01:00–03:00 | A | HTTP/WS, 101, phiên/bảo mật, lệnh chạy |
+| 03:00–04:30 | C | Kiến trúc, trạng thái bền vững/tạm thời, lưu trước khi phát |
+| 04:30–07:30 | B | Hai hồ sơ, chat hai chiều, cô lập phòng, trực tuyến/đang nhập |
+| 07:30–09:00 | B | Mất/kết nối lại, bản nháp, giao diện điện thoại, hiển thị văn bản an toàn |
+| 09:00–11:30 | C | Tin tồn tại sau restart, kiểm tra dữ liệu/giới hạn, giải thích mã và test |
+| 11:30–12:30 | C | Sáu lần đo, phương pháp và giới hạn |
+| 12:30–13:00 | B | Tìm kiếm, trả lời, xuất hội thoại, sáng/tối và trải nghiệm |
+| 13:00–14:00 | A | Hướng phát triển, vị trí nguồn/minh chứng, kết thúc |
 
-These are rehearsal targets. Replace them with actual video timestamps after recording. Slide notes are a spoken-text base; allow pauses for actual operations. Do not rush every paragraph to force an exact duration. The submitted video must be no more than 20 minutes.
+Thay các mốc trên bằng thời gian video thật sau khi ghi. Cho phép thời gian thao tác và ngừng nghỉ; video nộp không quá 20 phút. Chưa có xác nhận cả ba thành viên đã ghi hình.
 
-## Before recording
+## Chuẩn bị
 
-1. Start the app with `powershell -ExecutionPolicy Bypass -File tools/setup.ps1` and verify `http://localhost:8080/api/health`.
-2. Use one browser profile for Alice and another for Bob. Credentials for both are in the README. Ordinary tabs share cookies and demonstrate one-account/multiple-socket behavior instead.
-3. If a clean classroom dataset is needed, deliberately reset **only the local demo** using the commands below. This deletes demo conversations and sessions. It is not a normal startup step.
-4. Increase terminal/browser font, use a readable resolution, hide real notifications and secret files. Record a 30-second audio sample from every speaker.
-5. Open the deck, application, source path, test summaries and the six-run chart. Show short code paths that explain validation/persistence, rather than scrolling through every file.
+1. Chạy `powershell -ExecutionPolicy Bypass -File tools/setup.ps1`, kiểm tra `http://localhost:8080/api/health`.
+2. Dùng một hồ sơ cho Alice, một hồ sơ cho Bob; mật khẩu trong README. Thẻ thông thường dùng chung phiên, chỉ phù hợp minh họa nhiều socket một tài khoản.
+3. Nếu thực sự cần dữ liệu demo sạch, xuất nội dung cần giữ trước rồi chạy lệnh reset bên dưới. Lệnh xóa hội thoại/phiên demo, không phải bước khởi động thường ngày.
+4. Tăng cỡ chữ trình duyệt/terminal, ẩn thông báo cá nhân và tệp bí mật; thu thử âm thanh 30 giây mỗi người.
+5. Mở slide, ứng dụng, mã liên quan, kết quả test và biểu đồ sáu lần đo. Chỉ chọn đoạn mã giải thích được luồng kiểm tra/lưu/phát.
 
 ```powershell
 docker compose run --rm app php bin/reset-demo.php --confirm=RESET_DEMO
 docker compose restart ws
 ```
 
-## Live actions and explanatory wording
+## Thao tác và cách giải thích
 
-For handshake, open browser DevTools Network and the WS request. Point to the HTTP/1.1 101 response and then to JSON event names. Hide cookies/request secrets. Say: “The connection upgrades once, but authorization continues for each event and delivery.” A sanitized CDP capture is supplied at `evidence/logs/protocol-capture.json` if a static support artifact is useful; show the actual browser when practical.
+Mở DevTools → Network → WS, chỉ phản hồi 101 và tên sự kiện JSON; che cookie/bí mật. Giải thích: kết nối nâng cấp một lần nhưng quyền vẫn được kiểm tra từng sự kiện và trước khi giao tin. Có bản chụp đã lược bí mật ở `evidence/logs/protocol-capture.json`.
 
-For chat, send a distinct marker from Alice, observe Bob's copy and reply from Bob. Say: “The server stores the record first. Both clients receive the same database message ID.” Move Bob to Engineering and send a General message from Alice. Explain that room-scoped chat, presence and typing must not leak.
+Alice gửi dấu nhận diện riêng, Bob nhận rồi trả lời. Máy chủ lưu trước, hai bên thấy cùng ID DB. Chuyển Bob sang Kỹ thuật; tin và trạng thái nhập của Alice ở Trò chuyện chung không được xuất hiện bên Bob.
 
-For multi-tab presence, open a second ordinary tab in Alice's profile. One online account should remain one person. Close one tab, leaving the other. For typing, type then stop; explain the three-second server TTL. Demonstrate a network interruption and the disabled composer, restore network, then show rejoin/history without duplicated IDs. Explain that only 50 recent messages are restored and uncertain sends are not repeated automatically.
+Mở thêm một thẻ Alice để minh họa một tài khoản vẫn hiện một người. Đóng một thẻ và giữ thẻ kia. Gõ rồi dừng để giải thích trạng thái nhập hết hạn 3 giây. Ngắt mạng: trạng thái đổi, vẫn soạn bản nháp được, nút Gửi bị khóa. Khôi phục mạng, chỉ ra tham gia lại và gộp ID; tối đa 50 tin mới nhất, không tự gửi lại tin chưa rõ kết quả.
 
-For persistence, send a marker, run `docker compose restart ws app`, reload/rejoin if necessary and locate the marker again. Use the recorded runtime check to explain the result rather than deleting the volume. The no-pong check takes about 56 seconds; show the recorded log and method in a concise section instead of making the audience wait silently.
+Tìm không dấu, đổi phòng rồi quay lại bản nháp, trả lời bằng trích dẫn và đổi màu sáng/tối. Dùng xuất hội thoại để giải thích phạm vi chỉ tin đã tải. Mở danh sách thành viên và giao diện điện thoại.
 
-For validation and rate limiting, show the test output and one controlled invalid payload or account-wide rejection. Do not flood the main demo unintentionally before other scenes. The integration suite runs separately on port 8088; restarting its WS process clears its test limiter. For the comparison, quote the actual local ranges and explain the one-second polling interval, small sample, host interference and excluded wire overhead.
+Gửi một dấu nhận diện, chạy `docker compose restart ws app`, mở lại và tìm tin để minh họa bền vững. Không xóa volume. Phép đo không pong mất khoảng 56 giây; dùng log và giải thích ngắn thay vì chờ toàn bộ thời gian.
 
-## Recording and export checklist
+Với dữ liệu sai/giới hạn, dùng test và một ví dụ kiểm soát, tránh vô tình làm tài khoản demo chạm giới hạn trước các cảnh khác. Test dùng 8088 riêng. Khi trình bày kết quả đo, nêu chu kỳ polling một giây, mẫu nhỏ, máy chạy chung và byte không gồm tiêu đề/khung.
 
-- Record with Zoom/Meet/OBS or another tool that captures each actual member's English explanation and clear audio.
-- Keep slide transitions and live actions legible. Both main app interactions and explanatory diagrams should be visible.
-- Export MP4 using a widely supported codec and open the **final exported file** from beginning to end. Verify each person's voice and any screen-sharing changes.
-- Set the final file at `submission/demo.mp4` only when it meets the course's sound/participation requirements. A silent browser reference is supplementary and must not be renamed as a compliant final video.
-- Update `docs/rubric-evidence.md` with real timestamps and `submission/manifest.md` with file/duration/check results. Record the real presentation work in the contribution log.
-- Check the deadline and upload fields on the course system yourself; no official submission has been performed by Codex.
+## Hoàn tất video
+
+Thu bằng công cụ có âm thanh rõ của từng người thật. Đối chiếu yêu cầu ngôn ngữ gốc trước khi nộp. Xuất MP4 thông dụng, xem lại từ đầu đến cuối, kiểm tra âm thanh, độ rõ và chuyển màn hình.
+
+Chỉ đặt `submission/demo.mp4` khi đã đáp ứng yêu cầu. Video tham chiếu im lặng là tư liệu phụ, không đổi tên để coi như bản trình bày nhóm. Điền thời gian thật trong `rubric-evidence.md`, thời lượng/tệp trong manifest và đóng góp thực tế trong `contributions.md`. Xác nhận hạn/kênh nộp và biên nhận bằng thao tác thật; Codex chưa nộp bài.

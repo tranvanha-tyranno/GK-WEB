@@ -1,38 +1,40 @@
-# Shared application contract
+# Hợp đồng dữ liệu dùng chung
 
-All IDs are JSON integers. All API responses are `{ "data": ... }` or `{ "error": { "code": "...", "message": "..." } }`. Protected HTTP endpoints return 401 without a logged-in session. Mutating requests require exact allowed Origin and `X-CSRF-Token` from `GET /api/auth/me`.
+Mọi ID là số nguyên JSON. Phản hồi HTTP có dạng `{ "data": ... }` hoặc `{ "error": { "code": "...", "message": "..." } }`. API được bảo vệ trả 401 khi chưa đăng nhập. Yêu cầu thay đổi dữ liệu phải có Origin chính xác trong danh sách cho phép và `X-CSRF-Token` lấy từ `GET /api/auth/me`.
 
-`User = {id, username, displayName}`. `Message = {id, roomId, user: User, content, createdAt}`. Timestamps are UTC ISO 8601 and localized by the browser. Secrets, password hashes and login cookie values never appear in API JSON.
+`User = {id, username, displayName}`. `Message = {id, roomId, user: User, content, createdAt}`. Thời gian là UTC ISO 8601, hiển thị theo định dạng `vi-VN` và múi giờ trình duyệt. JSON không chứa khóa bí mật, mật khẩu băm hoặc giá trị cookie đăng nhập.
 
-| Method | Path | Request | `data` |
+| Phương thức | Đường dẫn | Dữ liệu gửi | Nội dung `data` |
 | --- | --- | --- | --- |
-| GET | `/api/health` | none | `{status:"ok"}` |
-| GET | `/api/auth/me` | optional cookie | `{user:User|null,csrfToken:string}`; creates anonymous session when needed |
-| POST | `/api/auth/login` | JSON `{username,password}` + Origin/CSRF | `{user:User,csrfToken:string}`; new signed cookie; old session revoked |
-| POST | `/api/auth/logout` | Origin/CSRF, active login | `{ok:true}`; revoke before cookie removal |
-| GET | `/api/rooms` | login | `[{id,name}]` |
-| GET | `/api/rooms/{id}/messages?limit=50` | login; limit integer 1..50 | newest messages, returned in ascending ID order |
-| GET | `/api/benchmark/rooms/{id}/messages?afterId=N` | login; benchmark mode enabled | messages after cursor, ascending; up to 1000 per poll; comparison harness only |
+| GET | `/api/health` | Không cần | `{status:"ok"}` |
+| GET | `/api/auth/me` | Cookie nếu có | `{user:User|null,csrfToken:string}`; tạo phiên khách khi cần |
+| POST | `/api/auth/login` | JSON `{username,password}` + Origin/CSRF | `{user:User,csrfToken:string}`; cookie mới, thu hồi phiên cũ |
+| POST | `/api/auth/logout` | Origin/CSRF, đã đăng nhập | `{ok:true}`; thu hồi phiên trước khi xóa cookie |
+| GET | `/api/rooms` | Đã đăng nhập | `[{id,name}]` |
+| GET | `/api/rooms/{id}/messages?limit=50` | Đã đăng nhập; limit 1..50 | Các tin mới nhất, trả theo ID tăng dần |
+| GET | `/api/benchmark/rooms/{id}/messages?afterId=N` | Đã đăng nhập, bật chế độ đo | Sau mốc ID, tối đa 1000 tin/lần; chỉ phục vụ công cụ so sánh |
 
-Bad input uses 400, unauthenticated access 401, failed Origin/CSRF 403, unknown room/endpoint 404, oversized HTTP body 413 and unavailable service 503. WebSocket rate limiting uses `system:error`, because a post-upgrade message is not an HTTP response. Unknown login always receives a generic credential error. The polling API is disabled in the normal environment by default.
+Mã HTTP: 400 cho dữ liệu sai; 401 chưa đăng nhập; 403 sai Origin/CSRF; 404 không có phòng/đường dẫn; 413 thân yêu cầu quá lớn; 503 dịch vụ không sẵn sàng. Sau Upgrade, lỗi WebSocket dùng `system:error`, không phải phản hồi HTTP. Đăng nhập sai luôn trả thông báo chung. API polling mặc định tắt ở ứng dụng thường.
 
-WebSocket `/ws` requires the same signed cookie and allowed Origin before upgrade. Each socket belongs to one room. Envelope: `{type:string,payload:object}`. Unknown fields and non-object/binary messages are rejected.
+WebSocket `/ws` kiểm tra cùng cookie có chữ ký và Origin trước Upgrade. Mỗi socket thuộc một phòng. Cấu trúc chung: `{type:string,payload:object}`. Từ chối trường lạ, dữ liệu không phải đối tượng và tin nhị phân.
 
-| Direction | Type | Payload |
+| Chiều | Sự kiện | Dữ liệu |
 | --- | --- | --- |
-| C -> S | `room:join` | `{roomId:int}` |
-| S -> C | `room:joined` | `{roomId:int}` |
-| C -> S | `chat:send` | `{roomId:int,content:string}` |
-| S -> C | `chat:new` | Message; includes sender echo after persistence |
-| C -> S | `typing:set` | `{roomId:int,isTyping:bool}` |
-| S -> C | `room:presence` | `{roomId:int,users:User[]}` full account-deduplicated snapshot |
-| S -> C | `room:typing` | `{roomId:int,users:User[]}` full snapshot, TTL 3s |
-| S -> C | `system:error` | `{code:string,message:string}` |
+| Máy khách → máy chủ | `room:join` | `{roomId:int}` |
+| Máy chủ → máy khách | `room:joined` | `{roomId:int}` |
+| Máy khách → máy chủ | `chat:send` | `{roomId:int,content:string}` |
+| Máy chủ → máy khách | `chat:new` | Message, gửi cả người gửi sau khi lưu |
+| Máy khách → máy chủ | `typing:set` | `{roomId:int,isTyping:bool}` |
+| Máy chủ → máy khách | `room:presence` | `{roomId:int,users:User[]}`; ảnh chụp trạng thái đã gộp theo tài khoản |
+| Máy chủ → máy khách | `room:typing` | `{roomId:int,users:User[]}`; ảnh chụp trạng thái, hạn 3 giây |
+| Máy chủ → máy khách | `system:error` | `{code:string,message:string}` |
 
-Errors include `INVALID_PAYLOAD`, `ROOM_NOT_FOUND`, `NOT_IN_ROOM`, `MESSAGE_TOO_LONG`, `PAYLOAD_TOO_LARGE`, `RATE_LIMITED`, `INTERNAL_ERROR`. Invalid/expired/revoked session prevents upgrade or destroys an established connection. Frame-level violations may close the connection without an application error event. Room membership is checked for every chat/typing event, and sender identity always comes from the session.
+Các mã lỗi giữ nguyên để máy khách xử lý: `INVALID_PAYLOAD`, `ROOM_NOT_FOUND`, `NOT_IN_ROOM`, `MESSAGE_TOO_LONG`, `PAYLOAD_TOO_LARGE`, `RATE_LIMITED`, `INTERNAL_ERROR`. Nội dung thông báo cho người dùng là tiếng Việt. Phiên sai/hết hạn/bị thu hồi ngăn Upgrade hoặc đóng kết nối hiện có. Vi phạm ở lớp khung có thể đóng kết nối trước khi trả lỗi JSON. Mỗi tin chat/nhập đều kiểm tra phòng, danh tính luôn lấy từ phiên.
 
-Content is Unicode-trimmed, non-empty, at most 500 code points; JSON is at most 8192 UTF-8 bytes. The library frame limit allows up to 14 bytes of frame header on top of that, and reassembled JSON is checked again. 20 accepted messages per account in a sliding 60-second window, across all sockets. Heartbeat pings every 20s, closes a missing pong after roughly 55-56s. Session checks run before events/delivery and every second.
+Nội dung được cắt khoảng trắng Unicode, không rỗng, tối đa 500 mã ký tự. JSON tối đa 8192 byte UTF-8; thư viện chừa tối đa 14 byte tiêu đề khung và ứng dụng kiểm tra lại tin đã ghép. Giới hạn 20 tin được chấp nhận/tài khoản/cửa sổ trượt 60 giây, dùng chung mọi socket. Ping mỗi 20 giây, không nhận pong khoảng 55–56 giây thì đóng. Kiểm tra phiên trước sự kiện, trước giao tin và mỗi giây.
 
-On join, the server sets membership then sends `room:joined`. The browser buffers incoming messages in an ID-keyed map while loading history, merges the snapshot and ignores stale responses after switching rooms. History is limited to 50; this does not guarantee recovery of every offline message. A pending send is never automatically resent.
+Khi tham gia, máy chủ cập nhật thành viên rồi gửi `room:joined`. Trình duyệt nhận sự kiện trực tiếp vào Map theo ID trong lúc tải lịch sử, gộp kết quả và bỏ phản hồi cũ sau đổi phòng. Lịch sử chỉ 50 tin; không bảo đảm lấy đủ mọi tin khi ngoại tuyến lâu. Không tự gửi lại tin chưa rõ kết quả.
 
-PDO repositories own bound SQL. `latest(roomId,limit=50)`, `create(userId,roomId,content)` and comparison-only `after(roomId,afterId)` return the exact Message shape. `SessionService` signs cookies, stores only token hashes, resolves anonymous/authenticated sessions, rotates after login and supports revocation shared across PHP-FPM and Workerman. Each process opens its own PDO connection after worker startup.
+Các repository PDO chịu trách nhiệm SQL có tham số: `latest(roomId,limit=50)`, `create(userId,roomId,content)`, `after(roomId,afterId)` trả đúng cấu trúc Message. `SessionService` ký cookie, chỉ lưu băm token, xử lý phiên khách/đăng nhập, xoay phiên và thu hồi dùng chung. Mỗi tiến trình mở PDO riêng sau khi khởi động worker.
+
+Tên phòng lưu trong API vẫn là `General`, `Engineering`, `Study group`; trình duyệt ánh xạ thành Trò chuyện chung, Kỹ thuật, Nhóm học tập. Tìm kiếm, bản nháp, giao diện và xuất tệp chạy ở máy khách; không mở thêm API hoặc thay quy tắc phân quyền.

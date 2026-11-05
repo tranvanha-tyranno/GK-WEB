@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "sourceArchiveIntegrity": true,
+  "secretFilesExcluded": true,
+  "applicationMatchesCleanTestedSnapshot": true,
+  "reportPages": 34,
+  "mainChapterPages": 29,
+  "slides": 12,
+  "speakerNotes": 12,
+  "embeddedReportImages": 6,
+  "externalReportImageLinks": 0
+}

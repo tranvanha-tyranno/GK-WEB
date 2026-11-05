@@ -1,0 +1,23 @@
+stateDiagram-v2
+    state "Đang kết nối" as Connecting
+    state "Đã kết nối" as Connected
+    state "Tham gia phòng" as Joining
+    state "Tải lịch sử" as Loading
+    state "Sẵn sàng" as Ready
+    state "Kết nối lại" as Reconnecting
+    state "Đã đăng xuất" as SignedOut
+    [*] --> Connecting
+    Connecting --> Connected: WebSocket mở
+    Connected --> Joining: tham gia phòng
+    Joining --> Loading: xác nhận tham gia phòng
+    Loading --> Ready: gộp lịch sử và sự kiện
+    Ready --> Joining: chọn phòng khác
+    Connected --> Reconnecting: mất kết nối
+    Joining --> Reconnecting: mất kết nối
+    Loading --> Reconnecting: mất kết nối
+    Ready --> Reconnecting: mất kết nối
+    Reconnecting --> Connecting: chờ thử lại 1 2 4 8 10 giây
+    Reconnecting --> SignedOut: phiên mất hiệu lực
+    Ready --> SignedOut: đăng xuất
+    SignedOut --> [*]
+

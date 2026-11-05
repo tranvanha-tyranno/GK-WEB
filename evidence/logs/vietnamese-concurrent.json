@@ -1,0 +1,26 @@
+[
+  {
+    "connections": 2,
+    "sent": 10,
+    "expectedDeliveries": 20,
+    "actualDeliveries": 20,
+    "uniqueStoredIds": 10,
+    "status": "PASS"
+  },
+  {
+    "connections": 10,
+    "sent": 10,
+    "expectedDeliveries": 100,
+    "actualDeliveries": 100,
+    "uniqueStoredIds": 10,
+    "status": "PASS"
+  },
+  {
+    "connections": 20,
+    "sent": 10,
+    "expectedDeliveries": 200,
+    "actualDeliveries": 200,
+    "uniqueStoredIds": 10,
+    "status": "PASS"
+  }
+]

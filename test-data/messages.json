@@ -1,0 +1,6 @@
+[
+  {"username":"alice","room":"General","content":"Chào mừng đến với Relay. Choose a room and say hello!"},
+  {"username":"bob","room":"General","content":"Tin nhắn đến tức thì. Bạn không cần tải lại trang."},
+  {"username":"charlie","room":"Engineering","content":"Cùng trao đổi cách xây dựng ứng dụng WebSocket trong phòng này nhé."},
+  {"username":"alice","room":"Study group","content":"Không gian cùng chuẩn bị cho buổi thuyết trình giữa kỳ."}
+]

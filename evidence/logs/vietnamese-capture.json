@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "screenshots": [
+    "VI-chat-desktop.png",
+    "VI-chat-mobile.png"
+  ],
+  "realBrowser": true
+}

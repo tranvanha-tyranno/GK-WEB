@@ -27,8 +27,9 @@ try {
         }
     }
     $db->commit();
-    echo "Schema and demo data ready. Re-running seed preserves existing data.\n";
+    echo "Cấu trúc và dữ liệu mẫu đã sẵn sàng. Chạy lại seed giữ nguyên dữ liệu hiện có.\n";
 } catch (Throwable $error) {
     $db->rollBack();
     throw $error;
 }
+

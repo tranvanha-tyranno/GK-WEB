@@ -1,0 +1,14 @@
+flowchart LR
+    browser["Trình duyệt\nGiao diện PHP + JavaScript"]
+    nginx["Nginx\nlocalhost:8080"]
+    http["PHP FPM\nĐịnh tuyến HTTP và dịch vụ phiên"]
+    ws["PHP CLI Workerman\nMột worker vòng lặp sự kiện"]
+    db[("Volume SQLite dùng chung\nusers rooms messages sessions")]
+    ram["Bộ nhớ worker\nthành viên, đang nhập, giới hạn gửi"]
+    browser -->|"HTTP"| nginx
+    browser <-->|"WS /ws"| nginx
+    nginx -->|"FastCGI"| http
+    nginx <-->|"HTTP/1.1 Upgrade"| ws
+    http --> db
+    ws --> db
+    ws --- ram

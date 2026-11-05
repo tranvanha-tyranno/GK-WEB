@@ -1,6 +1,8 @@
 import { Api } from './api.js';
 import { startChat } from './chat.js';
+import { applyTheme, readPreference } from './preferences.js';
 
+applyTheme(readPreference('theme', matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
 const api = new Api();
 const $ = selector => document.querySelector(selector);
 async function init() {
@@ -12,7 +14,7 @@ async function init() {
   if (user) { location.replace('/chat'); return; }
   $('#toggle-password').addEventListener('click', () => {
     const show = $('#password').type === 'password'; $('#password').type = show ? 'text' : 'password';
-    $('#toggle-password').textContent = show ? 'Hide' : 'Show'; $('#toggle-password').setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    $('#toggle-password').textContent = show ? 'Ẩn' : 'Hiện'; $('#toggle-password').setAttribute('aria-label', show ? 'Ẩn mật khẩu' : 'Hiện mật khẩu');
   });
   for (const button of document.querySelectorAll('[data-demo]')) button.addEventListener('click', () => { $('#username').value = button.dataset.demo; $('#password').value = 'ChatDemo!2026'; $('#login-submit').focus(); });
   $('#login-form').addEventListener('submit', async event => {
@@ -27,6 +29,6 @@ async function init() {
   for (const button of document.querySelectorAll('#login-submit, #toggle-password, [data-demo]')) button.disabled = false;
 }
 init().catch(error => {
-  if ($('#login-error')) { $('#login-error').textContent = 'Cannot connect to the service. Check the server and reload the page.'; $('#login-error').hidden = false; }
-  else { $('#toast').textContent = error.message || 'Cannot connect to the service. Reload to try again.'; $('#toast').hidden = false; }
+  if ($('#login-error')) { $('#login-error').textContent = 'Không kết nối được máy chủ. Hãy kiểm tra kết nối rồi tải lại trang.'; $('#login-error').hidden = false; }
+  else { $('#toast').textContent = error.message || 'Không kết nối được máy chủ. Hãy tải lại trang để thử lại.'; $('#toast').hidden = false; }
 });

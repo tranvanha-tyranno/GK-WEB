@@ -2,13 +2,13 @@
 declare(strict_types=1);
 
 if (!in_array('--confirm=RESET_DEMO', $argv, true)) {
-    fwrite(STDERR, "Refusing reset. This deletes demo messages and sessions. Use --confirm=RESET_DEMO deliberately.\n");
+    fwrite(STDERR, "Chưa xóa dữ liệu. Thao tác này xóa tin nhắn và phiên demo. Chỉ dùng --confirm=RESET_DEMO khi thực sự muốn xóa.\n");
     exit(2);
 }
 /** @var App\Application $app */
 $app = require dirname(__DIR__) . '/bootstrap/app.php';
 if (!in_array($app->config['env'], ['local', 'test'], true)) {
-    fwrite(STDERR, "Reset is allowed only in local/test environments.\n");
+    fwrite(STDERR, "Chỉ cho phép xóa dữ liệu trong môi trường local/test.\n");
     exit(2);
 }
 $app->db->beginTransaction();
@@ -20,4 +20,4 @@ try {
     throw $error;
 }
 require dirname(__DIR__) . '/database/seed.php';
-echo "Demo conversations reset; all sessions revoked. Restart WS to clear transient state.\n";
+echo "Đã đặt lại hội thoại mẫu và thu hồi mọi phiên. Khởi động lại WS để xóa trạng thái tạm.\n";

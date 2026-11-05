@@ -1,51 +1,102 @@
-# English presentation script
+# Lời thuyết trình Relay bằng tiếng Việt
 
-Fill in the blank team details yourself. The roles below correspond to the assignment, not fabricated identities. Record each real member speaking their own part.
 
-## Slide 1 Role A WebSockets and real time communication
 
-We present Relay, a PHP application demonstrating WebSockets and real-time communication. Our application is a multi-room chat workspace. It combines ordinary HTTP endpoints with a persistent connection for chat, typing and presence. In this presentation, we explain the communication model, show how the system is organized, demonstrate the running application, and discuss measured results and limitations. Our names and student IDs are left blank in this editable presentation so the team can fill them in. Each member must deliver their own assigned part of the final English recording. This deck supports that recording and does not replace participation.
+Bản chuẩn bị ngày 28/10/2026; điền danh tính thật và đối chiếu ngôn ngữ theo đề gốc khi ghi video nộp. Chưa có xác nhận thành viên đã trình bày.
 
-## Slide 2 Role A HTTP and persistent communication
 
-HTTP request and response is a natural model for a bounded operation. We submit credentials and receive a result, or request a history snapshot and receive records. A receiving chat participant, however, wants updates without initiating another request for every possible change. WebSocket establishes a persistent framed channel. Both browser and server can initiate messages on that channel. Our application therefore keeps HTTP for login, rooms and history, and uses WebSocket for live events. This is a division by purpose. WebSocket does not make all HTTP operations obsolete. The architecture also separates PHP-FPM from the long-running Workerman process. They share durable records through SQLite, rather than relying on a PHP variable that exists only inside one process. Sources: RFC 6455; MDN WebSocket API; Nginx WebSocket proxying.
 
-## Slide 3 Role A Handshake identity and message boundaries
+## Slide 1 — WebSocket và giao tiếp thời gian thực
 
-In our HTTP/1.1 deployment, the browser requests an upgrade at slash ws. Nginx explicitly forwards Upgrade and Connection headers to Workerman. Before the connection is accepted, our gateway validates the Origin and signed session cookie against SQLite. The successful response is 101 Switching Protocols. That status proves protocol negotiation, not permanent authorization for every later event. Workerman handles frame parsing, continuation frames, masking and control frames. Our validator handles the JSON object inside a text message. We distinguish a chat event name from a protocol opcode. Client masking does not encrypt content, so a public deployment must use TLS and WSS. The verified local demo runs on loopback HTTP and WS; we do not claim a public TLS deployment was tested. During the live recording, open the browser's Network WebSocket request and explain the 101 response and messages, with cookies hidden. Sources: RFC 6455 sections 4, 5 and 10; OWASP WebSocket Security Cheat Sheet.
+Người trình bày dự kiến: A
 
-## Slide 4 Role B Transport alternatives
+Chúng tôi giới thiệu Relay, đồ án minh họa WebSocket và giao tiếp thời gian thực bằng PHP. HTTP phục vụ đăng nhập và lịch sử, còn kết nối liên tục xử lý chat, đang nhập và trực tuyến. Chúng tôi giải thích mô hình, kiến trúc, thao tác thật và kết quả đo kèm giới hạn. Thông tin thành viên được để trống để điền đúng người thật. Bản tài liệu tiếng Việt hỗ trợ chuẩn bị theo yêu cầu; cần đối chiếu quy định ngôn ngữ trong đề gốc khi nộp.
 
-We compared short polling, long polling, server-sent events and WebSocket. Short polling is simple, but the receiving browser discovers an update only when a request completes. Long polling holds a request while waiting for data and then opens another. SSE provides a server-to-browser event stream with browser reconnect behavior, while upstream actions need a separate request or channel. WebSocket supports independent sending in both directions. For this application, typing, room activity and chat fit a shared bidirectional event channel. This does not mean WebSocket is always better. A low-frequency status page may work well with polling, and a server-only feed may be simpler with SSE. We implement a controlled short-polling comparison, while long polling and SSE are researched alternatives rather than benchmark implementations. Sources: RFC 6455; WHATWG HTML Server-sent events; MDN WebSocket API.
 
-## Slide 5 Role C One origin two PHP processes
 
-The browser sees one origin at localhost port 8080. Nginx sends ordinary requests to PHP-FPM and forwards slash ws to Workerman. Workerman runs exactly one worker, so its room hub sees every socket in the demo. Both PHP processes open their own PDO connection to a shared SQLite named volume. Users, rooms, messages and sessions are durable. Membership, typing and rate counters are transient worker memory. This boundary explains what survives a restart. We initially encountered a Windows source-mount permission problem with SQLite writes. Moving the complete database directory to a named volume and setting ownership fixed the issue for both processes, including WAL and SHM files. Increasing the worker count would require shared room state, fanout and account limiting before it could be considered correct. Sources: SQLite Write-Ahead Logging; Workerman 5.2.3 installed source; Nginx WebSocket proxying.
+## Slide 2 — HTTP và kết nối liên tục
 
-## Slide 6 Role C Stored data and event flow
+Người trình bày dự kiến: A
 
-Our four tables separate account identity, room identity, stored conversation and revocable sessions. Messages reference users and rooms with foreign keys. The room and ID index supports the latest-history query. On a send event, the server validates the active session, exact schema, membership and message budget. The repository inserts the record, and only after that succeeds does the hub broadcast the canonical Message object. That object has the same ID and shape in HTTP history and WebSocket delivery. A unit test deliberately aborts insertion and verifies that no message is broadcast and no successful-send slot is consumed. This demonstrates why persistence ordering matters. ID-based display deduplication is useful, but it is not an exactly-once protocol. A future request ID and server uniqueness rule would be needed to retry uncertain sends safely. Evidence: tests/Realtime/ChatTest.php, tests/Database/MessageRepositoryTest.php.
+HTTP có yêu cầu/phản hồi hữu hạn, phù hợp lấy dữ liệu và xác thực. Phòng chat cần cập nhật mà người nhận không liên tục hỏi lại. WebSocket cho hai bên chủ động gửi trên kết nối mở. Điều này không bỏ HTTP hoặc tự giải quyết mọi lỗi. Proxy có thể timeout, máy ngủ hoặc tiến trình restart; ứng dụng cần quản lý danh tính, phòng và phục hồi. Sơ đồ cho thấy một Nginx chuyển tới hai tiến trình PHP dùng chung SQLite. Nguồn nguyên lý: RFC 6455 và MDN; chi tiết báo cáo mục 2.1–2.2.
 
-## Slide 7 Role B Live room conversation
 
-Now we switch to the actual application. In one browser profile, sign in as Alice. In another profile, sign in as Bob. Ordinary tabs share cookies, so they are not suitable for demonstrating two different users. Choose General in both browsers and send a clear marker from Alice. Bob receives it without reloading, and Alice receives the same canonical stored message. Send a reply from Bob to show the channel works in both directions. Open the WebSocket Messages view briefly to relate chat send and chat new to the UI. Next move Bob to Engineering. Send a General message and typing activity from Alice. Bob must not receive that room's events. The automated integration checks compare actual stored IDs and verify isolation; this live demonstration makes the behavior understandable. Show the online member list and explain that it is scoped to the current room. Evidence: integration room test, EV-06 screenshot.
 
-## Slide 8 Role B Presence typing and connection recovery
+## Slide 3 — Bắt tay danh tính và thông điệp
 
-Open a second tab for one account and point out that presence still shows one person. Closing one tab should not remove that person while another socket remains in the room. Type briefly and stop. The server expires typing after three seconds even when a stop message never arrives. Then demonstrate offline state and restore connectivity. The composer is disabled, the client reconnects with bounded backoff, rejoins the selected room and merges history by stored ID. We also tested changing rooms while an older history request was delayed. The stale response could not replace the new room. On a phone-sized viewport, the important controls remain usable and the document does not overflow horizontally. Recovery is bounded to 50 recent messages. If the offline interval exceeds that history, older missing messages may not return. A message stored just before disconnect may be uncertain, so the client never automatically resends it. Evidence: browser acceptance JSON and runtime checks.
+Người trình bày dự kiến: A
 
-## Slide 9 Role C Persistence and defensive behavior
+Mở Network để chỉ yêu cầu /ws và phản hồi 101, che cookie và bí mật. Workerman xử lý bắt tay và khung theo RFC. Gateway kiểm cookie ký và bản ghi phiên, Origin chính xác; sau đó tiếp tục kiểm phiên và quyền từng sự kiện. 101 không xác thực vĩnh viễn. Khung có opcode/độ dài/masking, còn chat:send là tên JSON do ứng dụng định nghĩa. Masking không bảo mật nội dung; triển khai công khai cần HTTPS/WSS. Bản demo chỉ dùng loopback, chưa chứng minh TLS công khai.
 
-We use several verification layers. PHPUnit checks validation, sessions, SQL, room state, the limiter and persistence failure. Real HTTP and WS integration tests check authentication boundaries, room isolation, binary and fragmented messages, multi-tab presence, logout and rate limiting. Browser acceptance checks literal script-like text, recovery, stale response handling and shared-session logout. For persistence, we sent a unique marker and restarted HTTP and WS without deleting the volume. The marker remained in history. For cleanup, we connected a client that never sent pong. The server closed it after 55.828 seconds. The account limiter is shared across tabs: opening another socket does not create another budget. A blocked message is not stored. These results support specific behavior, not a claim that the product has no defects or is production secure. During recording, show the test summary and one meaningful code path rather than scrolling through all source. Evidence: evidence/logs/phpunit.xml, integration.json, runtime-verification.json and browser-acceptance.json.
 
-## Slide 10 Role C Local polling and WebSocket results
 
-The experiment changes the receiving transport while keeping the sender, database, room, authentication and machine common. Each transport has three 120-second runs with twenty messages at six-second intervals. Polling checks for new IDs once per second. The run order alternates, and a single Python monotonic clock measures send to observed receive. All 120 messages across the six runs were received with no recorded timeout or server error. Polling median delays ranged from 452.95 to 504.52 milliseconds; WebSocket medians ranged from 17.63 to 23.73 milliseconds. These values include storage and scheduling, and polling includes its wait for the next request. They are local exploratory results, not pure network latency. Polling made 360 receiving HTTP requests across the active trials. The WS receive path made no repeated HTTP polling requests, but it still maintained a connection and heartbeat traffic. JSON body counts exclude headers and framing and include extra WS room-state events, so they are not a normalized bandwidth comparison. Evidence: raw per-run JSON, benchmark-summary.json and chart source.
+## Slide 4 — Các phương án truyền dữ liệu
 
-## Slide 11 Role B Results within clear limits
+Người trình bày dự kiến: B
 
-The implementation demonstrates the intended concepts with a useful chat workflow. The concurrency test received the same stored message ID on every joined socket at two, ten and twenty connections. Several sockets share accounts, so this is not a test of twenty independent users or a capacity ceiling. The strongest conclusion is functional fanout at those levels. Our limits are explicit. One worker owns room and rate state, synchronous SQLite writes can block its event loop, and the UI restores only the latest fifty messages. The local transport experiment uses a small sample and one polling interval; it should not be generalized to WAN deployment or every workload. Host development activity may affect scheduling, so the results are exploratory. A future controlled performance study should isolate resources and normalize event content. We retain these qualifications in the report and chart interpretation so the evidence remains useful rather than overstated.
+Polling ngắn dễ dùng nhưng có thời gian chờ chu kỳ và yêu cầu lúc nhàn rỗi. Polling dài giữ yêu cầu rồi mở lại, cần xử lý timeout. SSE có luồng một chiều và cơ chế EventSource nối lại, phù hợp thông báo/tiến độ; gửi lên dùng HTTP hoặc kênh khác. WebSocket thuận tiện khi chat/đang nhập độc lập hai chiều. Không có lựa chọn luôn nhanh nhất cho mọi tải. Phép đo của nhóm chỉ đổi đường nhận, giữ cùng người gửi WS, phòng, DB và máy chủ.
 
-## Slide 12 Role A Application reliability beyond a socket
 
-The main lesson is that real-time communication is a system behavior rather than a single socket call. WebSocket provides a channel, while the application must define identity, permissions, event schemas, storage and recovery. Relay connects those responsibilities in a PHP implementation and verifies them through source, tests, browser checks and raw measurements. Useful next steps are durable history replay, client request IDs with server deduplication, shared multi-worker state and a verified public WSS deployment. The source README explains how to install, seed, run and test the project, including fictional credentials. The report contains the design rationale, comparison, results and limitations. Our final English video must include each real team member explaining their own part. Thank you. Selected sources: RFC 6455, WHATWG Server-sent events, MDN WebSocket API, OWASP WebSocket Security Cheat Sheet, PHP documentation, SQLite WAL documentation, Workerman documentation and Nginx WebSocket proxying.
+
+## Slide 5 — Một Origin hai tiến trình PHP
+
+Người trình bày dự kiến: C
+
+Trình duyệt chỉ nối Nginx ở cổng 8080, nội bộ Docker giữ cổng WS và FPM. PHP-FPM xử lý yêu cầu ngắn, Workerman giữ socket và vòng lặp. Mỗi tiến trình mở PDO riêng tới cùng volume SQLite; biến RAM PHP không phải nguồn phiên chung. Worker mở DB sau khi khởi động. Phòng, typing và giới hạn nằm RAM một worker, còn user/tin/phiên nằm DB. Không tăng worker nếu chưa có trạng thái chung và pub/sub.
+
+
+
+## Slide 6 — Dữ liệu và luồng lưu tin
+
+Người trình bày dự kiến: C
+
+Repository dùng SQL có tham số; khóa ngoại và chỉ mục room_id,id hỗ trợ lịch sử. Lấy mới nhất bằng giảm dần có giới hạn rồi đảo thứ tự. ChatService kiểm quyền, schema và giới hạn tài khoản trước khi ghi. Chỉ khi INSERT thành công mới ghi lượt và phát chat:new. Test gây lỗi ghi chứng minh không phát/không trừ lượt gửi thành công. ID giúp gộp cùng bản ghi trên HTTP/WS, không bảo đảm lưu đúng một lần nếu người gửi tự thử lại sau disconnect.
+
+
+
+## Slide 7 — Trò chuyện bằng tiếng Việt
+
+Người trình bày dự kiến: B
+
+Mở Alice và Bob ở hai hồ sơ riêng vì các thẻ thường chia sẻ cookie. Chọn Trò chuyện chung, gửi dấu riêng từ Alice rồi Bob trả lời; chỉ ra cập nhật không tải lại. Chuyển Bob sang Kỹ thuật, Alice gửi/nhập ở phòng cũ; Bob không thấy sự kiện phòng khác. Tiếp theo tìm ky thuat để thấy tìm không dấu, đổi phòng rồi quay lại bản nháp, thử trích dẫn/sao chép và xuất TXT. Các thao tác chỉ trên tin đã tải; không khẳng định tìm hoặc xuất toàn bộ DB. Ảnh lấy từ trình duyệt bản tiếng Việt.
+
+
+
+## Slide 8 — Trực tuyến và khôi phục kết nối
+
+Người trình bày dự kiến: B
+
+Mở thẻ thứ hai cùng tài khoản để chỉ danh sách không trùng. Dừng gõ để trạng thái hết hạn ba giây ở máy chủ. Giả lập ngoại tuyến, chỉ trạng thái và nút Gửi bị khóa nhưng vẫn soạn/lưu nháp. Khôi phục mạng, client nối lại, vào phòng và gộp ID. Tin chưa rõ kết quả không tự gửi lại vì có thể đã lưu. Lịch sử API chỉ 50 tin mới nhất, không cam kết mọi tin khi vắng lâu. Mở điện thoại và hộp thoại Thành viên, thử sáng/tối và thu gọn; lựa chọn được nhớ.
+
+
+
+## Slide 9 — Bền vững và xử lý đầu vào
+
+Người trình bày dự kiến: C
+
+Bảng là kết quả lịch sử có log thật, không tự đổi ngày. PHPUnit 28 bài/78 xác nhận, bảy nhóm tích hợp, restart giữ dấu tin, peer không pong đóng khoảng 55,828 giây. Kiểm tra input gồm JSON/schema, binary phân mảnh, 500/501 mã Unicode, giới hạn tài khoản và lỗi ghi. Bộ UI tiếng Việt kiểm nháp, tìm, quote, sao chép/xuất, offline, preferences và nhiều chiều rộng. Xem log vietnamese-ui và vietnamese-validation để biết kết quả mới. Test chức năng không thay video/đóng góp thật.
+
+
+
+## Slide 10 — Kết quả polling và WebSocket local
+
+Người trình bày dự kiến: C
+
+Mỗi kênh nhận ba lượt xen kẽ, người gửi WS chung, gửi cách sáu giây, polling một giây. Dùng perf_counter cùng tiến trình Python để đo gửi đến nhận, có kiểm/lưu/mạng/lịch điều phối và chờ polling. Trung vị polling 452,95–504,52 ms, WS 17,63–23,73 ms. Đây là quan sát trên máy local với mẫu nhỏ và hoạt động phát triển chung. Byte chỉ JSON, không header/khung/TLS; WS có trạng thái phòng nên không so băng thông cùng nội dung. Không suy thành công suất hoặc độ trễ mạng tổng quát.
+
+
+
+## Slide 11 — Đánh giá trong phạm vi đã kiểm tra
+
+Người trình bày dự kiến: B
+
+Kết quả đủ 20/100/200 bản giao là kiểm fanout ở mức đó. Nhiều socket có thể chung tài khoản, không phải sức chứa người dùng độc lập. RAM phòng/typing/limit mất khi restart; DB giữ dữ liệu. SQLite đồng bộ có thể chặn vòng lặp. Chưa có cursor phát lại dài hoặc ID thao tác để retry an toàn. Chưa có registration/upload/private chat hoặc audit trợ năng đầy đủ. UI nhiều kích thước hữu ích nhưng không chứng minh mọi thiết bị. Phạm vi rõ giúp người đọc dùng kết quả đúng.
+
+
+
+## Slide 12 — Độ tin cậy vượt ra ngoài socket
+
+Người trình bày dự kiến: A
+
+Relay cho thấy thời gian thực là hành vi toàn hệ thống. Bắt tay đúng chưa đủ; cần phiên, quyền phòng, dữ liệu chuẩn, lưu trước phát, UI và kiểm tra. Bản tiếng Việt giúp thao tác dễ hơn, giữ nguyên hợp đồng kỹ thuật. Hướng tiếp là khóa duy nhất theo ID thao tác, cursor phân trang, trạng thái chung/pub-sub và vận hành TLS/sao lưu/giám sát. Mã, README, tài liệu và log được bàn giao cùng nhau. Nhóm cần điền danh tính thật và thu video theo yêu cầu môn; không có xác nhận nộp chính thức từ bộ tài liệu.
+

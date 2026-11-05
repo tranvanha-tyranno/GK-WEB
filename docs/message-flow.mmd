@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant B as Trình duyệt
+    participant W as Workerman
+    participant D as SQLite
+    participant R as Người tham gia phòng
+    B->>W: chat:send với phòng và nội dung
+    W->>W: Kiểm phiên, schema, thành viên và giới hạn
+    W->>D: Thêm tin nhắn
+    D-->>W: Commit và trả ID đã lưu
+    W-->>R: chat:new với bản tin chuẩn
+    Note over W,R: Chỉ phiên còn hiệu lực trong phòng

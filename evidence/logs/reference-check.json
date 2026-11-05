@@ -1,0 +1,56 @@
+[
+  {
+    "id": "rfc6455",
+    "url": "https://www.rfc-editor.org/rfc/rfc6455.html",
+    "status": 200,
+    "bytes": 200197
+  },
+  {
+    "id": "sse",
+    "url": "https://html.spec.whatwg.org/multipage/server-sent-events.html",
+    "status": 200,
+    "bytes": 76654
+  },
+  {
+    "id": "websocket-api",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket",
+    "status": 200,
+    "bytes": 157488
+  },
+  {
+    "id": "owasp-ws",
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/WebSocket_Security_Cheat_Sheet.html",
+    "status": 200,
+    "bytes": 94549
+  },
+  {
+    "id": "workerman",
+    "url": "https://manual.workerman.net/doc/en/appendices/about-websocket.html",
+    "status": 200,
+    "bytes": 23213
+  },
+  {
+    "id": "php-pdo",
+    "url": "https://www.php.net/manual/en/pdo.prepare.php",
+    "status": 200,
+    "bytes": 84307
+  },
+  {
+    "id": "php-password",
+    "url": "https://www.php.net/manual/en/function.password-hash.php",
+    "status": 200,
+    "bytes": 67846
+  },
+  {
+    "id": "sqlite-wal",
+    "url": "https://sqlite.org/wal.html",
+    "status": 200,
+    "bytes": 42143
+  },
+  {
+    "id": "nginx-ws",
+    "url": "https://nginx.org/en/docs/http/websocket.html",
+    "status": 200,
+    "bytes": 4767
+  }
+]

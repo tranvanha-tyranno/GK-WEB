@@ -16,9 +16,9 @@ from package import EXCLUDE, ROOT
 
 
 ROLE = {
-    "A": "HTTP, dang nhap va tich hop",
-    "B": "Giao dien, client va thuyet trinh",
-    "C": "Database, WebSocket va kiem thu",
+    "A": "HTTP, đăng nhập và tích hợp",
+    "B": "Giao diện, máy khách và thuyết trình",
+    "C": "Dữ liệu, WebSocket và kiểm thử",
 }
 MESSAGES = {
     "A": ["chore: import project scaffold and Docker baseline", "chore: import HTTP authentication and API baseline", "docs: import report and packaging material"],
@@ -119,7 +119,7 @@ def owner(path: str) -> tuple[str, int]:
         return "C", 3
     if path == "PHAN_CONG_PHP_3_NGUOI.md":
         return "A", 3
-    if "/" not in path or path == "bin/reset-demo.php":
+    if "/" not in path or path in {"bin/reset-demo.php", "bin/localize-demo.php"}:
         return "A", 1
     raise ValueError(f"Unassigned file: {path}")
 
@@ -148,14 +148,14 @@ def main() -> None:
         if path in assignments:
             raise ValueError(f"Review path already exists; assign it explicitly before rebuilding: {path}")
         contents[path] = (
-            f"# Member {member}: actual review and contribution record\n\n"
-            "Fill only after doing the work. The imported baseline and old logs are not a new test run.\n\n"
-            "| Field | Actual value |\n| --- | --- |\n"
-            "| Full name / student ID | |\n| GitHub username | |\n| Review date | |\n"
-            "| Files read and understood | |\n| Changes personally made | |\n"
-            "| Commands actually run | |\n| Results and new evidence paths | |\n"
-            "| Remaining defects / limits | |\n| Commit / PR URLs | |\n"
-            "| Presentation section / timestamp | |\n"
+            f"# Thành viên {member}: nhật ký rà soát và đóng góp thực tế\n\n"
+            "Chỉ điền sau khi thực sự làm. Mã tiếp nhận và log cũ không phải lần kiểm tra mới.\n\n"
+            "| Mục | Giá trị thực tế |\n| --- | --- |\n"
+            "| Họ tên / mã sinh viên | |\n| Tên tài khoản GitHub | |\n| Ngày rà soát | |\n"
+            "| Tệp đã đọc và hiểu | |\n| Thay đổi tự thực hiện | |\n"
+            "| Lệnh thực sự đã chạy | |\n| Kết quả và đường dẫn minh chứng mới | |\n"
+            "| Lỗi / giới hạn còn lại | |\n| Đường dẫn commit / PR | |\n"
+            "| Phần trình bày / mốc thời gian | |\n"
         ).encode("utf-8")
         assignments[path] = member, 3
 

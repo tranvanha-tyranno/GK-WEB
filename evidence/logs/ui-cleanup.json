@@ -1,0 +1,81 @@
+{
+  "checkedAt": "2026-10-28T18:05:34.693Z",
+  "checks": [
+    {
+      "name": "B\u1ec1 m\u1eb7t tr\u00f2 chuy\u1ec7n g\u1ecdn",
+      "status": "PASS",
+      "detail": "Hai n\u00fat tr\u00ean \u0111\u1ea7u ph\u00f2ng, t\u00ecm ki\u1ebfm v\u00e0 menu \u0111\u00f3ng, thao t\u00e1c tin \u1ea9n khi ch\u01b0a ch\u1ecdn."
+    },
+    {
+      "name": "Menu c\u00f4ng c\u1ee5",
+      "status": "PASS",
+      "detail": "M\u1edf b\u1eb1ng n\u00fat g\u00f3c ph\u1ea3i; \u0111\u00f3ng khi b\u1ea5m ngo\u00e0i/Esc, tr\u1ea3 ti\u00eau \u0111i\u1ec3m b\u00e0n ph\u00edm \u0111\u00fang."
+    },
+    {
+      "name": "B\u1ea3n nh\u00e1p ri\u00eang theo ph\u00f2ng v\u00e0 t\u1ea3i l\u1ea1i",
+      "status": "PASS",
+      "detail": "Hai ph\u00f2ng gi\u1eef n\u1ed9i dung \u0111\u1ed9c l\u1eadp trong c\u00f9ng th\u1ebb."
+    },
+    {
+      "name": "G\u1eedi v\u00e0 x\u00f3a b\u1ea3n nh\u00e1p \u0111\u00e3 x\u00e1c nh\u1eadn",
+      "status": "PASS",
+      "detail": "Tin c\u00f3 echo; b\u1ea3n nh\u00e1p \u0111\u00e3 g\u1eedi \u0111\u01b0\u1ee3c x\u00f3a."
+    },
+    {
+      "name": "T\u00ecm kh\u00f4ng d\u1ea5u v\u00e0 tr\u1ea1ng th\u00e1i r\u1ed7ng",
+      "status": "PASS",
+      "detail": "T\u00ecm \u0111\u01b0\u1ee3c k\u1ef9 thu\u1eadt b\u1eb1ng ky thuat; Esc x\u00f3a t\u00ecm ki\u1ebfm."
+    },
+    {
+      "name": "Tr\u1ea3 l\u1eddi, bi\u1ec3u t\u01b0\u1ee3ng v\u00e0 gi\u1edbi h\u1ea1n Unicode",
+      "status": "PASS",
+      "detail": "Tr\u00edch d\u1eabn g\u1eedi d\u1ea1ng v\u0103n b\u1ea3n, emoji ch\u00e8n \u0111\u00fang, 501 m\u00e3 k\u00fd t\u1ef1 kh\u00f3a g\u1eedi."
+    },
+    {
+      "name": "S\u00e1ng/t\u1ed1i v\u00e0 thu g\u1ecdn",
+      "status": "PASS",
+      "detail": "L\u1ef1a ch\u1ecdn c\u00f2n sau t\u1ea3i l\u1ea1i."
+    },
+    {
+      "name": "Xu\u1ea5t h\u1ed9i tho\u1ea1i",
+      "status": "PASS",
+      "detail": "T\u1ea3i \u0111\u01b0\u1ee3c t\u1ec7p TXT UTF-8 ph\u00f2ng hi\u1ec7n t\u1ea1i."
+    },
+    {
+      "name": "Sao ch\u00e9p",
+      "status": "PASS",
+      "detail": "B\u1ed9 nh\u1edb t\u1ea1m ch\u1ee9a \u0111\u00fang v\u0103n b\u1ea3n tin nh\u1eafn."
+    },
+    {
+      "name": "Ngo\u1ea1i tuy\u1ebfn v\u00e0 kh\u00f4i ph\u1ee5c",
+      "status": "PASS",
+      "detail": "So\u1ea1n \u0111\u01b0\u1ee3c khi ngo\u1ea1i tuy\u1ebfn, kh\u00f3a g\u1eedi, b\u1ea3n nh\u00e1p gi\u1eef sau n\u1ed1i l\u1ea1i."
+    },
+    {
+      "name": "Ph\u00edm t\u1eaft v\u00e0 tr\u1ee3 gi\u00fap",
+      "status": "PASS",
+      "detail": "Ctrl K m\u1edf t\u00ecm ki\u1ebfm, Esc \u0111\u00f3ng h\u1ed9p tho\u1ea1i."
+    },
+    {
+      "name": "Thao t\u00e1c tin tr\u00ean \u0111i\u1ec7n tho\u1ea1i",
+      "status": "PASS",
+      "detail": "Ch\u1ea1m tin \u0111\u1ec3 m\u1edf thao t\u00e1c, tr\u1ea3 l\u1eddi v\u00e0 h\u1ee7y \u0111\u01b0\u1ee3c."
+    },
+    {
+      "name": "K\u00edch th\u01b0\u1edbc m\u00e0n h\u00ecnh v\u00e0 th\u00e0nh vi\u00ean",
+      "status": "PASS",
+      "detail": "1440, 1024, 768, 390, 320 px: kh\u00f4ng tr\u00e0n ngang, d\u00f9ng \u0111\u01b0\u1ee3c danh s\u00e1ch th\u00e0nh vi\u00ean."
+    },
+    {
+      "name": "C\u1ea3m \u1ee9ng th\u1ef1c t\u1ebf",
+      "status": "PASS",
+      "detail": "Thi\u1ebft b\u1ecb kh\u00f4ng c\u00f3 hover v\u1eabn ch\u1ea1m \u0111\u1ec3 tr\u1ea3 l\u1eddi v\u00e0 m\u1edf c\u00f4ng c\u1ee5/th\u00e0nh vi\u00ean \u0111\u01b0\u1ee3c."
+    },
+    {
+      "name": "JavaScript tr\u00ecnh duy\u1ec7t",
+      "status": "PASS",
+      "detail": "Kh\u00f4ng c\u00f3 pageerror trong to\u00e0n b\u1ed9 l\u01b0\u1ee3t ki\u1ec3m tra."
+    }
+  ],
+  "errors": []
+}

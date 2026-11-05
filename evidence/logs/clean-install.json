@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "sourceArchive": "tmp/source-clean-check.zip",
+  "project": "relay-clean",
+  "url": "http://localhost:8090",
+  "freshSecret": true,
+  "freshNamedVolume": true,
+  "installedFromLock": true,
+  "loginAndWebSocketChat": true,
+  "messageId": 5,
+  "note": "Dependencies installed from an extracted source snapshot without using the original vendor directory. The snapshot predates final documentation changes."
+}

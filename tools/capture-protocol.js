@@ -17,10 +17,10 @@ async (page) => {
   session.on('Network.webSocketFrameReceived', ({ response }) => frame('server-to-client', response));
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.reload();
-  await page.getByText('Connected', { exact: true }).waitFor();
-  await page.getByRole('textbox', { name: 'Your message' }).fill('Protocol evidence: this message is stored before it is pushed.');
-  await page.getByRole('textbox', { name: 'Your message' }).press('Enter');
-  await page.getByRole('log').getByText('Protocol evidence: this message is stored before it is pushed.', { exact: true }).last().waitFor();
+  await page.getByText('Đã kết nối', { exact: true }).waitFor();
+  await page.getByRole('textbox', { name: 'Tin nhắn của bạn' }).fill('Minh chứng giao thức: tin nhắn được lưu trước khi phát đi.');
+  await page.getByRole('textbox', { name: 'Tin nhắn của bạn' }).press('Enter');
+  await page.getByRole('log').getByText('Minh chứng giao thức: tin nhắn được lưu trước khi phát đi.', { exact: true }).last().waitFor();
   await page.screenshot({ path: 'output/playwright/EV-02-protocol-chat.png' });
   await session.detach();
   if (!handshakes.some(h => h.status === 101)) throw new Error('No 101 handshake captured');

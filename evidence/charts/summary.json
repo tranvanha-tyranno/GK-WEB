@@ -1,0 +1,30 @@
+[
+  {
+    "transport": "polling",
+    "medianRangeMs": [
+      452.9485999373719,
+      504.51645004795864
+    ],
+    "p95RangeMs": [
+      563.3131000213325,
+      674.2980999406427
+    ],
+    "received": 60,
+    "sent": 60,
+    "httpRequests": 360
+  },
+  {
+    "transport": "websocket",
+    "medianRangeMs": [
+      17.626999993808568,
+      23.73014995828271
+    ],
+    "p95RangeMs": [
+      62.98999988939613,
+      146.00559999234974
+    ],
+    "received": 60,
+    "sent": 60,
+    "httpRequests": 0
+  }
+]

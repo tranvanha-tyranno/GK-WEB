@@ -1,23 +1,11 @@
-# Report and presentation review
+# Rà soát báo cáo và slide
 
-The user explicitly requested blank institutional/personal details and authorized a custom layout to edit later. The cover therefore has blank fill-in lines and no invented logo, university, instructor or student identity. The document is not certified against an unavailable official Faculty template.
+Người dùng yêu cầu để trống thông tin cá nhân/cơ sở đào tạo và dùng bố cục tự chỉnh. Bìa không có logo, trường, giảng viên hoặc danh tính tự đặt. Chưa xác nhận theo mẫu chính thức của Khoa.
 
-## Verified artifact properties
+Ngày 28/10/2026, nguồn báo cáo năm chương, slide và ghi chú được chuyển sang tiếng Việt, bổ sung tính năng giao diện mới. Các con số đo cũ vẫn ghi đúng ngày và phạm vi; không gọi log ngày 22/10 là phép chạy lại ngày 28/10. Dùng `evidence/logs/vietnamese-validation.json` để xem kiểm tra mới.
 
-- English report source contains approximately 10,000 words and five chapters, references and an evidence appendix.
-- Word and PDF are exported from the same native Word document. Page count and section locations are checked after final export.
-- Figures are embedded in DOCX, not linked to machine-specific local paths. Six embedded images and zero external image relationships were checked after conversion.
-- The report has a generated contents table, figure list, consistent A4 layout, black headings and page numbers. Figure descriptions and references accompany the visuals.
-- PDF pages are rasterized and reviewed for clipping, broken tables, unreadable characters, missing images and accidental mostly-empty overflow pages. An initial Word HTML pagination issue was fixed before delivery.
-- The 12-slide presentation has editable text/tables and embedded application screenshots, diagrams and chart imagery. Speaker notes hold the English script and source citations. Native PowerPoint exports PPTX/PDF and QA PNGs.
-- Quantitative comparison statements trace to the six saved 120-second runs. Host build/development activity was not fully isolated, so results are described as exploratory local observations. JSON counts exclude wire overhead and differ in event content.
+Word/PDF phải dựng từ cùng nguồn, có tiêu đề rõ, mục lục, chú thích hình, tham chiếu và số trang. Hình nhúng vào Word, không phụ thuộc đường dẫn ảnh trên máy. Bản xuất được kết xuất ra ảnh để rà dấu tiếng Việt, bảng, hình và ngắt trang. Slide dùng văn bản/bảng chỉnh sửa được, ảnh thật và ghi chú người nói.
 
-## Remaining user-editable items
+Kết quả sáu lần đo truy về dữ liệu thô. Máy đo đồng thời có hoạt động phát triển nên chỉ là quan sát local thăm dò. Byte JSON không gồm chi phí đường truyền và WS có thêm lớp sự kiện khác.
 
-- Fill in blank university/faculty/class/group/instructor and three member names/IDs, using actual course information.
-- Apply the official Faculty template if required before submission, including logo and exact styles. The user has chosen to make this adjustment later.
-- Rebuild/update Word contents, page references and final PDF if layout/content changes.
-- Record the actual three-member English presentation with clear audio. Slides and notes do not establish participation.
-- Review the final uploaded files and preserve the real submission receipt; upload has not been performed by Codex.
-
-The review records automated/native-application and visual checks. It is not a signature from A, B or C, and does not assert that the report has already been accepted by the course.
+Người dùng còn cần điền bìa thật, áp dụng mẫu nếu bắt buộc, cập nhật trường mục lục khi sửa, thu video ba thành viên thật theo yêu cầu ngôn ngữ môn học, xem lại tệp tải lên và giữ biên nhận thật. Các kiểm tra tự động không thay xác nhận A/B/C hoặc chấp nhận của môn học.

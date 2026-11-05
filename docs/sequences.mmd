@@ -1,0 +1,28 @@
+sequenceDiagram
+    actor U as Trình duyệt
+    participant N as Nginx
+    participant H as PHP FPM
+    participant W as Workerman
+    participant D as SQLite
+    U->>N: GET /api/auth/me
+    N->>H: FastCGI
+    H->>D: Tạo phiên khách và CSRF
+    H-->>U: Cookie HttpOnly và JSON CSRF
+    U->>H: POST đăng nhập, cookie, Origin, CSRF
+    H->>D: Xác minh người dùng, cấp phiên mới, thu hồi cũ
+    H-->>U: Cookie mới và người dùng
+    U->>N: GET /ws, Upgrade, cookie, Origin
+    N->>W: Chuyển bắt tay HTTP/1.1
+    W->>D: Tra phiên đang hiệu lực
+    W-->>U: 101 Switching Protocols
+    U->>W: room:join
+    W-->>U: room:joined, presence, typing
+    U->>H: GET lịch sử gần đây
+    H->>D: 50 tin mới nhất
+    H-->>U: Lịch sử đúng thứ tự
+    Note over U: Gộp lịch sử và tin trực tiếp theo ID
+    U->>W: chat:send
+    W->>W: Phiên, schema, phòng và giới hạn tài khoản
+    W->>D: INSERT tin nhắn và commit
+    D-->>W: ID tin đã lưu
+    W-->>U: chat:new tới socket còn hiệu lực trong phòng

@@ -1,0 +1,30 @@
+erDiagram
+    USERS ||--o{ MESSAGES : "gửi"
+    ROOMS ||--o{ MESSAGES : "chứa"
+    USERS o|--o{ SESSIONS : "xác thực"
+    USERS {
+        integer id PK
+        text username UK
+        text display_name
+        text password_hash
+    }
+    ROOMS {
+        integer id PK
+        text name UK
+    }
+    MESSAGES {
+        integer id PK
+        integer room_id FK
+        integer user_id FK
+        text content
+        text created_at
+    }
+    SESSIONS {
+        integer id PK
+        integer user_id FK "có thể rỗng cho phiên khách"
+        text token_hash UK
+        text csrf_token
+        integer expires_at
+        integer revoked_at "có thể rỗng"
+    }
+

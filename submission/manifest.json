@@ -1,0 +1,55 @@
+{
+  "version": "vietnamese-ui-2",
+  "startedDate": "2026-10-28",
+  "date": "2026-10-29",
+  "timezone": "Asia/Saigon",
+  "language": "vi",
+  "reportPages": 22,
+  "slides": 12,
+  "completedTaskPackages": 21,
+  "totalTaskPackages": 28,
+  "finalTeamVideo": "CHƯA GHI HÌNH",
+  "referenceVideo": {
+    "file": "reference-walkthrough.webm",
+    "seconds": 34.52,
+    "audio": false,
+    "isFinalSubmissionVideo": false,
+    "description": "Tư liệu giao diện cũ, giữ nguyên làm tham khảo; không phải video mới hoặc video nhóm cuối."
+  },
+  "officialUpload": "CHƯA THỰC HIỆN",
+  "identities": "ĐỂ TRỐNG THEO YÊU CẦU",
+  "layout": "Bố cục chỉnh sửa được; người dùng có thể áp dụng mẫu lớp sau",
+  "validation": "evidence/logs/vietnamese-validation.json",
+  "files": [
+    {
+      "file": "report.docx",
+      "bytes": 531170,
+      "sha256": "91d5a31f38a844801277329de6e7cd8e7191821a5adb0ab93b2d38a4b253207b"
+    },
+    {
+      "file": "report.pdf",
+      "bytes": 794959,
+      "sha256": "4b82c2027e46490f7ec178f38368633427dbe205baf5ac5ea08b4bddc08e55b9"
+    },
+    {
+      "file": "slides.pptx",
+      "bytes": 401948,
+      "sha256": "0004cfa3411da13113c1103ab76c849d17b00a4caf9bc6cc0a510cca9e1ef53e"
+    },
+    {
+      "file": "slides.pdf",
+      "bytes": 330793,
+      "sha256": "b55f2ed606931202980ada4bdd61082d0863b45854108e164e400cf46cb75701"
+    },
+    {
+      "file": "source.zip",
+      "bytes": 1160165,
+      "sha256": "9438c6b63cb8a2bcca7b9a228ef31566d6e2c5b05ccfc0d2becc97fb8880432b"
+    },
+    {
+      "file": "reference-walkthrough.webm",
+      "bytes": 1289226,
+      "sha256": "5d6d13874ae3e951f4984366afe098862c80fd4f41aba875086865c69e0f29cb"
+    }
+  ]
+}
