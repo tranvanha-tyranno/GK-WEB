@@ -39,7 +39,7 @@ final class Gateway
                 $peer = new Peer($connection->id, $session,
                     function (string $json) use ($connection, $session): void {
                         try {
-                            if (!$this->app->sessions->isActive($session['id'])) { $connection->destroy(); return; }
+                            if (!$this->app->sessions->isActiveForUser($session['id'], $session['user']['id'])) { $connection->destroy(); return; }
                             $connection->send($json);
                         } catch (\Throwable $error) { error_log($error::class . ': websocket delivery failed'); $connection->destroy(); }
                     }, static fn () => $connection->destroy());
@@ -54,7 +54,7 @@ final class Gateway
             $peer = $connection->context->peer ?? null;
             if (!$peer instanceof Peer) { $connection->destroy(); return; }
             try {
-                if (!$this->app->sessions->isActive($peer->session['id'])) { $connection->destroy(); return; }
+                if (!$this->app->sessions->isActiveForUser($peer->session['id'], $peer->user()['id'])) { $connection->destroy(); return; }
                 if ($connection->context->relayBinary ?? false) { throw new ProtocolError('INVALID_PAYLOAD', 'Không hỗ trợ tin nhắn dạng nhị phân.'); }
                 $this->handler->handle($peer, $raw);
             } catch (ProtocolError $error) {
@@ -79,7 +79,7 @@ final class Gateway
                     continue;
                 }
                 try {
-                    if (!$this->app->sessions->isActive($peer->session['id']) || $now - $peer->lastPong > 55) { $connection->destroy(); continue; }
+                    if (!$this->app->sessions->isActiveForUser($peer->session['id'], $peer->user()['id']) || $now - $peer->lastPong > 55) { $connection->destroy(); continue; }
                     if ($now - $peer->lastPing >= 20) {
                         $connection->websocketType = "\x89";
                         $connection->send('relay');

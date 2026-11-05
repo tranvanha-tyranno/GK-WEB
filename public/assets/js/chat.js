@@ -11,6 +11,7 @@ const element = (tag, className, text) => { const node = document.createElement(
 export async function startChat(api, user) {
   let rooms = [], roomId = null, joined = false, generation = 0, request = null, typingTimer = null, typingAt = 0, pending = null, sessionCheck = null, state = 'connecting', reply = null, toastTimer = null, activeMessageId = null;
   const messages = new Map(), drafts = new Map(), uncertain = new Set();
+  let sessionRequest = null, checkingSession = false, identityChanged = false;
   const input = $('#message-input');
   const draftKey = id => `relay:draft:${user.id}:${id}`;
   function loadDraft(id) {
@@ -36,7 +37,7 @@ export async function startChat(api, user) {
     $('#character-count').setAttribute('aria-label', `${count} trên tối đa 500 ký tự`);
     // Có thể soạn và giữ bản nháp trong lúc chờ kết nối.
     input.disabled = roomId === null;
-    $('#send-message').disabled = !joined || state !== 'connected' || pending !== null || !input.value.trim() || count > 500;
+    $('#send-message').disabled = identityChanged || checkingSession || !joined || state !== 'connected' || pending !== null || !input.value.trim() || count > 500;
   }
   function cancelReply() { reply = null; $('#reply-preview').hidden = true; controls(); }
   function preservePending() {
@@ -50,9 +51,25 @@ export async function startChat(api, user) {
   $('#self-name').textContent = user.displayName;
   $('#self-avatar').textContent = initials(user.displayName);
   $('#self-avatar').className = `avatar ${color(user.id)}`;
-  async function checkSession() {
-    try { const me = await api.request('/api/auth/me'); if (!me.user) { socket.stop(); location.replace('/login'); } }
-    catch { /* Thử lại ở lần kết nối hoặc yêu cầu tiếp theo. */ }
+  function checkSession() {
+    if (identityChanged || socket.stopped) return Promise.resolve(false);
+    if (sessionRequest) return sessionRequest;
+    checkingSession = true; controls();
+    sessionRequest = (async () => {
+      try {
+        const me = await api.request('/api/auth/me');
+        if (!me.user) { joined = false; socket.stop(); location.replace('/login'); return false; }
+        if (me.user.id !== user.id) {
+          identityChanged = true; joined = false; socket.stop();
+          toast('Tài khoản đã thay đổi ở thẻ khác. Đang tải lại để đồng bộ danh tính.');
+          setTimeout(() => location.reload(), 100);
+          return false;
+        }
+        return true;
+      } catch { return false; /* Không gửi khi chưa xác minh được danh tính. */ }
+      finally { checkingSession = false; sessionRequest = null; controls(); }
+    })();
+    return sessionRequest;
   }
   const socket = new ChatSocket(onEvent, newState => {
     state = newState;
@@ -65,7 +82,10 @@ export async function startChat(api, user) {
       clearTimeout(sessionCheck); sessionCheck = setTimeout(checkSession, 500);
     }
     controls();
-  }, () => { if (roomId !== null) socket.send('room:join', { roomId }); });
+  }, async () => {
+    if (await checkSession()) { if (roomId !== null) socket.send('room:join', { roomId }); }
+    else if (!socket.stopped) socket.networkLost();
+  });
 
   function updateJump() {
     const list = $('#messages');
@@ -175,10 +195,13 @@ export async function startChat(api, user) {
   input.addEventListener('keydown', event => {
     if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) { event.preventDefault(); if (!$('#send-message').disabled) $('#message-form').requestSubmit(); }
   });
-  $('#message-form').addEventListener('submit', event => {
+  $('#message-form').addEventListener('submit', async event => {
     event.preventDefault(); controls();
     if ($('#send-message').disabled) return;
-    const text = content();
+    const text = content(), sendingRoom = roomId;
+    if (!await checkSession()) return;
+    // Người dùng có thể đổi phòng hoặc sửa bản nháp trong lúc kiểm tra HTTP.
+    if (roomId !== sendingRoom || content() !== text || !joined || state !== 'connected' || pending !== null) return;
     if (!socket.send('chat:send', { roomId, content: text })) { notice('Bạn đang mất kết nối. Bản nháp được giữ lại, hãy đợi kết nối trở lại.'); return; }
     pending = { roomId, content: text };
     // Giữ bản gửi trong bộ nhớ phiên cho đến khi nhận được phản hồi, kể cả khi tải lại trang.
