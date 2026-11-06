@@ -234,11 +234,22 @@ export async function startChat(api, user) {
     for (const button of $('#room-list').children) button.setAttribute('aria-current', String(Number(button.dataset.roomId) === id));
     savePreference(`room:${user.id}`, String(id)); socket.send('room:join', { roomId }); controls();
   }
+  let groupData = null;
+  // Áp toàn bộ trạng thái ẩn/hiện của popup quản lý nhóm từ dữ liệu đã tải, trong MỘT lần duy nhất.
+  // Không để đường code nào khác tự ý ẩn/hiện từng nút riêng lẻ — tránh nút ẩn hiện thất thường.
+  function applyGroupManagerState() {
+    const data = groupData; if (!data) return;
+    $('#manage-group-name').disabled = !data.isOwner;
+    $('#rename-group-submit').hidden = !data.isOwner;
+    $('#add-group-member-form').hidden = !data.isOwner;
+    $('#delete-group').hidden = !data.isOwner;
+    $('#leave-group').hidden = data.isOwner;
+    $('#add-group-member-submit').disabled = !Array.isArray(data.friends) || data.friends.length === 0;
+  }
   async function loadGroupManager(roomId) {
     const data = await api.request(`/api/groups/${roomId}`);
+    groupData = data;
     $('#manage-group-name').value = data.name; $('#manage-group-count').textContent = `${data.members.length} thành viên`;
-    $('#manage-group-name').disabled = !data.isOwner; $('#rename-group-submit').hidden = !data.isOwner;
-    $('#add-group-member-form').hidden = !data.isOwner; $('#delete-group').hidden = !data.isOwner; $('#leave-group').hidden = data.isOwner;
     $('#manage-group-hint').textContent = data.isOwner ? 'Bạn là chủ nhóm.' : 'Chủ nhóm: ' + (data.members.find(member => member.id === data.ownerId)?.displayName ?? '');
     const list = document.createDocumentFragment();
     for (const member of data.members) {
@@ -254,8 +265,8 @@ export async function startChat(api, user) {
     $('#manage-group-members').replaceChildren(list);
     const select = $('#add-group-member'); select.replaceChildren();
     for (const friend of data.friends) { const option = element('option', '', friend.displayName); option.value = String(friend.id); select.append(option); }
-    $('#add-group-member-submit').disabled = data.friends.length === 0;
     if (!data.friends.length) { const option = element('option', '', 'Không còn bạn bè có thể thêm'); option.value = ''; select.append(option); }
+    applyGroupManagerState();
   }
   async function manageGroup(action, extra = {}) {
     const id = roomId; $('#manage-group-error').hidden = true;
@@ -274,6 +285,8 @@ export async function startChat(api, user) {
     $('#manage-group-loading').hidden = !loading && !retryable;
     $('#retry-manage-group').hidden = loading || !retryable;
     for (const control of dialog.querySelectorAll('input, select, button:not([data-close-dialog])')) control.disabled = loading || (retryable && control.id !== 'retry-manage-group');
+    // Sau khi hết trạng thái tải, áp lại trạng thái ẩn/hiện chuẩn để không nút nào bị kẹt ở trạng thái cũ.
+    if (!loading && !retryable) applyGroupManagerState();
   }
   async function openGroupManager() {
     if (!roomId) return;

@@ -33,6 +33,32 @@ final class SessionTest extends TestCase
         $this->db->exec('UPDATE sessions SET expires_at = 1');
         self::assertNull($service->resolveCookie($issued['cookie'])); self::assertFalse($service->isActive($issued['id']));
     }
+    public function testActiveSessionMustStillBelongToTheSocketUser(): void
+    {
+        $service = $this->service(); $issued = $service->issue(2);
+        self::assertTrue($service->isActiveForUser($issued['id'], 2));
+        self::assertFalse($service->isActiveForUser($issued['id'], 1));
+        $query = $this->db->prepare('UPDATE sessions SET user_id = ? WHERE id = ?');
+        $query->execute([1, $issued['id']]);
+        // A valid session alone must not authorize the stale Bob peer.
+        self::assertTrue($service->isActive($issued['id']));
+        self::assertFalse($this->service()->isActiveForUser($issued['id'], 2));
+        self::assertTrue($this->service()->isActiveForUser($issued['id'], 1));
+        $query->execute([null, $issued['id']]);
+        self::assertFalse($service->isActiveForUser($issued['id'], 1));
+    }
+    public function testUserGuardRejectsRevokedExpiredAnonymousAndMissingSessions(): void
+    {
+        $service = $this->service();
+        $alice = $service->issue(1); $bob = $service->issue(2); $anonymous = $service->issue();
+        $service->revoke($alice['id']);
+        self::assertFalse($service->isActiveForUser($alice['id'], 1));
+        self::assertTrue($service->isActiveForUser($bob['id'], 2));
+        self::assertFalse($service->isActiveForUser($anonymous['id'], 1));
+        self::assertFalse($service->isActiveForUser(99999, 1));
+        $this->db->exec('UPDATE sessions SET expires_at = 1');
+        self::assertFalse($service->isActiveForUser($bob['id'], 2));
+    }
     public function testCsrfRejectsWrongOriginEvenWithCorrectToken(): void
     {
         $this->expectException(HttpError::class);

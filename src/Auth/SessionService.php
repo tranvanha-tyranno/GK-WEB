@@ -32,5 +32,9 @@ final class SessionService
         ];
     }
     public function isActive(int $sessionId): bool { return $this->repository->isActive($sessionId); }
+    public function isActiveForUser(int $sessionId, int $userId): bool
+    {
+        return $this->repository->activeUserId($sessionId) === $userId;
+    }
     public function revoke(int $sessionId): void { $this->repository->revoke($sessionId); }
 }

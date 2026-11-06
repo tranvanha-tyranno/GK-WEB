@@ -24,6 +24,13 @@ final class SessionRepository
         $query->execute([$id, $now ?? time()]);
         return (bool) $query->fetchColumn();
     }
+    public function activeUserId(int $id): ?int
+    {
+        $query = $this->db->prepare('SELECT user_id FROM sessions WHERE id = ? AND revoked_at IS NULL AND expires_at > ?');
+        $query->execute([$id, time()]);
+        $userId = $query->fetchColumn();
+        return $userId === false || $userId === null ? null : (int) $userId;
+    }
     public function revoke(int $id): void
     {
         $query = $this->db->prepare('UPDATE sessions SET revoked_at = ? WHERE id = ? AND revoked_at IS NULL');
