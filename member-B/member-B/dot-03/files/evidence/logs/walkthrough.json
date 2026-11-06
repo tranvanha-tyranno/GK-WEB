@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "kind": "supplementary silent UI reference, not the required three-member spoken video",
+  "demonstrated": [
+    "stored live message",
+    "room selection",
+    "offline-disabled composer",
+    "reconnect and history",
+    "phone layout"
+  ]
+}

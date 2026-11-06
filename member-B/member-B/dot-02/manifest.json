@@ -1,0 +1,32 @@
+{
+  "member": "B",
+  "round": 2,
+  "commit_message": "chore: import browser chat and reconnect client",
+  "files": [
+    {
+      "path": "public/assets/js/api.js",
+      "bytes": 981,
+      "sha256": "a36430b3901319cbfaa86227a7a45da88c58e280697cf77e070c6f0f064c5493"
+    },
+    {
+      "path": "public/assets/js/app.js",
+      "bytes": 1987,
+      "sha256": "5c8ff67a577c7bf53269be7ac844b03a5b97f32519af56643efc8a054394fdfe"
+    },
+    {
+      "path": "public/assets/js/chat.js",
+      "bytes": 9846,
+      "sha256": "093329dcc22a74596626b0c508bed528c6b87af9213a477f391b4b5e15d494a9"
+    },
+    {
+      "path": "public/assets/js/socket.js",
+      "bytes": 1879,
+      "sha256": "84eebcfe6bbf56032c7db41bc01bdb369e2594e9020c029677f32dd044727b5c"
+    },
+    {
+      "path": "tests/manual-acceptance.md",
+      "bytes": 1942,
+      "sha256": "fab1b8571661a5db7eab1dd730b77ff11a259eae68f6f30616e9eda888d65644"
+    }
+  ]
+}

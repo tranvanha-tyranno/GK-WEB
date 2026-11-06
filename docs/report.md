@@ -10,9 +10,9 @@ Học kỳ 1 Năm học 2026 2027
 
 Relay minh họa cách dùng kết nối hai chiều liên tục để xây dựng ứng dụng trò chuyện nhiều phòng. Hệ thống kết hợp HTTP bằng PHP, tiến trình WebSocket Workerman, JavaScript trình duyệt, Nginx và SQLite. Ba phòng dùng chung cung cấp tin nhắn, danh sách trực tuyến gộp theo tài khoản, trạng thái đang nhập và lịch sử. Cookie có chữ ký nhận diện phiên được cả HTTP và WebSocket kiểm tra. Máy chủ xác minh dữ liệu, quyền trong phòng, giới hạn tài khoản và lưu trước khi phát.
 
-Bản kiểm chứng gốc ngày 22/10/2026 gồm 28 bài PHPUnit với 78 xác nhận và bảy nhóm tích hợp, có phát tin tới 20 socket đồng thời. Kết nối không phản hồi bị đóng sau 55,828 giây trong phép đo đã lưu. Kiểm tra trình duyệt gồm hiển thị văn bản giống mã lệnh an toàn, ngoại tuyến, tham gia lại, gộp lịch sử, phản hồi phòng cũ tới muộn và đăng xuất dùng chung phiên. Bản cập nhật ngày 28/10/2026 bổ sung giao diện tiếng Việt, tìm không dấu, bản nháp, trích dẫn, sao chép, xuất TXT và tùy chọn hiển thị; kết quả mới được lưu riêng.
+Bản kiểm chứng gốc ngày 22/10/2026 gồm 28 bài PHPUnit với 78 xác nhận và bảy nhóm tích hợp. Đợt hoàn thiện ngày 05/11/2026 đạt 40 bài PHPUnit/135 xác nhận, 9/9 nhóm HTTP/WebSocket và 14/14 bước trình duyệt, không có lỗi JavaScript. Đợt này kiểm đăng ký, tin riêng, vòng đời nhóm, phân trang/tìm/xuất lịch sử, bản nháp lưu lâu hơn và bố cục điện thoại/máy tính; JSON và ảnh chụp được đính kèm. Kết quả gốc và các lượt cập nhật được giữ riêng theo ngày.
 
-WebSocket là phương thức truyền, không tự cung cấp xác thực, phân quyền, lịch sử hoặc giao đúng một lần. Relay xây dựng cơ chế ứng dụng tương ứng nhưng giữ giới hạn: một worker giữ trạng thái tạm, SQLite ghi đồng bộ, khôi phục 50 tin mới nhất và chưa kiểm chứng TLS công khai. Báo cáo đối chiếu nguyên lý, thiết kế, mã nguồn, minh chứng và phương pháp đo trong phạm vi này.
+WebSocket là phương thức truyền, không tự cung cấp xác thực, phân quyền, lịch sử hoặc giao đúng một lần. Relay xây dựng cơ chế ứng dụng tương ứng nhưng giữ giới hạn: một worker giữ trạng thái tạm, SQLite ghi đồng bộ, mỗi trang lịch sử tối đa 50 tin và chưa kiểm chứng TLS công khai. Tải trang cũ, tìm toàn lịch sử phòng và xuất hội thoại duyệt tuần tự qua trang. Báo cáo đối chiếu nguyên lý, thiết kế, mã nguồn, minh chứng và phương pháp đo trong phạm vi này.
 
 <!-- PAGE -->
 # Chương 1 Giới thiệu
@@ -45,7 +45,7 @@ Mục tiêu chính là nhắn tin hai chiều, máy chủ đẩy sự kiện và
 | Phòng vệ | Từ chối schema sai, quá dài, nhị phân, gửi dồn | Validator, giao thức |
 | Tái lập | Cài từ nguồn giải nén bằng lệnh hướng dẫn | Cài sạch |
 
-Phạm vi gồm ba tài khoản, ba phòng và tối đa 50 tin mỗi lần lấy lịch sử. Chưa có đăng ký, tệp đính kèm, nhắn riêng, kiểm duyệt hoặc mở rộng nhiều máy. PHP 8.3, Workerman, SQLite, Nginx và Docker là lựa chọn dự án. JavaScript mở WebSocket và cập nhật DOM; không có bước build giao diện Node.js.
+Phạm vi kiểm chứng dùng ba tài khoản mẫu, ba phòng chung và tối đa 50 tin mỗi trang. Bản hoàn thiện bổ sung đăng ký tài khoản, tin nhắn riêng giữa bạn bè và quản lý vòng đời nhóm riêng. Chưa có tệp đính kèm, vai trò quản trị, kiểm duyệt hoặc mở rộng nhiều máy. PHP 8.3, Workerman, SQLite, Nginx và Docker là lựa chọn dự án. JavaScript mở WebSocket và cập nhật DOM; không có bước build giao diện Node.js.
 
 Chương 2 trình bày nguyên lý/phương án, chương 3 thiết kế, chương 4 triển khai/kiểm chứng/phép đo, chương 5 đánh giá và phát triển. Mã nguồn, hợp đồng và dữ liệu đo đi cùng báo cáo để người đọc kiểm tra nhận định.
 
@@ -119,7 +119,7 @@ Máy khách chờ 1/2/4/8/10 giây khi thử lại. Mở lại thì `room:join`,
 
 Tin có thể commit nhưng người gửi chưa nhận echo khi mạng mất. Tự gửi lại không có khóa chống trùng có thể thêm bản ghi khác. Relay giữ nội dung để kiểm tra, không tự gửi lại. Bản nháp hỗ trợ thao tác, không bảo đảm giao đúng một lần.
 
-API chỉ lấy 50 tin mới nhất. Ngoại tuyến bỏ lỡ hơn 50 tin không được cam kết khôi phục đầy đủ. Map ID loại trùng hiển thị cùng bản ghi; chưa có con trỏ phát lại bền vững.
+Mỗi yêu cầu lấy tối đa 50 tin. `beforeId` cho phép đọc trang cũ hơn; tìm kiếm duyệt toàn bộ lịch sử phù hợp trong phòng và xuất tải từng trang tới khi hết dữ liệu. Map ID loại trùng hiển thị cùng bản ghi. Tuy vậy, máy khách không có cursor phát lại bền vững cho mọi sự kiện sau gián đoạn; tin gửi chưa rõ kết quả vẫn cần người dùng kiểm tra.
 
 Thời điểm chuyển phòng là một trường hợp tranh chấp rõ. Người dùng có thể chọn Kỹ thuật rồi Nhóm học tập trước khi yêu cầu lịch sử Kỹ thuật trả về. Hủy yêu cầu giúp giảm công việc nhưng không đủ để chứng minh phản hồi sẽ không đến; kiểm tra thế hệ và ID phòng là lớp quyết định áp dụng kết quả. Bộ thử cố ý làm chậm yêu cầu cũ để thực sự tạo điều kiện này.
 
@@ -226,7 +226,7 @@ Trình duyệt lấy phiên khách/CSRF, đăng nhập, nhận cookie mới, m�
 
 Máy chủ kiểm phiên/schema/phòng/giới hạn, INSERT/commit, ghi lượt rồi phát. Lỗi ghi không phát thành công/trừ lượt thành công. Đổi phòng dừng typing, abort HTTP, tăng thế hệ, xóa trạng thái cũ. Chỉ áp dụng phản hồi khớp thế hệ/roomId; máy chủ tham gia lặp không tạo trùng.
 
-Bản nháp tách tài khoản/phòng/thẻ trong sessionStorage, bắt lỗi và dùng RAM. Giao diện/phòng gần nhất dùng localStorage có bắt lỗi. Bộ nhớ trình duyệt hỗ trợ cá nhân, không thay lưu trữ máy chủ.
+Bản nháp tách theo tài khoản/phòng trong localStorage, tự chuyển dữ liệu cũ từ sessionStorage và có RAM dự phòng khi bộ nhớ bị chặn. Đăng xuất xóa bản nháp của tài khoản. Giao diện/phòng gần nhất cũng dùng localStorage có bắt lỗi. Bộ nhớ trình duyệt hỗ trợ cá nhân, không thay lưu trữ máy chủ.
 
 <!-- PAGE -->
 # Chương 4 Triển khai kiểm thử và đánh giá
@@ -265,7 +265,7 @@ API/socket/chat tách nhiệm vụ. DOM dùng `textContent`; Map sắp ID gộp 
 
 ![Hình 5 Giao diện trò chuyện tiếng Việt trên máy tính](../evidence/screenshots/VI-chat-desktop.png)
 
-Mất mạng khóa Gửi nhưng vẫn soạn/lưu nháp. Nối lại vào phòng/tải 50 tin. Nội dung gửi chưa rõ giữ để kiểm, không tự phát lại. Test gốc gồm XSS văn bản, offline/online, gộp ID, phòng trễ/logout chung; bộ mới thêm bản nháp/tìm/trích dẫn/xuất/giao diện.
+Mất mạng khóa Gửi nhưng vẫn soạn/lưu nháp. Nối lại vào phòng/tải trang mới nhất và có thể tải thêm trang cũ. Nội dung gửi chưa rõ giữ để kiểm, không tự phát lại. Test gốc gồm XSS văn bản, offline/online, gộp ID, phòng trễ/logout chung; đợt cập nhật kiểm bản nháp sau reload, tìm/xuất toàn lịch sử và giao diện nhiều kích thước.
 
 Một tình huống cần kiểm riêng là nhiều thẻ cùng hồ sơ. Chúng dùng cùng cookie, do đó không thể dùng làm hai người giả lập độc lập. Khi một thẻ đăng xuất, các socket dùng phiên đó phải bị thu hồi và trang còn lại trở về đăng nhập. Bài kiểm tra mở thẻ phụ, đăng xuất ở đó và chờ thẻ ban đầu chuyển trang để xác nhận hành vi thực trong trình duyệt.
 
@@ -279,7 +279,7 @@ Gateway ping mỗi 20 giây, dọn thiếu pong khoảng 55–56 giây. Peer th�
 
 ## 4.7 Chiến lược kiểm thử
 
-| Lớp | Kết quả gốc ngày 22/10/2026 | Phạm vi |
+| Lớp | Kết quả gốc ngày 22/10/2026 | Phạm vi ban đầu |
 | --- | --- | --- |
 | PHPUnit | 28 bài, 78 xác nhận đạt | Phiên, validator, hub, limiter, SQL, lỗi ghi |
 | Tích hợp | 7/7 nhóm đạt | Auth, phòng, presence, payload, limit, logout, đồng thời |
@@ -288,7 +288,7 @@ Gateway ping mỗi 20 giây, dọn thiếu pong khoảng 55–56 giây. Peer th�
 | Cài sạch | Nguồn giải nén cài được | Secret/volume/thư viện mới |
 | Đồng thời | 20/100/200 bản nhận đủ | Mười tin tới 2/10/20 socket |
 
-JUnit/JSON/dữ liệu thô chứng minh kết quả; ảnh chỉ mô tả giao diện. Phần thủ công chưa thử vẫn để mở. Test không thay video/đóng góp thật. Bản sửa 28/10 cần chạy lại các kiểm tra liên quan, lưu `vietnamese-validation.json`, `vietnamese-ui.json`; log gốc giữ ngày cũ.
+JUnit/JSON/dữ liệu thô chứng minh kết quả; ảnh chỉ mô tả giao diện. Phần thủ công chưa thử vẫn để mở. Test không thay video/đóng góp thật. Bản sửa ngày 28/10 có log Việt hóa riêng; hồi quy 05/11 được tổng kết tại mục 4.12, log gốc tiếp tục giữ ngày cũ.
 
 Các tình huống chi tiết dưới đây liên kết yêu cầu với loại minh chứng. Bảng ghi phạm vi đã thực hiện ở lần kiểm chứng gốc; kết quả sau sửa dùng log mới. Trường hợp TLS chỉ hoàn thành một phần, không chuyển thành đạt toàn bộ vì cờ cookie hoặc cấu hình proxy có trong mã.
 
@@ -351,9 +351,61 @@ Restart mất trạng thái RAM; client nối lại/nhập phòng/tải lịch s
 
 Việt hóa tiêu đề, nhãn, placeholder, trợ năng, trạng thái và lỗi HTTP/WS. Tên sự kiện/trường/mã/lệnh giữ nguyên. Ba tên phòng dịch ở trình bày để tương thích dữ liệu.
 
-Tìm chuẩn hóa dấu và đ/Đ trên tên/nội dung đã tải, không tìm toàn DB. Xuất TXT UTF-8 lấy mọi tin đã tải phòng, không chỉ lọc; kèm tên/thời gian Việt Nam. Trả lời chèn trích dẫn tối đa 120 mã ký tự, tính trong 500; không liên kết bền vững hoặc chat riêng.
+Tìm chuẩn hóa dấu và đ/Đ trên tên/nội dung của toàn bộ lịch sử trong phòng, phân trang khi có thêm kết quả. Tải lịch sử cũ hơn theo từng trang tối đa 50 tin. Xuất TXT UTF-8 duyệt toàn bộ lịch sử phòng, không chỉ tin đang tải trên màn hình hoặc đang lọc; kèm tên/thời gian theo định dạng Việt Nam. Trả lời chèn trích dẫn tối đa 120 mã ký tự, tính trong 500; trích dẫn vẫn là văn bản và không tạo liên kết bền vững.
 
-Nháp sessionStorage tách tài khoản/phòng/thẻ; đổi phòng/tải lại tiếp tục, logout chủ động xóa. Bị chặn lưu thì RAM; đóng thẻ/xóa lưu có thể mất. Sáng/tối/thu gọn/phòng gần nhất nhớ localStorage. Thành viên mở hộp thoại trên điện thoại; phím tắt/sao chép/emoji/về cuối giảm thao tác. Kiểm nhiều kích thước không thay kiểm toán tiếp cận toàn diện.
+Tài khoản đăng ký được kiểm tra cùng xoay phiên; bạn bè có thể mở tin riêng hai người. Nhóm riêng hỗ trợ đổi tên, thêm/xóa thành viên, rời nhóm và xóa nhóm; quyền lịch sử/socket bị thu hồi khi thành viên bị xóa. Nháp localStorage tách tài khoản/phòng, chuyển dữ liệu cũ và xóa khi đăng xuất. Bị chặn lưu thì RAM; xóa dữ liệu trình duyệt vẫn có thể làm mất nháp. Sáng/tối/thu gọn/phòng gần nhất nhớ localStorage. Thành viên mở hộp thoại trên điện thoại; phím tắt/sao chép/emoji/về cuối giảm thao tác. Kiểm nhiều kích thước không thay kiểm toán tiếp cận toàn diện.
+
+## 4.12 Hồi quy sau hoàn thiện chức năng ngày 05/11/2026
+
+Kiểm tra cuối được chạy trên stack HTTP/WebSocket riêng và cơ sở dữ liệu mẫu mới, không reset cơ sở dữ liệu demo ở cổng 8080. `composer test` đạt 40/40 bài với 135 xác nhận; `composer lint` kiểm tra 47 tệp PHP; `composer validate --strict` hợp lệ. Bộ tích hợp đạt 9/9 nhóm gồm xác thực, đăng ký, quyền phòng/lịch sử, trò chuyện riêng, vòng đời nhóm, presence/typing, ranh giới Unicode/giao thức, logout, 2/10/20 socket và giới hạn gửi. Kịch bản trình duyệt hoàn tất 14/14 bước, không có lỗi JavaScript.
+
+Kiểm tra môi trường demo cũ phát hiện thiếu bảng `direct_chats`, làm API phòng trả 503. `bin/migrate-social.php` chạy `CREATE TABLE IF NOT EXISTS` từ schema hiện tại; sau đó API health và phòng đều trả 200, kết nối WebSocket hoạt động và sáu phòng cũ vẫn hiển thị. Không xóa volume hoặc hội thoại. Đây là bước cần chạy khi nâng cấp cơ sở dữ liệu đã có dữ liệu; log trước/sau nằm ở `evidence/logs/final-run-2026-11-05-migration.json`.
+
+Các thao tác trình duyệt gồm đăng ký và tự đăng nhập; kết bạn, mở tin riêng và chặn truy cập từ tài khoản ngoài; tạo/đổi tên nhóm, thêm/xóa thành viên, rời/xóa nhóm; tải tin cũ, tìm dấu mốc cũ, tải tệp xuất đủ 121 tin trong phòng thử; giữ nháp sau reload; xác nhận toast không giao với vùng soạn trên điện thoại; kiểm chiều ngang ở 390×844 và 1440×900. Dữ liệu tích hợp và trình duyệt được lưu ở `evidence/logs/final-run-2026-11-05-integration.json` và `final-run-2026-11-05-browser.json`; PHPUnit ở `final-run-2026-11-05-phpunit.xml`.
+
+![Hình 7 Màn hình đăng ký tài khoản Relay](../evidence/screenshots/relay-final-register.png)
+
+![Hình 8 Hộp thoại quản lý nhóm và thành viên](../evidence/screenshots/relay-final-group-management.png)
+
+![Hình 9 Không gian chat trên máy tính](../evidence/screenshots/relay-final-desktop.png)
+
+![Hình 10 Không gian chat trên điện thoại](../evidence/screenshots/relay-final-mobile.png)
+
+## 4.13 Kiểm chứng chức năng trên môi trường demo ngày 06/11/2026
+
+Lượt kiểm chứng ngày 06/11/2026 được chạy trực tiếp trên stack demo đang hoạt động tại http://localhost:8080, tức đúng ba dịch vụ Docker Compose mà README mô tả: nginx 1.28-alpine làm proxy, PHP-FPM 8.3 xử lý HTTP và SQLite, và một tiến trình PHP CLI chạy Workerman làm máy chủ WebSocket. Trình duyệt điều khiển là Chromium headless qua Playwright trên Windows. Bốn ngữ cảnh trình duyệt độc lập được mở đồng thời để có bốn danh tính thật cùng lúc: alice, bob, charlie và một tài khoản đăng ký mới ngay trong lượt chạy. Hai viewport được dùng: 1440×900 cho máy tính và 390×844 với mật độ điểm ảnh nhân đôi cho điện thoại.
+
+Lượt chạy hoàn tất với 52 khẳng định đạt, 32 ảnh chụp màn hình, 136 khung WebSocket được ghi nguyên văn và 0 lỗi JavaScript trong console; danh sách vấn đề gặp phải là rỗng. Toàn bộ kết quả nằm ở evidence/logs/run-2026-11-06-ui.json, ảnh ở evidence/screenshots/run-2026-11-06/ và khung giao thức ở evidence/raw/run-2026-11-06-websocket.jsonl. Mỗi con số trong mục này đều được đọc trực tiếp từ các tệp đó thay vì nhập tay.
+
+Kịch bản đi hết vòng đời của các chức năng mới: đăng ký tài khoản bằng giao diện và được máy chủ cấp phiên rồi chuyển thẳng vào phòng; tìm người theo tên hoặc tên đăng nhập có hỗ trợ gõ không dấu; gửi và chấp nhận lời mời kết bạn với huy hiệu lời mời đến; mở tin nhắn riêng hai người với tên phòng cá nhân hóa theo từng phía; tạo nhóm riêng ba thành viên và trao đổi tin theo thời gian thực giữa ba người; phân biệt quyền chủ nhóm với thành viên thường trong hộp thoại quản lý; xóa thành viên rồi xác nhận quyền đọc lịch sử bị thu hồi bằng mã HTTP 404; xuất hội thoại ra tệp UTF-8 có BOM; kiểm bố cục điện thoại không tràn ngang; và ngắt mạng rồi để ứng dụng tự kết nối lại theo backoff.
+
+| Tình huống | Kết quả mong đợi | Kết quả thực nhận |
+| --- | --- | --- |
+| Đăng ký tài khoản với mật khẩu ngắn hơn 12 byte | HTTP 400, mã lỗi INVALID_PASSWORD | 400 |
+| Yêu cầu lịch sử phòng với limit vượt quá 50 | HTTP 400 | 400 |
+| Yêu cầu POST mang Origin ngoài danh sách cho phép | HTTP 403 | 403 |
+| Thao tác quản lý nhóm với CSRF token sai | HTTP 403 | 403 |
+| Tài khoản ngoài cuộc đọc lịch sử phòng riêng | HTTP 404 | 404 |
+| Người ngoài nhóm gọi thao tác quản lý nhóm | HTTP 404 | 404 |
+| Chủ nhóm thêm một người chưa kết bạn vào nhóm | HTTP 400 | 400 |
+| Gửi tin 501 mã ký tự Unicode qua WebSocket | system:error, mã MESSAGE_TOO_LONG | MESSAGE_TOO_LONG |
+| Gửi loại sự kiện không có trong hợp đồng qua WebSocket | system:error, mã INVALID_PAYLOAD | INVALID_PAYLOAD |
+| Gọi API đo so sánh khi BENCHMARK_ENABLED=0 | HTTP 404 | 404 |
+
+Sáu hình dưới đây là ảnh chụp thật của lượt chạy, mỗi hình tương ứng một trạng thái đã được khẳng định ở trên. Bộ ảnh đầy đủ gồm 32 ảnh được lưu và chú thích đầy đủ ở Phụ lục B.
+
+![Hình 11 Phòng công khai trên máy tính với trạng thái Đã kết nối; tin vừa gửi đã được máy chủ lưu và phát lại cho chính người gửi](../evidence/screenshots/run-2026-11-06/R03-phong-chung-desktop.png)
+
+![Hình 12 Lời mời kết bạn đến hiển thị ở tab Lời mời của người nhận, kèm huy hiệu đếm lời mời trên thanh bên](../evidence/screenshots/run-2026-11-06/R14-loi-moi-den.png)
+
+![Hình 13 Hội thoại tin nhắn riêng: tên phòng cá nhân hóa theo người nhận và mô tả chỉ hai người tham gia](../evidence/screenshots/run-2026-11-06/R17-tin-nhan-rieng.png)
+
+![Hình 14 Nhóm riêng ba thành viên trao đổi tin theo thời gian thực; biểu tượng nhóm riêng trên danh sách phòng](../evidence/screenshots/run-2026-11-06/R20-nhom-rieng.png)
+
+![Hình 15 Hộp thoại Quản lý nhóm ở vai chủ nhóm: đổi tên, danh sách thành viên, thêm bạn bè và xóa nhóm](../evidence/screenshots/run-2026-11-06/R21-quan-ly-nhom.png)
+
+![Hình 16 Bố cục điện thoại 390×844: thanh bên thu thành dải phòng ngang và không tràn chiều rộng màn hình](../evidence/screenshots/run-2026-11-06/R28-mobile-chat.png)
+
 
 <!-- PAGE -->
 # Chương 5 Kết luận và hướng phát triển
@@ -366,17 +418,17 @@ Bản cập nhật giữ logic truyền trong ChatSocket và logic công cụ tr
 
 Relay nối danh tính, hợp đồng, phòng, lưu trước phát, vòng đời, UI và kiểm chứng. Hai tài khoản trao đổi không tải lại, phòng cô lập, phiên thu hồi, tin giữ qua restart, client gộp ID.
 
-Tiếng Việt giúp hiểu/thao tác, giữ hợp đồng kỹ thuật. Tìm/nháp/xuất hỗ trợ công việc; phạm vi dữ liệu/trích dẫn/khôi phục phải rõ. Hai mươi socket không là sức chứa, Map không bảo đảm lưu một lần, 50 tin không phát lại vô hạn, cookie/Origin không là chứng nhận bảo mật.
+Tiếng Việt giúp hiểu/thao tác, giữ hợp đồng kỹ thuật. Tìm/nháp/xuất hỗ trợ công việc; phân trang và quyền phạm vi phòng được làm rõ. Hai mươi socket không là sức chứa production, Map không bảo đảm lưu một lần, trang 50 tin không phát lại mọi sự kiện vô hạn, cookie/Origin không là chứng nhận bảo mật.
 
 ## 5.2 Giới hạn
 
 Trạng thái một worker mất khi restart; cần trạng thái chung/pub-sub để mở rộng. SQLite ghi đồng bộ có thể chặn vòng lặp. Chưa có cursor/khóa chống lặp, commit trước disconnect vẫn gây chưa rõ kết quả; bản nháp không xác định máy chủ đã lưu.
 
-Đo local nhỏ, chu kỳ chọn trước, máy chung và lớp JSON khác nhau. Chưa đo byte toàn tuyến, tài nguyên/WAN/nhiều máy/churn dài. HTTPS công khai chưa kiểm chứng; chưa đăng ký/tải tệp/kiểm duyệt/phòng riêng/kiểm toán trợ năng. Tài khoản mẫu dành lớp học.
+Đo local nhỏ, chu kỳ chọn trước, máy chung và lớp JSON khác nhau. Chưa đo byte toàn tuyến, tài nguyên/WAN/nhiều máy/churn dài. HTTPS công khai chưa kiểm chứng; chưa có tải tệp, vai trò quản trị, kiểm duyệt, thông báo tin chưa đọc, kiểm toán trợ năng hoặc bảo đảm gửi đúng một lần khi mất kết nối. Tài khoản mẫu dành lớp học.
 
 ## 5.3 Phát triển
 
-Thêm ID thao tác máy khách và ràng buộc duy nhất máy chủ để retry không lưu trùng. Thêm cursor/phân trang/quyền/thời hạn lưu để phục hồi đủ sau mốc.
+Thêm ID thao tác máy khách và ràng buộc duy nhất máy chủ để retry không lưu trùng. Bổ sung nhãn/chỉ báo tin chưa đọc, tải tệp an toàn, kiểm duyệt và vai trò quản trị theo chính sách triển khai.
 
 Nhiều worker cần presence/limiter chung/pub-sub, vẫn kiểm phiên tại từng worker. Đo DB theo tải, hạn hàng đợi/chính sách nhận chậm. Vận hành cần TLS, tài khoản, log an toàn, sao lưu/phục hồi, giám sát.
 
@@ -415,13 +467,56 @@ README có cài đặt/cấu hình/tài khoản/test. Windows dùng setup.ps1; t
 | docs/contracts.md | HTTP/WS, kiểu/lỗi/giới hạn |
 | database/schema.sql và seed.php | Mô hình, seed không trùng |
 | tests và phpunit.xml | Kiểm PHP dữ liệu riêng |
-| tools/integration.py | Auth, phòng, payload, logout, limit, fanout |
+| tools/integration.py | Auth, đăng ký, phòng, tin riêng, nhóm, payload, logout, limit, fanout |
 | tools/browser-acceptance.js | DOM, ngoại tuyến, gộp, phòng trễ, phiên |
+| tools/full-browser-check.js | Quy trình đăng ký, tin riêng, nhóm, lịch sử, nháp và responsive |
 | tools/vietnamese-ui-check.js | Nháp, tìm, trích dẫn, xuất, tùy chọn, kích thước |
 | tools/verify-runtime.py | Restart thật, peer không pong |
 | tools/benchmark/run.py | Đo đường nhận |
-| evidence/logs và raw | Kết quả/ngày/môi trường, từng lượt/tin |
-| evidence/diagrams và screenshots | Sơ đồ và ảnh thật |
+| evidence/logs và raw | Kết quả/ngày/môi trường, từng lượt/tin, hồi quy và migration 05/11/2026, kiểm chứng giao diện và khung WebSocket 06/11/2026 |
+| evidence/diagrams và screenshots | Sơ đồ và ảnh thật; 4 ảnh giao diện bản hoàn thiện; 32 ảnh kiểm chứng ngày 06/11/2026 trong thư mục con run-2026-11-06 |
+| tools/build-report-insert.js và insert-report-section.ps1 | Sinh đặc tả từ log kiểm chứng rồi chèn mục 4.13/Phụ lục B vào báo cáo Word bằng Word COM |
 | docs/huong-dan-su-dung.md | Hướng dẫn tiếng Việt |
 
 Đọc nguồn cùng log: tên bài dự kiến không chứng minh đã chạy, ảnh không thay giao thức. Manifest xác định sản phẩm/phần thiếu. Chưa có đóng góp/thuyết trình thật/nộp chính thức; thông tin lớp/người để trống theo yêu cầu.
+<!-- PAGE -->
+# Phụ lục B Ảnh chụp kiểm chứng giao diện ngày 06/11/2026
+
+Phụ lục này lưu toàn bộ 32 ảnh chụp màn hình của lượt kiểm chứng ngày 06/11/2026 theo đúng thứ tự kịch bản, kèm chú thích mô tả trạng thái được chụp. Ảnh do Chromium headless chụp trực tiếp từ phản hồi của máy chủ tại http://localhost:8080; không ảnh nào là ảnh dựng sẵn hoặc qua chỉnh sửa. Tệp hội thoại xuất được trong lượt chạy cũng nằm cùng thư mục với tên bắt đầu bằng xuat-.
+
+Để tái hiện, khởi động stack theo README rồi chạy script tmp/pw-shot/capture-report-run.js; dữ liệu demo của lượt trước được dọn trước mỗi lượt bằng tmp/pw-shot/cleanup-demo.php chạy trong container app. Thư mục tmp không nằm trong gói nộp, còn toàn bộ minh chứng trong phụ lục này thì có.
+
+| Ảnh | Tệp trong evidence/screenshots/ | Chú thích |
+| --- | --- | --- |
+| Ảnh B1 | run-2026-11-06/R01-dang-nhap.png | Trang đăng nhập với ba tài khoản mẫu dùng thử |
+| Ảnh B2 | run-2026-11-06/R02-dang-ky-dien-form.png | Form đăng ký tài khoản mới đã điền đủ ba trường bắt buộc |
+| Ảnh B3 | run-2026-11-06/R03-phong-chung-desktop.png | Phòng "Trò chuyện chung" trên desktop, trạng thái Đã kết nối, tin vừa gửi đã được máy chủ lưu và phát lại |
+| Ảnh B4 | run-2026-11-06/R04-thanh-vien-truc-tuyen.png | Hộp thoại Thành viên liệt kê người đang trực tuyến trong phòng, gộp nhiều thẻ của cùng tài khoản |
+| Ảnh B5 | run-2026-11-06/R05-chi-bao-dang-nhap.png | Chỉ báo "Bob Tran đang nhập…" đẩy realtime sang Alice bằng sự kiện room:typing |
+| Ảnh B6 | run-2026-11-06/R06-hai-nguoi-trao-doi.png | Cuộc trao đổi hai chiều giữa Alice và Bob trong cùng phòng công khai |
+| Ảnh B7 | run-2026-11-06/R07-tim-kiem-lich-su.png | Tìm kiếm toàn bộ lịch sử phòng với từ khóa không dấu, kèm nhãn số kết quả |
+| Ảnh B8 | run-2026-11-06/R08-ban-be-tat-ca.png | Hộp thoại Bạn bè & khám phá, tab Tất cả liệt kê mọi người dùng khác kèm số bạn chung và nhóm chung |
+| Ảnh B9 | run-2026-11-06/R09-ban-be-da-ket-noi.png | Tab Bạn bè với nhãn "✓ Bạn bè" và nút Nhắn tin / Hủy kết bạn |
+| Ảnh B10 | run-2026-11-06/R10-ban-be-tim-kiem.png | Ô tìm bạn bè lọc theo tên hoặc tên đăng nhập, hỗ trợ gõ không dấu |
+| Ảnh B11 | run-2026-11-06/R11-dang-ky-thanh-cong.png | Tài khoản mới đăng ký thành công, được chuyển thẳng vào phòng chat với phiên đã cấp |
+| Ảnh B12 | run-2026-11-06/R12-tim-khong-dau.png | Gõ không dấu "kiem chung" vẫn tìm ra "Người Kiểm Chứng" nhờ chuẩn hóa dấu trong SocialRepository::normalize |
+| Ảnh B13 | run-2026-11-06/R13-loi-moi-da-gui.png | Trạng thái outgoing sau khi gửi lời mời, kèm nút Hủy lời mời |
+| Ảnh B14 | run-2026-11-06/R14-loi-moi-den.png | Tab Lời mời ở phía người nhận, hiển thị lời mời đến từ Alice với hai nút Chấp nhận / Từ chối |
+| Ảnh B15 | run-2026-11-06/R15-da-ket-ban.png | Sau khi chấp nhận, tab Bạn bè của người nhận hiển thị Alice với nhãn "✓ Bạn bè" |
+| Ảnh B16 | run-2026-11-06/R16-goi-y.png | Tab Gợi ý xếp hạng theo số bạn chung rồi tới số nhóm riêng chung |
+| Ảnh B17 | run-2026-11-06/R17-tin-nhan-rieng.png | Hội thoại tin nhắn riêng, biểu tượng ↔ trên danh sách phòng và mô tả "Trò chuyện riêng · chỉ hai người tham gia" |
+| Ảnh B18 | run-2026-11-06/R18-nguoi-ngoai-khong-thay-phong.png | Danh sách phòng của Charlie không chứa nhóm riêng hay tin nhắn riêng của người khác |
+| Ảnh B19 | run-2026-11-06/R19-tao-nhom.png | Hộp thoại Tạo nhóm với tên nhóm, danh sách bạn bè được chọn và bộ đếm "3 thành viên, gồm bạn" |
+| Ảnh B20 | run-2026-11-06/R20-nhom-rieng.png | Nhóm riêng "Nhóm Đồ Án Web" với biểu tượng ♧, mô tả số thành viên và tin nhắn từ ba người |
+| Ảnh B21 | run-2026-11-06/R21-quan-ly-nhom.png | Hộp thoại Quản lý nhóm ở vai chủ nhóm: đổi tên, danh sách thành viên, thêm bạn, rời/xóa nhóm |
+| Ảnh B22 | run-2026-11-06/R22-thanh-vien-thuong.png | Cùng hộp thoại ở vai thành viên thường: các nút của chủ nhóm bị ẩn, chỉ còn Rời nhóm |
+| Ảnh B23 | run-2026-11-06/R23-xoa-thanh-vien.png | Sau khi chủ nhóm xóa thành viên, danh sách còn 2 người và nút "Xóa khỏi nhóm" biến mất với thành viên còn lại |
+| Ảnh B24 | run-2026-11-06/R24-mat-quyen-sau-khi-bi-xoa.png | Thành viên bị xóa khỏi nhóm không còn thấy nhóm trong danh sách phòng |
+| Ảnh B25 | run-2026-11-06/R25-giao-dien-toi-thu-gon.png | Giao diện tối kèm chế độ thu gọn tin nhắn, cả hai được nhớ trong localStorage |
+| Ảnh B26 | run-2026-11-06/R26-huong-dan-phim-tat.png | Hộp thoại hướng dẫn và phím tắt của ứng dụng |
+| Ảnh B27 | run-2026-11-06/R27-tra-loi-va-emoji.png | Khung trả lời trích dẫn tin gốc và bộ chọn biểu tượng cảm xúc trong ô soạn |
+| Ảnh B28 | run-2026-11-06/R28-mobile-chat.png | Giao diện chat trên viewport điện thoại 390×844, thanh bên thu thành ngăn kéo |
+| Ảnh B29 | run-2026-11-06/R29-mobile-ban-be.png | Hộp thoại Bạn bè trên điện thoại vẫn nằm gọn trong chiều rộng màn hình |
+| Ảnh B30 | run-2026-11-06/R30-mobile-thanh-vien.png | Danh sách thành viên trực tuyến trên điện thoại |
+| Ảnh B31 | run-2026-11-06/R31-mat-ket-noi.png | Trạng thái mất kết nối, nút Gửi bị khóa để tránh gửi tin không xác định |
+| Ảnh B32 | run-2026-11-06/R32-ket-noi-lai.png | Kết nối được khôi phục tự động, không cần người dùng tải lại trang |

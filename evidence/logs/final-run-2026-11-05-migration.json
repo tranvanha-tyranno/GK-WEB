@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-11-05T15:31:00Z",
+  "database": "existing demo volume; not reset",
+  "before": {
+    "directChatsTable": false,
+    "observedFailure": "HTTP 503: no such table: direct_chats"
+  },
+  "action": "docker compose exec -T app php bin/migrate-social.php",
+  "migrationOutput": "Social schema ready; existing data preserved.",
+  "after": {
+    "directChatsTable": true,
+    "directChatRows": 0,
+    "healthHttp": 200,
+    "authenticatedRoomsHttp": 200,
+    "websocketConnection": "Đã kết nối",
+    "roomsVisible": 6
+  }
+}

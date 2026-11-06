@@ -1,0 +1,42 @@
+{
+  "member": "B",
+  "round": 1,
+  "commit_message": "chore: import PHP views and stylesheet baseline",
+  "files": [
+    {
+      "path": "public/assets/css/app.css",
+      "bytes": 16650,
+      "sha256": "fc09b901423ab8c9573817a0d12c9b77d73e31e39181f7de7d62dd1ccfec6a70"
+    },
+    {
+      "path": "public/assets/css/fonts.css",
+      "bytes": 80,
+      "sha256": "89d849c2d7ba75fdc82b9f27497d57a728125a1c51b0d79f1b1eb220aeedb4ed"
+    },
+    {
+      "path": "public/assets/css/readability.css",
+      "bytes": 1255,
+      "sha256": "42acf9ea223cc7af8607b4f56f9dd09d29ca00b951c39adbb395d3549fe82e76"
+    },
+    {
+      "path": "public/assets/favicon.svg",
+      "bytes": 278,
+      "sha256": "f6bad6cf643559654b55b46b38c75d995c97e2e3c6b0d6d96037fcf8058f67f7"
+    },
+    {
+      "path": "resources/views/chat.php",
+      "bytes": 3753,
+      "sha256": "20aa5e448f2b4242602d38e4712ce655de966e4e11d5dbe4078f2a5a7cf851b5"
+    },
+    {
+      "path": "resources/views/layout.php",
+      "bytes": 889,
+      "sha256": "44bbf1714770d17a10728a4617fb1efd79f20c221181b3f0b0a367a01a77dc09"
+    },
+    {
+      "path": "resources/views/login.php",
+      "bytes": 3523,
+      "sha256": "4d89e75b07ba45c36b1ce36bf1c70016be7725b65d24bd21bb480a39465e4e02"
+    }
+  ]
+}

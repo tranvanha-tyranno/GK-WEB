@@ -1,0 +1,136 @@
+{"dir":"sent","at":"2026-11-05T18:19:09.675Z","payload":"{\"type\":\"room:join\",\"payload\":{\"roomId\":1}}"}
+{"dir":"received","at":"2026-11-05T18:19:09.681Z","payload":"{\"type\":\"room:joined\",\"payload\":{\"roomId\":1}}"}
+{"dir":"received","at":"2026-11-05T18:19:09.720Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:09.720Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"sent","at":"2026-11-05T18:19:10.007Z","payload":"{\"type\":\"room:join\",\"payload\":{\"roomId\":1}}"}
+{"dir":"received","at":"2026-11-05T18:19:10.012Z","payload":"{\"type\":\"room:joined\",\"payload\":{\"roomId\":1}}"}
+{"dir":"received","at":"2026-11-05T18:19:10.057Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:10.057Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"sent","at":"2026-11-05T18:19:11.145Z","payload":"{\"type\":\"typing:set\",\"payload\":{\"roomId\":1,\"isTyping\":false}}"}
+{"dir":"sent","at":"2026-11-05T18:19:11.145Z","payload":"{\"type\":\"room:join\",\"payload\":{\"roomId\":1}}"}
+{"dir":"received","at":"2026-11-05T18:19:11.151Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:11.157Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:11.157Z","payload":"{\"type\":\"room:joined\",\"payload\":{\"roomId\":1}}"}
+{"dir":"sent","at":"2026-11-05T18:19:11.181Z","payload":"{\"type\":\"typing:set\",\"payload\":{\"roomId\":1,\"isTyping\":true}}"}
+{"dir":"received","at":"2026-11-05T18:19:11.181Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:11.182Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"sent","at":"2026-11-05T18:19:11.226Z","payload":"{\"type\":\"chat:send\",\"payload\":{\"roomId\":1,\"content\":\"Xin chào cả nhà, đây là tin nhắn kiểm chứng lượt 181905.\"}}"}
+{"dir":"sent","at":"2026-11-05T18:19:11.226Z","payload":"{\"type\":\"typing:set\",\"payload\":{\"roomId\":1,\"isTyping\":false}}"}
+{"dir":"received","at":"2026-11-05T18:19:11.236Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:11.236Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:11.236Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:11.275Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:11.301Z","payload":"{\"type\":\"chat:new\",\"payload\":{\"id\":30,\"roomId\":1,\"user\":{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},\"content\":\"Xin chào cả nhà, đây là tin nhắn kiểm chứng lượt 181905.\",\"createdAt\":\"2026-11-05T18:19:11Z\"}}"}
+{"dir":"received","at":"2026-11-05T18:19:11.303Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:11.303Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:12.022Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:12.022Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:12.209Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:12.209Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:12.211Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:12.211Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:12.705Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:12.705Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:12.829Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:12.829Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:12.834Z","payload":"{\"type\":\"chat:new\",\"payload\":{\"id\":31,\"roomId\":1,\"user\":{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"},\"content\":\"Bob xác nhận tin nhắn lượt 181905 đi qua WebSocket tới Alice.\",\"createdAt\":\"2026-11-05T18:19:12Z\"}}"}
+{"dir":"received","at":"2026-11-05T18:19:12.834Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:12.834Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:15.758Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:15.758Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:17.315Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:17.316Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:17.316Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:17.316Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:17.457Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:17.457Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"sent","at":"2026-11-05T18:19:20.616Z","payload":"{\"type\":\"typing:set\",\"payload\":{\"roomId\":1,\"isTyping\":false}}"}
+{"dir":"sent","at":"2026-11-05T18:19:20.616Z","payload":"{\"type\":\"room:join\",\"payload\":{\"roomId\":7}}"}
+{"dir":"received","at":"2026-11-05T18:19:20.616Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:20.616Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:20.619Z","payload":"{\"type\":\"room:joined\",\"payload\":{\"roomId\":7}}"}
+{"dir":"sent","at":"2026-11-05T18:19:20.650Z","payload":"{\"type\":\"typing:set\",\"payload\":{\"roomId\":7,\"isTyping\":true}}"}
+{"dir":"received","at":"2026-11-05T18:19:20.650Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":7,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:20.650Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":7,\"users\":[]}}"}
+{"dir":"sent","at":"2026-11-05T18:19:20.683Z","payload":"{\"type\":\"chat:send\",\"payload\":{\"roomId\":7,\"content\":\"Tin nhắn riêng lượt 181905 chỉ Bob và Alice xem được.\"}}"}
+{"dir":"sent","at":"2026-11-05T18:19:20.683Z","payload":"{\"type\":\"typing:set\",\"payload\":{\"roomId\":7,\"isTyping\":false}}"}
+{"dir":"received","at":"2026-11-05T18:19:20.695Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":7,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:20.695Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":7,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:20.695Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":7,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:20.730Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":7,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:20.731Z","payload":"{\"type\":\"chat:new\",\"payload\":{\"id\":32,\"roomId\":7,\"user\":{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},\"content\":\"Tin nhắn riêng lượt 181905 chỉ Bob và Alice xem được.\",\"createdAt\":\"2026-11-05T18:19:20Z\"}}"}
+{"dir":"received","at":"2026-11-05T18:19:20.731Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":7,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:20.731Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":7,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:20.809Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":7,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:20.809Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":7,\"users\":[]}}"}
+{"dir":"sent","at":"2026-11-05T18:19:22.068Z","payload":"{\"type\":\"typing:set\",\"payload\":{\"roomId\":7,\"isTyping\":false}}"}
+{"dir":"sent","at":"2026-11-05T18:19:22.068Z","payload":"{\"type\":\"room:join\",\"payload\":{\"roomId\":15}}"}
+{"dir":"received","at":"2026-11-05T18:19:22.068Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":7,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:22.068Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":7,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:22.070Z","payload":"{\"type\":\"room:joined\",\"payload\":{\"roomId\":15}}"}
+{"dir":"sent","at":"2026-11-05T18:19:22.087Z","payload":"{\"type\":\"typing:set\",\"payload\":{\"roomId\":15,\"isTyping\":true}}"}
+{"dir":"received","at":"2026-11-05T18:19:22.087Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:22.087Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"sent","at":"2026-11-05T18:19:22.127Z","payload":"{\"type\":\"chat:send\",\"payload\":{\"roomId\":15,\"content\":\"Chào mừng mọi người đến với nhóm đồ án, lượt kiểm chứng 181905!\"}}"}
+{"dir":"sent","at":"2026-11-05T18:19:22.127Z","payload":"{\"type\":\"typing:set\",\"payload\":{\"roomId\":15,\"isTyping\":false}}"}
+{"dir":"received","at":"2026-11-05T18:19:22.137Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:22.137Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:22.137Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:22.174Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:22.175Z","payload":"{\"type\":\"chat:new\",\"payload\":{\"id\":33,\"roomId\":15,\"user\":{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},\"content\":\"Chào mừng mọi người đến với nhóm đồ án, lượt kiểm chứng 181905!\",\"createdAt\":\"2026-11-05T18:19:22Z\"}}"}
+{"dir":"received","at":"2026-11-05T18:19:22.175Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:22.175Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.108Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.108Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.206Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.206Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.251Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.251Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.252Z","payload":"{\"type\":\"chat:new\",\"payload\":{\"id\":34,\"roomId\":15,\"user\":{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"},\"content\":\"Bob đã vào nhóm và nhận được tin của Alice ở lượt 181905.\",\"createdAt\":\"2026-11-05T18:19:24Z\"}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.252Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.254Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.297Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.297Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.392Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.392Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.436Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.436Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.439Z","payload":"{\"type\":\"chat:new\",\"payload\":{\"id\":35,\"roomId\":15,\"user\":{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"},\"content\":\"Người Kiểm Chứng cũng đã tham gia nhóm riêng này ở lượt 181905.\",\"createdAt\":\"2026-11-05T18:19:24Z\"}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.439Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:24.440Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"sent","at":"2026-11-05T18:19:25.462Z","payload":"{\"type\":\"typing:set\",\"payload\":{\"roomId\":15,\"isTyping\":false}}"}
+{"dir":"sent","at":"2026-11-05T18:19:25.462Z","payload":"{\"type\":\"room:join\",\"payload\":{\"roomId\":15}}"}
+{"dir":"received","at":"2026-11-05T18:19:25.464Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:25.464Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:25.465Z","payload":"{\"type\":\"room:joined\",\"payload\":{\"roomId\":15}}"}
+{"dir":"received","at":"2026-11-05T18:19:25.506Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:25.506Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"sent","at":"2026-11-05T18:19:27.457Z","payload":"{\"type\":\"typing:set\",\"payload\":{\"roomId\":15,\"isTyping\":false}}"}
+{"dir":"sent","at":"2026-11-05T18:19:27.457Z","payload":"{\"type\":\"room:join\",\"payload\":{\"roomId\":15}}"}
+{"dir":"received","at":"2026-11-05T18:19:27.457Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:27.457Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:27.460Z","payload":"{\"type\":\"room:joined\",\"payload\":{\"roomId\":15}}"}
+{"dir":"received","at":"2026-11-05T18:19:27.503Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:27.504Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:28.348Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:28.348Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"sent","at":"2026-11-05T18:19:29.644Z","payload":"{\"type\":\"typing:set\",\"payload\":{\"roomId\":15,\"isTyping\":false}}"}
+{"dir":"sent","at":"2026-11-05T18:19:29.644Z","payload":"{\"type\":\"room:join\",\"payload\":{\"roomId\":1}}"}
+{"dir":"received","at":"2026-11-05T18:19:29.655Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":15,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":2,\"username\":\"bob\",\"displayName\":\"Bob Tran\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:29.655Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":15,\"users\":[]}}"}
+{"dir":"received","at":"2026-11-05T18:19:29.655Z","payload":"{\"type\":\"room:joined\",\"payload\":{\"roomId\":1}}"}
+{"dir":"received","at":"2026-11-05T18:19:29.687Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":3,\"username\":\"charlie\",\"displayName\":\"Charlie Le\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:29.687Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[]}}"}
+{"dir":"sent","at":"2026-11-05T18:19:30.828Z","payload":"{\"type\":\"typing:set\",\"payload\":{\"roomId\":1,\"isTyping\":true}}"}
+{"dir":"received","at":"2026-11-05T18:19:30.832Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":3,\"username\":\"charlie\",\"displayName\":\"Charlie Le\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:30.886Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:31.316Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":3,\"username\":\"charlie\",\"displayName\":\"Charlie Le\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:31.316Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:31.417Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":3,\"username\":\"charlie\",\"displayName\":\"Charlie Le\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:31.417Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:31.417Z","payload":"{\"type\":\"room:presence\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"},{\"id\":3,\"username\":\"charlie\",\"displayName\":\"Charlie Le\"},{\"id\":14,\"username\":\"demo.baocao\",\"displayName\":\"Người Kiểm Chứng\"}]}}"}
+{"dir":"received","at":"2026-11-05T18:19:31.417Z","payload":"{\"type\":\"room:typing\",\"payload\":{\"roomId\":1,\"users\":[{\"id\":1,\"username\":\"alice\",\"displayName\":\"Alice Nguyen\"}]}}"}
+{"dir":"sent","at":"2026-11-05T18:19:32.356Z","payload":"{\"type\":\"chat:send\",\"payload\":{\"roomId\":1,\"content\":\"ắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắắ\"}}"}
+{"dir":"received","at":"2026-11-05T18:19:32.376Z","payload":"{\"type\":\"system:error\",\"payload\":{\"code\":\"MESSAGE_TOO_LONG\",\"message\":\"Tin nhắn được chứa tối đa 500 mã ký tự Unicode.\"}}"}
+{"dir":"sent","at":"2026-11-05T18:19:32.380Z","payload":"{\"type\":\"khong-ton-tai\",\"payload\":{\"roomId\":1}}"}
+{"dir":"received","at":"2026-11-05T18:19:32.382Z","payload":"{\"type\":\"system:error\",\"payload\":{\"code\":\"INVALID_PAYLOAD\",\"message\":\"Loại sự kiện không được hỗ trợ.\"}}"}

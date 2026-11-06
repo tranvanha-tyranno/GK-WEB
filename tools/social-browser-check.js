@@ -77,9 +77,9 @@ async (page) => {
       await page.setViewportSize({ width, height: 844 });
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth && document.querySelector('#friends-dialog').scrollWidth <= document.querySelector('#friends-dialog').clientWidth), `Friend dialog fits mobile width ${width}`);
     }
-    await page.getByRole('button', { name: 'Ngẫu nhiên', exact: true }).click();
+    await page.getByRole('button', { name: 'Gợi ý', exact: true }).click();
     await page.getByRole('listitem').filter({ hasText: '@charlie' }).waitFor();
-    assert(await page.getByRole('listitem').count() === 1, 'Random suggests a new user and excludes existing friend');
+    assert(await page.getByRole('listitem').count() === 1, 'Suggestions show a new user and exclude existing friends');
     assert(errors.length === 0, 'No browser JavaScript errors');
     return { checks, groupId: room.id, csrfAvailable: !!csrf };
   } finally { await bobContext.close(); await charlieContext.close(); }

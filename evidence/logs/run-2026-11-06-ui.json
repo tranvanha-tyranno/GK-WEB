@@ -1,0 +1,417 @@
+{
+  "runId": "run-2026-11-06",
+  "baseUrl": "http://localhost:8080",
+  "startedAt": "2026-11-05T18:19:05.540Z",
+  "finishedAt": "2026-11-05T18:19:32.382Z",
+  "browser": "Playwright Chromium (headless) trên Windows",
+  "viewportDesktop": "1440x900",
+  "viewportMobile": "390x844 @2x",
+  "assertionsPassed": 52,
+  "assertions": [
+    {
+      "at": "2026-11-05T18:19:08.108Z",
+      "message": "Trang đăng nhập hiển thị tiêu đề chào mừng"
+    },
+    {
+      "at": "2026-11-05T18:19:09.065Z",
+      "message": "Đăng ký với mật khẩu ngắn hơn 12 byte bị từ chối (HTTP 400)"
+    },
+    {
+      "at": "2026-11-05T18:19:09.066Z",
+      "message": "Máy chủ trả đúng mã lỗi INVALID_PASSWORD: Mật khẩu cần từ 12 đến 256 byte."
+    },
+    {
+      "at": "2026-11-05T18:19:11.162Z",
+      "message": "Danh sách phòng hiển thị 8 phòng mà Alice được phép xem"
+    },
+    {
+      "at": "2026-11-05T18:19:11.165Z",
+      "message": "Trạng thái kết nối WebSocket báo \"Đã kết nối\""
+    },
+    {
+      "at": "2026-11-05T18:19:11.335Z",
+      "message": "Gửi tin qua WebSocket và nhận lại chính tin đó từ máy chủ"
+    },
+    {
+      "at": "2026-11-05T18:19:12.352Z",
+      "message": "Danh sách thành viên trực tuyến gộp 2 người (Alice và Bob cùng phòng)"
+    },
+    {
+      "at": "2026-11-05T18:19:12.715Z",
+      "message": "Chỉ báo \"đang nhập\" của Bob hiện ở màn hình Alice qua sự kiện room:typing"
+    },
+    {
+      "at": "2026-11-05T18:19:12.865Z",
+      "message": "Tin của Bob xuất hiện ở Alice mà không cần tải lại trang"
+    },
+    {
+      "at": "2026-11-05T18:19:12.984Z",
+      "message": "Tìm không dấu \"websocket\" trả về kết quả: 6 kết quả · tìm trong toàn bộ lịch sử"
+    },
+    {
+      "at": "2026-11-05T18:19:13.520Z",
+      "message": "Tab Bạn bè hiển thị quan hệ đã chấp nhận"
+    },
+    {
+      "at": "2026-11-05T18:19:14.371Z",
+      "message": "Tìm kiếm theo tên đăng nhập lọc đúng một người"
+    },
+    {
+      "at": "2026-11-05T18:19:15.780Z",
+      "message": "Đăng ký qua giao diện thành công, máy chủ cấp phiên và chuyển thẳng vào /chat"
+    },
+    {
+      "at": "2026-11-05T18:19:15.784Z",
+      "message": "Tên hiển thị sau đăng nhập đúng là \"Người Kiểm Chứng\""
+    },
+    {
+      "at": "2026-11-05T18:19:15.895Z",
+      "message": "Tài khoản mới nhận id = 14 từ máy chủ"
+    },
+    {
+      "at": "2026-11-05T18:19:17.025Z",
+      "message": "Alice gửi lời mời, hàng chuyển sang nhãn \"Đã gửi lời mời\" (quan hệ outgoing)"
+    },
+    {
+      "at": "2026-11-05T18:19:18.522Z",
+      "message": "Huy hiệu lời mời đến trên thanh bên hiển thị số 1 (thực nhận: \"1\")"
+    },
+    {
+      "at": "2026-11-05T18:19:19.063Z",
+      "message": "Chấp nhận lời mời chuyển quan hệ sang accepted, hiện \"✓ Bạn bè\" ở cả hai phía"
+    },
+    {
+      "at": "2026-11-05T18:19:19.966Z",
+      "message": "Tab Gợi ý trả về 1 người chưa có quan hệ, xếp theo bạn chung rồi nhóm chung"
+    },
+    {
+      "at": "2026-11-05T18:19:20.634Z",
+      "message": "Phòng tin nhắn riêng được cá nhân hóa tên người nhận: \"Trò chuyện với Bob Tran\""
+    },
+    {
+      "at": "2026-11-05T18:19:20.913Z",
+      "message": "Tin nhắn riêng xuất hiện ở phía Bob, tên phòng cá nhân hóa theo từng người"
+    },
+    {
+      "at": "2026-11-05T18:19:21.530Z",
+      "message": "Người ngoài không nhận được phòng tin nhắn riêng nào trong /api/rooms (chỉ thấy 3 phòng công khai)"
+    },
+    {
+      "at": "2026-11-05T18:19:21.580Z",
+      "message": "Người ngoài đọc lịch sử phòng riêng bị chặn với HTTP 404"
+    },
+    {
+      "at": "2026-11-05T18:19:21.847Z",
+      "message": "Bộ đếm thành viên cập nhật: 3 thành viên, gồm bạn"
+    },
+    {
+      "at": "2026-11-05T18:19:22.079Z",
+      "message": "Nhóm mới mở ra với mô tả: \"Nhóm riêng · 3 thành viên\""
+    },
+    {
+      "at": "2026-11-05T18:19:24.463Z",
+      "message": "Ba thành viên trao đổi được trong nhóm riêng theo thời gian thực"
+    },
+    {
+      "at": "2026-11-05T18:19:24.697Z",
+      "message": "Quản lý nhóm tải đúng số thành viên: \"3 thành viên\""
+    },
+    {
+      "at": "2026-11-05T18:19:24.698Z",
+      "message": "Alice được nhận diện là chủ nhóm"
+    },
+    {
+      "at": "2026-11-05T18:19:25.073Z",
+      "message": "Thành viên thường không thấy nút Xóa nhóm"
+    },
+    {
+      "at": "2026-11-05T18:19:25.075Z",
+      "message": "Thành viên thường không thấy nút lưu tên nhóm"
+    },
+    {
+      "at": "2026-11-05T18:19:25.077Z",
+      "message": "Thành viên thường thấy nút Rời nhóm"
+    },
+    {
+      "at": "2026-11-05T18:19:25.463Z",
+      "message": "Chủ nhóm đổi tên nhóm, tiêu đề phòng cập nhật ngay ở phía chủ nhóm"
+    },
+    {
+      "at": "2026-11-05T18:19:27.031Z",
+      "message": "Tên nhóm mới lan sang thành viên khác qua vòng làm tươi /api/rooms mỗi 3 giây (không cần tải lại trang)"
+    },
+    {
+      "at": "2026-11-05T18:19:27.095Z",
+      "message": "Thêm người chưa kết bạn vào nhóm bị từ chối (HTTP 400)"
+    },
+    {
+      "at": "2026-11-05T18:19:27.114Z",
+      "message": "Yêu cầu đổi nhóm với CSRF token sai bị chặn (HTTP 403)"
+    },
+    {
+      "at": "2026-11-05T18:19:27.157Z",
+      "message": "Người ngoài nhóm thao tác quản lý bị chặn (HTTP 404)"
+    },
+    {
+      "at": "2026-11-05T18:19:27.502Z",
+      "message": "Chủ nhóm xóa một thành viên, danh sách còn 2 người"
+    },
+    {
+      "at": "2026-11-05T18:19:28.378Z",
+      "message": "Thành viên bị xóa không đọc được lịch sử nhóm nữa (HTTP 404)"
+    },
+    {
+      "at": "2026-11-05T18:19:29.555Z",
+      "message": "Nhóm biến mất khỏi danh sách phòng của thành viên bị xóa"
+    },
+    {
+      "at": "2026-11-05T18:19:29.984Z",
+      "message": "Tệp xuất chứa 16 dòng tin nhắn có dấu thời gian"
+    },
+    {
+      "at": "2026-11-05T18:19:29.984Z",
+      "message": "Tệp xuất bắt đầu bằng BOM UTF-8 để Excel đọc đúng tiếng Việt"
+    },
+    {
+      "at": "2026-11-05T18:19:31.424Z",
+      "message": "Bố cục mobile 390px không tràn ngang (chênh lệch 0px)"
+    },
+    {
+      "at": "2026-11-05T18:19:31.618Z",
+      "message": "Hộp thoại Bạn bè không tràn ngang trên mobile (chênh lệch 0px)"
+    },
+    {
+      "at": "2026-11-05T18:19:32.104Z",
+      "message": "Khi mất mạng, trạng thái chuyển thành: \"Đang kết nối lại…\""
+    },
+    {
+      "at": "2026-11-05T18:19:32.105Z",
+      "message": "Nút Gửi bị khóa khi chưa tham gia lại phòng, bản nháp được giữ"
+    },
+    {
+      "at": "2026-11-05T18:19:32.186Z",
+      "message": "Ứng dụng tự kết nối lại theo backoff 1/2/4/8/10 giây và tham gia lại phòng"
+    },
+    {
+      "at": "2026-11-05T18:19:32.292Z",
+      "message": "Yêu cầu lịch sử với limit > 50 bị từ chối (HTTP 400)"
+    },
+    {
+      "at": "2026-11-05T18:19:32.306Z",
+      "message": "Điểm kiểm tra sức khỏe /api/health trả về ok"
+    },
+    {
+      "at": "2026-11-05T18:19:32.333Z",
+      "message": "API đo so sánh bị tắt ở môi trường demo (HTTP 404)"
+    },
+    {
+      "at": "2026-11-05T18:19:32.351Z",
+      "message": "Yêu cầu POST với Origin lạ bị chặn (HTTP 403)"
+    },
+    {
+      "at": "2026-11-05T18:19:32.376Z",
+      "message": "Tin 501 mã ký tự bị từ chối với mã MESSAGE_TOO_LONG qua WebSocket"
+    },
+    {
+      "at": "2026-11-05T18:19:32.382Z",
+      "message": "Sự kiện không có trong giao thức bị từ chối với mã INVALID_PAYLOAD"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R01-dang-nhap.png",
+      "caption": "Hình R1: Trang đăng nhập với ba tài khoản mẫu dùng thử",
+      "bytes": 90777,
+      "at": "2026-11-05T18:19:08.186Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R02-dang-ky-dien-form.png",
+      "caption": "Hình R2: Form đăng ký tài khoản mới đã điền đủ ba trường bắt buộc",
+      "bytes": 57460,
+      "at": "2026-11-05T18:19:08.962Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R03-phong-chung-desktop.png",
+      "caption": "Hình R3: Phòng \"Trò chuyện chung\" trên desktop, trạng thái Đã kết nối, tin vừa gửi đã được máy chủ lưu và phát lại",
+      "bytes": 71847,
+      "at": "2026-11-05T18:19:11.408Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R04-thanh-vien-truc-tuyen.png",
+      "caption": "Hình R4: Hộp thoại Thành viên liệt kê người đang trực tuyến trong phòng, gộp nhiều thẻ của cùng tài khoản",
+      "bytes": 141701,
+      "at": "2026-11-05T18:19:12.616Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R05-chi-bao-dang-nhap.png",
+      "caption": "Hình R5: Chỉ báo \"Bob Tran đang nhập…\" đẩy realtime sang Alice bằng sự kiện room:typing",
+      "bytes": 74982,
+      "at": "2026-11-05T18:19:12.773Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R06-hai-nguoi-trao-doi.png",
+      "caption": "Hình R6: Cuộc trao đổi hai chiều giữa Alice và Bob trong cùng phòng công khai",
+      "bytes": 73643,
+      "at": "2026-11-05T18:19:12.928Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R07-tim-kiem-lich-su.png",
+      "caption": "Hình R7: Tìm kiếm toàn bộ lịch sử phòng với từ khóa không dấu, kèm nhãn số kết quả",
+      "bytes": 70384,
+      "at": "2026-11-05T18:19:13.049Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R08-ban-be-tat-ca.png",
+      "caption": "Hình R8: Hộp thoại Bạn bè & khám phá, tab Tất cả liệt kê mọi người dùng khác kèm số bạn chung và nhóm chung",
+      "bytes": 142485,
+      "at": "2026-11-05T18:19:13.376Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R09-ban-be-da-ket-noi.png",
+      "caption": "Hình R9: Tab Bạn bè với nhãn \"✓ Bạn bè\" và nút Nhắn tin / Hủy kết bạn",
+      "bytes": 141974,
+      "at": "2026-11-05T18:19:13.744Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R10-ban-be-tim-kiem.png",
+      "caption": "Hình R10: Ô tìm bạn bè lọc theo tên hoặc tên đăng nhập, hỗ trợ gõ không dấu",
+      "bytes": 138880,
+      "at": "2026-11-05T18:19:14.534Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R11-dang-ky-thanh-cong.png",
+      "caption": "Hình R11: Tài khoản mới đăng ký thành công, được chuyển thẳng vào phòng chat với phiên đã cấp",
+      "bytes": 65579,
+      "at": "2026-11-05T18:19:15.862Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R12-tim-khong-dau.png",
+      "caption": "Hình R12: Gõ không dấu \"kiem chung\" vẫn tìm ra \"Người Kiểm Chứng\" nhờ chuẩn hóa dấu trong SocialRepository::normalize",
+      "bytes": 139787,
+      "at": "2026-11-05T18:19:16.713Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R13-loi-moi-da-gui.png",
+      "caption": "Hình R13: Trạng thái outgoing sau khi gửi lời mời, kèm nút Hủy lời mời",
+      "bytes": 139216,
+      "at": "2026-11-05T18:19:17.242Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R14-loi-moi-den.png",
+      "caption": "Hình R14: Tab Lời mời ở phía người nhận, hiển thị lời mời đến từ Alice với hai nút Chấp nhận / Từ chối",
+      "bytes": 135376,
+      "at": "2026-11-05T18:19:18.860Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R15-da-ket-ban.png",
+      "caption": "Hình R15: Sau khi chấp nhận, tab Bạn bè của người nhận hiển thị Alice với nhãn \"✓ Bạn bè\"",
+      "bytes": 134732,
+      "at": "2026-11-05T18:19:19.230Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R16-goi-y.png",
+      "caption": "Hình R16: Tab Gợi ý xếp hạng theo số bạn chung rồi tới số nhóm riêng chung",
+      "bytes": 137430,
+      "at": "2026-11-05T18:19:20.234Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R17-tin-nhan-rieng.png",
+      "caption": "Hình R17: Hội thoại tin nhắn riêng, biểu tượng ↔ trên danh sách phòng và mô tả \"Trò chuyện riêng · chỉ hai người tham gia\"",
+      "bytes": 54778,
+      "at": "2026-11-05T18:19:20.985Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R18-nguoi-ngoai-khong-thay-phong.png",
+      "caption": "Hình R18: Danh sách phòng của Charlie không chứa nhóm riêng hay tin nhắn riêng của người khác",
+      "bytes": 65287,
+      "at": "2026-11-05T18:19:21.641Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R19-tao-nhom.png",
+      "caption": "Hình R19: Hộp thoại Tạo nhóm với tên nhóm, danh sách bạn bè được chọn và bộ đếm \"3 thành viên, gồm bạn\"",
+      "bytes": 117999,
+      "at": "2026-11-05T18:19:21.938Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R20-nhom-rieng.png",
+      "caption": "Hình R20: Nhóm riêng \"Nhóm Đồ Án Web\" với biểu tượng ♧, mô tả số thành viên và tin nhắn từ ba người",
+      "bytes": 51157,
+      "at": "2026-11-05T18:19:24.534Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R21-quan-ly-nhom.png",
+      "caption": "Hình R21: Hộp thoại Quản lý nhóm ở vai chủ nhóm: đổi tên, danh sách thành viên, thêm bạn, rời/xóa nhóm",
+      "bytes": 109434,
+      "at": "2026-11-05T18:19:24.874Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R22-thanh-vien-thuong.png",
+      "caption": "Hình R22: Cùng hộp thoại ở vai thành viên thường: các nút của chủ nhóm bị ẩn, chỉ còn Rời nhóm",
+      "bytes": 101929,
+      "at": "2026-11-05T18:19:25.266Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R23-xoa-thanh-vien.png",
+      "caption": "Hình R23: Sau khi chủ nhóm xóa thành viên, danh sách còn 2 người và nút \"Xóa khỏi nhóm\" biến mất với thành viên còn lại",
+      "bytes": 109092,
+      "at": "2026-11-05T18:19:27.631Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R24-mat-quyen-sau-khi-bi-xoa.png",
+      "caption": "Hình R24: Thành viên bị xóa khỏi nhóm không còn thấy nhóm trong danh sách phòng",
+      "bytes": 65551,
+      "at": "2026-11-05T18:19:29.622Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R25-giao-dien-toi-thu-gon.png",
+      "caption": "Hình R25: Giao diện tối kèm chế độ thu gọn tin nhắn, cả hai được nhớ trong localStorage",
+      "bytes": 88386,
+      "at": "2026-11-05T18:19:30.206Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R26-huong-dan-phim-tat.png",
+      "caption": "Hình R26: Hộp thoại hướng dẫn và phím tắt của ứng dụng",
+      "bytes": 162720,
+      "at": "2026-11-05T18:19:30.589Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R27-tra-loi-va-emoji.png",
+      "caption": "Hình R27: Khung trả lời trích dẫn tin gốc và bộ chọn biểu tượng cảm xúc trong ô soạn",
+      "bytes": 82802,
+      "at": "2026-11-05T18:19:30.887Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R28-mobile-chat.png",
+      "caption": "Hình R28: Giao diện chat trên viewport điện thoại 390×844, thanh bên thu thành ngăn kéo",
+      "bytes": 114561,
+      "at": "2026-11-05T18:19:31.523Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R29-mobile-ban-be.png",
+      "caption": "Hình R29: Hộp thoại Bạn bè trên điện thoại vẫn nằm gọn trong chiều rộng màn hình",
+      "bytes": 121362,
+      "at": "2026-11-05T18:19:31.792Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R30-mobile-thanh-vien.png",
+      "caption": "Hình R30: Danh sách thành viên trực tuyến trên điện thoại",
+      "bytes": 160070,
+      "at": "2026-11-05T18:19:32.056Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R31-mat-ket-noi.png",
+      "caption": "Hình R31: Trạng thái mất kết nối, nút Gửi bị khóa để tránh gửi tin không xác định",
+      "bytes": 53800,
+      "at": "2026-11-05T18:19:32.154Z"
+    },
+    {
+      "file": "evidence/screenshots/run-2026-11-06/R32-ket-noi-lai.png",
+      "caption": "Hình R32: Kết nối được khôi phục tự động, không cần người dùng tải lại trang",
+      "bytes": 53567,
+      "at": "2026-11-05T18:19:32.226Z"
+    }
+  ],
+  "problems": [],
+  "pageErrors": [],
+  "websocketFrameCount": 136
+}

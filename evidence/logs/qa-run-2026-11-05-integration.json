@@ -1,0 +1,71 @@
+{
+  "baseUrl": "http://nginx",
+  "generatedAt": "2026-11-05T14:16:41Z",
+  "results": [
+    {
+      "ids": "TC-01/02/03/15",
+      "title": "Authentication and security boundaries",
+      "status": "PASS",
+      "seconds": 0.462,
+      "detail": "HTTP 401/403/404/400, cookie rotation/flags, anonymous/tampered/revoked cookie and bad Origin all checked."
+    },
+    {
+      "ids": "TC-04/05/07",
+      "title": "Persistence, room isolation and join",
+      "status": "PASS",
+      "seconds": 1.269,
+      "detail": "Bidirectional sender echo, receiver ID equality, SQL persistence, isolation, invalid membership and idempotent join verified."
+    },
+    {
+      "ids": "TC-06/12",
+      "title": "Multi-tab presence and typing TTL",
+      "status": "PASS",
+      "seconds": 3.907,
+      "detail": "Same user in two tabs counted once; typing expires without client stop; closing one tab preserves presence."
+    },
+    {
+      "ids": "TC-09/10",
+      "title": "Protocol and Unicode boundaries",
+      "status": "PASS",
+      "seconds": 0.198,
+      "detail": "Malformed schemas, Unicode 500/501, binary/fragmented binary rejection, text fragmentation and oversized close verified."
+    },
+    {
+      "ids": "TC-14",
+      "title": "Logout closes all session sockets",
+      "status": "PASS",
+      "seconds": 0.823,
+      "detail": "Both sockets of revoked session closed in 0.701s; API rejected after logout."
+    },
+    {
+      "ids": "TC-20",
+      "title": "2, 10 and 20 simultaneous connections",
+      "status": "PASS",
+      "seconds": 0.35,
+      "detail": [
+        {
+          "connections": 2,
+          "received": 2,
+          "uniqueMessageIds": 1
+        },
+        {
+          "connections": 10,
+          "received": 10,
+          "uniqueMessageIds": 1
+        },
+        {
+          "connections": 20,
+          "received": 20,
+          "uniqueMessageIds": 1
+        }
+      ]
+    },
+    {
+      "ids": "TC-11",
+      "title": "Rate limit across sockets",
+      "status": "PASS",
+      "seconds": 0.689,
+      "detail": "Account-wide limit reached after 19 additional sends; two sockets cannot bypass; blocked message not persisted."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+async (page) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('http://localhost:8080/chat');
+  await page.getByText('Connected', { exact: true }).waitFor();
+  await page.getByRole('log').getByText('Welcome to Relay. Choose a room and say hello!', { exact: true }).waitFor();
+  await page.waitForTimeout(2000);
+  const box=page.getByRole('textbox', { name: 'Your message' });
+  const text='This message is sent through PHP WebSocket and stored in SQLite.';
+  await box.fill(text); await page.waitForTimeout(1500); await box.press('Enter');
+  await page.getByRole('log').getByText(text, { exact: true }).last().waitFor();
+  await page.waitForTimeout(2500);
+  await page.getByRole('button',{ name:'# Engineering',exact:true }).click();
+  await page.getByRole('log').getByText('Use this room to discuss the WebSocket implementation.',{exact:true}).waitFor();
+  await page.waitForTimeout(2500);
+  await page.getByRole('button',{ name:'# Study group',exact:true }).click();
+  await page.getByRole('log').getByText('A quiet space to prepare for the midterm presentation.',{exact:true}).waitFor();
+  await page.waitForTimeout(2500);
+  await page.getByRole('button',{ name:'# General',exact:true }).click();
+  await page.getByRole('log').getByText(text,{exact:true}).last().waitFor();
+  await page.context().setOffline(true);await page.evaluate(()=>window.dispatchEvent(new Event('offline')));
+  await page.waitForFunction(()=>document.querySelector('#message-input').disabled);
+  await page.waitForTimeout(3500);
+  await page.context().setOffline(false);await page.evaluate(()=>window.dispatchEvent(new Event('online')));
+  await page.getByText('Connected',{exact:true}).waitFor();
+  await page.getByRole('log').getByText(text,{exact:true}).last().waitFor();
+  await page.waitForTimeout(2500);
+  await page.setViewportSize({width:390,height:844});await page.waitForTimeout(3500);
+  await page.setViewportSize({width:1440,height:900});await page.waitForTimeout(2000);
+  return {status:'PASS',kind:'supplementary silent UI reference, not the required three-member spoken video',demonstrated:['stored live message','room selection','offline-disabled composer','reconnect and history','phone layout']};
+}

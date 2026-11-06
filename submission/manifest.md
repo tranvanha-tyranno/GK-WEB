@@ -4,9 +4,9 @@ Bản cập nhật bắt đầu 28/10 và hoàn tất 29/10/2026 (Asia/Saigon). 
 
 | Sản phẩm | Trạng thái | Nội dung |
 | --- | --- | --- |
-| report.docx / report.pdf | ĐÃ TẠO | 22 trang tiếng Việt, 5 chương, tài liệu tham khảo và phụ lục; bìa để trống thông tin thật |
-| slides.pptx / slides.pdf | ĐÃ TẠO | 12 trang, văn bản/bảng chỉnh sửa được, ghi chú tiếng Việt, ảnh giao diện mới |
-| source.zip | ĐÃ TẠO | Mã, schema/seed, khóa thư viện, Docker, README tiếng Việt, test và minh chứng; không có .env, vendor hoặc DB thực |
+| report.docx / report.pdf | ĐÃ CẬP NHẬT 06/11 | 65 trang tiếng Việt, 5 chương, phụ lục A và phụ lục B (32 ảnh chụp kiểm chứng ngày 06/11); mục 4.12 hồi quy 05/11 và 4.13 kiểm chứng 06/11; bìa để trống thông tin thật |
+| presentation.pptx / presentation.pdf | ĐÃ TẠO 06/11 | 19 trang, thay bộ slides.pptx/slides.pdf cũ |
+| source.zip | ĐÃ GỠ KHỎI GÓI | Tệp không còn trong submission/; cần tạo lại gói nguồn khi nộp chính thức |
 | recording-kit | ĐÃ TẠO | Lời nói, thao tác và câu hỏi tiếng Việt; đối chiếu ngôn ngữ theo đề gốc khi nộp |
 | reference-walkthrough.webm | TƯ LIỆU CŨ BỔ TRỢ | 34,52 giây, im lặng; giao diện bản cũ, không thay video nhóm cuối |
 | demo.mp4 có ba thành viên thật | CHƯA GHI HÌNH | Kiểm tra âm thanh, quy định ngôn ngữ và thời lượng tối đa 20 phút |
@@ -23,9 +23,8 @@ Giới hạn: một worker, SQLite đồng bộ, khôi phục 50 tin, tìm/xuấ
 
 | Tệp | Byte | SHA256 |
 | --- | --- | --- |
-| `report.docx` | 531170 | `91d5a31f38a844801277329de6e7cd8e7191821a5adb0ab93b2d38a4b253207b` |
-| `report.pdf` | 794959 | `4b82c2027e46490f7ec178f38368633427dbe205baf5ac5ea08b4bddc08e55b9` |
-| `slides.pptx` | 401948 | `0004cfa3411da13113c1103ab76c849d17b00a4caf9bc6cc0a510cca9e1ef53e` |
-| `slides.pdf` | 330793 | `b55f2ed606931202980ada4bdd61082d0863b45854108e164e400cf46cb75701` |
-| `source.zip` | 1160165 | `9438c6b63cb8a2bcca7b9a228ef31566d6e2c5b05ccfc0d2becc97fb8880432b` |
+| `report.docx` | 4078174 | `1073fa6979bd69011afc29606de1d3ffa68a6681d1adca60adf3bbafd4601f5c` |
+| `report.pdf` | 3037686 | `5e325b3d5bf99f6325fba901b4d10f52e87d74e667b556493a291c14c48681c3` |
+| `presentation.pptx` | 617742 | `37f4e875249b462e8614a5ece724b9c057b3ae5411a9a293556a4326d667f333` |
+| `presentation.pdf` | 544257 | `8982fcc92935218ddafd4e7e37c8c692b8485ed4b766f9da72bdabcd20d1ddc5` |
 | `reference-walkthrough.webm` | 1289226 | `5d6d13874ae3e951f4984366afe098862c80fd4f41aba875086865c69e0f29cb` |
