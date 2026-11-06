@@ -1,0 +1,63 @@
+async (page) => {
+  const result = { checkedAt: new Date().toISOString(), checks: [] };
+  const check = (name, detail) => result.checks.push({ name, status: 'PASS', detail });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.reload();
+  await page.getByText('Connected', { exact: true }).waitFor();
+  // Test actual browser rendering rather than trusting source text alone.
+  let dialog = false;
+  page.on('dialog', async event => { dialog = true; await event.dismiss(); });
+  const payload = '<script>alert(1)</script>';
+  await page.getByRole('textbox', { name: 'Your message' }).fill(payload);
+  await page.getByRole('textbox', { name: 'Your message' }).press('Enter');
+  await page.getByRole('log', { name: 'Messages' }).getByText(payload, { exact: true }).last().waitFor();
+  if (dialog) throw new Error('XSS dialog executed');
+  check('TC-13 browser XSS', 'Script payload appears as literal text; no dialog executed.');
+  await page.context().setOffline(true);
+  // Chromium's context emulation may not dispatch OS connectivity events itself.
+  await page.evaluate(() => window.dispatchEvent(new Event('offline')));
+  await page.waitForFunction(() => document.querySelector('#message-input').disabled, null, { timeout: 15000 });
+  check('TC-08 offline state', 'Composer disabled after network loss.');
+  await page.context().setOffline(false);
+  await page.evaluate(() => window.dispatchEvent(new Event('online')));
+  await page.getByText('Connected', { exact: true }).waitFor({ timeout: 20000 });
+  await page.waitForFunction(() => !document.querySelector('#message-input').disabled);
+  await page.getByRole('log').getByText(payload, { exact: true }).last().waitFor();
+  const ids = await page.locator('[data-message-id]').evaluateAll(nodes => nodes.map(n => n.dataset.messageId));
+  if (new Set(ids).size !== ids.length) throw new Error('Duplicate history/realtime IDs');
+  check('TC-08 rejoin and merge', `Reconnected; restored history has ${ids.length} unique message IDs.`);
+  // Slow a previous-room response to exercise the stale-response guard.
+  await page.route('**/api/rooms/2/messages?limit=50', async route => { await new Promise(resolve => setTimeout(resolve, 700)); await route.continue(); });
+  await page.getByRole('button', { name: '# Engineering', exact: true }).click();
+  await page.getByRole('button', { name: '# Study group', exact: true }).click();
+  await page.getByRole('heading', { name: 'Study group', exact: true }).waitFor();
+  await page.waitForTimeout(1200);
+  if ((await page.locator('#room-name').textContent()) !== 'Study group') throw new Error('Stale room header');
+  if (await page.getByRole('log').getByText('Use this room to discuss the WebSocket implementation.', { exact: true }).count()) throw new Error('Old room leaked');
+  check('TC-07 delayed old history', 'Slow Engineering request did not replace Study group.');
+  await page.unroute('**/api/rooms/2/messages?limit=50');
+  await page.getByRole('button', { name: '# General', exact: true }).click();
+  await page.waitForFunction(() => !document.querySelector('#message-input').disabled);
+  await page.getByRole('textbox', { name: 'Your message' }).fill('😀'.repeat(501));
+  if (!(await page.getByRole('button', { name: 'Send message' }).isDisabled())) throw new Error('Over-limit send enabled');
+  check('TC-09 client Unicode', '501 code-point emoji draft disables send.');
+  await page.getByRole('textbox', { name: 'Your message' }).fill('');
+  await page.screenshot({ path: 'output/playwright/EV-06-chat-desktop.png' });
+  const desktop = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
+  await page.setViewportSize({ width: 390, height: 844 });
+  const mobile = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
+  if (!desktop || !mobile) throw new Error('Horizontal overflow');
+  await page.screenshot({ path: 'output/playwright/EV-07-chat-mobile.png' });
+  check('Responsive UI', '1440x900 and 390x844 without horizontal document overflow.');
+  const sibling = await page.context().newPage();
+  await sibling.goto('http://localhost:8080/chat');
+  await sibling.getByText('Connected', { exact: true }).waitFor();
+  await sibling.getByRole('button', { name: 'Sign out', exact: true }).click();
+  await sibling.waitForURL('**/login');
+  await page.waitForURL('**/login', { timeout: 15000 });
+  check('TC-14 same-session browser logout', 'Both ordinary tabs returned to login after shared-session revocation.');
+  await sibling.close();
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.screenshot({ path: 'output/playwright/EV-00-login.png' });
+  return result;
+}

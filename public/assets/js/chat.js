@@ -9,19 +9,33 @@ const descriptions = { General: 'Chia sẻ công việc, ý tưởng và những
 const element = (tag, className, text) => { const node = document.createElement(tag); if (className) node.className = className; if (text !== undefined) node.textContent = text; return node; };
 
 export async function startChat(api, user) {
-  let rooms = [], roomId = null, joined = false, generation = 0, request = null, typingTimer = null, typingAt = 0, pending = null, sessionCheck = null, state = 'connecting', reply = null, toastTimer = null, activeMessageId = null;
+  let rooms = [], roomId = null, joined = false, generation = 0, request = null, typingTimer = null, typingAt = 0, pending = null, sessionCheck = null, state = 'connecting', reply = null, toastTimer = null, activeMessageId = null, historyHasOlder = false, historyBusy = false, searchTimer = null, searchHasMore = false, searchLoaded = false, searchResults = [], exportBusy = false;
   const messages = new Map(), drafts = new Map(), uncertain = new Set();
   let sessionRequest = null, checkingSession = false, identityChanged = false;
   const input = $('#message-input');
   const draftKey = id => `relay:draft:${user.id}:${id}`;
   function loadDraft(id) {
     if (drafts.has(id)) return drafts.get(id);
-    try { return sessionStorage.getItem(draftKey(id)) ?? ''; } catch { return ''; }
+    try {
+      const key = draftKey(id);
+      let value = localStorage.getItem(key);
+      if (value === null) {
+        value = sessionStorage.getItem(key);
+        if (value !== null) { localStorage.setItem(key, value); sessionStorage.removeItem(key); }
+      }
+      return value ?? '';
+    } catch { return ''; }
   }
   function saveDraft(id = roomId, value = input.value) {
     if (id === null) return;
     drafts.set(id, value);
-    try { if (value) sessionStorage.setItem(draftKey(id), value); else sessionStorage.removeItem(draftKey(id)); } catch { /* Lại dùng bản nháp trong bộ nhớ. */ }
+    try { if (value) localStorage.setItem(draftKey(id), value); else localStorage.removeItem(draftKey(id)); sessionStorage.removeItem(draftKey(id)); } catch { /* Vẫn dùng bản nháp trong bộ nhớ. */ }
+  }
+  function clearDrafts() {
+    const prefix = `relay:draft:${user.id}:`;
+    try { for (const key of Object.keys(localStorage)) if (key.startsWith(prefix)) localStorage.removeItem(key); } catch { /* Bộ nhớ có thể bị chặn. */ }
+    for (const room of rooms) { try { sessionStorage.removeItem(draftKey(room.id)); } catch { /* Bộ nhớ có thể bị chặn. */ } }
+    drafts.clear();
   }
   function toast(text) { clearTimeout(toastTimer); $('#toast').textContent = text; $('#toast').hidden = false; toastTimer = setTimeout(() => { $('#toast').hidden = true; }, 3500); }
   function notice(text = '') { $('#chat-notice').textContent = text; $('#chat-notice').hidden = !text; }
@@ -95,10 +109,10 @@ export async function startChat(api, user) {
     const list = $('#messages'), oldTop = list.scrollTop;
     const nearBottom = list.scrollHeight - oldTop - list.clientHeight < 100;
     const fragment = document.createDocumentFragment();
-    const ordered = [...messages.values()].sort((a, b) => a.id - b.id);
     const query = normalizeSearch($('#message-search').value);
+    const ordered = (query && searchLoaded ? searchResults : [...messages.values()]).slice().sort((a, b) => a.id - b.id);
     const visible = ordered.filter(message => !query || normalizeSearch(`${message.user.displayName} ${message.content}`).includes(query));
-    $('#history-label').textContent = query ? `${visible.length} KẾT QUẢ / ${ordered.length} TIN ĐÃ TẢI` : `${ordered.length} TIN NHẮN ĐÃ TẢI`;
+    $('#history-label').textContent = query ? `${visible.length} kết quả${searchHasMore ? ' trở lên' : ''} · tìm trong toàn bộ lịch sử` : `${ordered.length} tin nhắn đã tải`;
     $('#history-summary').hidden = !query;
     $('#export-messages').disabled = ordered.length === 0;
     if (!visible.length) fragment.append(element('div', 'empty-state', query ? 'Không tìm thấy tin nhắn phù hợp. Thử từ khóa khác hoặc xóa tìm kiếm.' : 'Phòng đang yên tĩnh. Hãy là người đầu tiên gửi lời chào!'));
@@ -123,7 +137,15 @@ export async function startChat(api, user) {
         reply = message; $('#reply-preview').hidden = false; $('#reply-text').textContent = `Đang trả lời ${message.user.displayName}: ${message.content}`; controls(); input.focus();
       }], ['Sao chép', async () => {
         try { await navigator.clipboard.writeText(message.content); toast('Đã sao chép tin nhắn.'); }
-        catch { toast('Không thể sao chép tự động. Bạn có thể chọn văn bản để sao chép.'); }
+        catch {
+          const fallback = document.createElement('textarea'); fallback.value = message.content; fallback.setAttribute('readonly', '');
+          fallback.style.position = 'fixed'; fallback.style.opacity = '0'; fallback.style.left = '-10000px'; document.body.append(fallback);
+          fallback.select();
+          let copied = false;
+          try { copied = document.execCommand('copy'); } catch { copied = false; }
+          fallback.remove();
+          toast(copied ? 'Đã sao chép tin nhắn.' : 'Không thể sao chép tự động. Hãy chọn văn bản để sao chép.');
+        }
       }]]) { const button = element('button', '', label); button.type = 'button'; button.setAttribute('aria-label', `${label} tin nhắn của ${message.user.displayName}`); button.addEventListener('click', action); actions.append(button); }
       body.append(meta, element('p', 'message-text', message.content)); row.append(body, actions); fragment.append(row);
     }
@@ -151,6 +173,8 @@ export async function startChat(api, user) {
       const result = await api.request(`/api/rooms/${id}/messages?limit=50`, { signal: request.signal });
       if (current !== generation || id !== roomId) return;
       for (const message of result) if (message.roomId === roomId) messages.set(message.id, message);
+      historyHasOlder = result.length === 50;
+      $('#load-older').hidden = !historyHasOlder || Boolean($('#message-search').value.trim());
       renderMessages(); $('#messages').scrollTop = $('#messages').scrollHeight; updateJump();
       if (!uncertain.has(id)) notice();
     } catch (error) {
@@ -159,13 +183,57 @@ export async function startChat(api, user) {
       if (current === generation) notice('Không tải được lịch sử. Chọn lại phòng để thử lại.');
     }
   }
+  async function loadOlder() {
+    const term = $('#message-search').value.trim();
+    if (historyBusy || roomId === null) return;
+    if (term) {
+      if (!searchHasMore || !searchResults.length) return;
+      const id = roomId, current = generation; let oldestResult = Infinity;
+      for (const message of searchResults) oldestResult = Math.min(oldestResult, message.id);
+      historyBusy = true; $('#load-older').disabled = true; $('#load-older').textContent = 'Đang tải kết quả…';
+      try {
+        const result = await api.request(`/api/rooms/${id}/messages/search?q=${encodeURIComponent(term)}&limit=50&beforeId=${oldestResult}`);
+        if (current !== generation || id !== roomId || $('#message-search').value.trim() !== term) return;
+        searchResults = [...result.messages, ...searchResults]; searchHasMore = result.hasMore; renderMessages(); $('#load-older').hidden = !searchHasMore;
+      } catch (error) { if (current === generation) notice(error.message); }
+      finally { historyBusy = false; $('#load-older').disabled = false; $('#load-older').textContent = $('#message-search').value.trim() ? 'Tải kết quả cũ hơn' : 'Tải tin nhắn cũ hơn'; }
+      return;
+    }
+    if (!historyHasOlder) return;
+    const id = roomId, current = generation, list = $('#messages');
+    let oldest = Infinity; for (const id of messages.keys()) oldest = Math.min(oldest, id);
+    if (!Number.isFinite(oldest)) return;
+    const scrollTop = list.scrollTop, scrollHeight = list.scrollHeight;
+    historyBusy = true; $('#load-older').disabled = true; $('#load-older').textContent = 'Đang tải tin cũ…';
+    try {
+      const result = await api.request(`/api/rooms/${id}/messages?limit=50&beforeId=${oldest}`);
+      if (current !== generation || id !== roomId) return;
+      for (const message of result) if (message.roomId === roomId) messages.set(message.id, message);
+      historyHasOlder = result.length === 50;
+      renderMessages(); list.scrollTop = scrollTop + list.scrollHeight - scrollHeight;
+      $('#load-older').hidden = !historyHasOlder;
+    } catch (error) { if (current === generation) notice(error.message); }
+    finally { historyBusy = false; $('#load-older').disabled = false; $('#load-older').textContent = 'Tải tin nhắn cũ hơn'; }
+  }
+  async function searchHistory(term) {
+    const id = roomId, current = generation;
+    if (!term || id === null) { searchHasMore = false; searchLoaded = false; searchResults = []; renderMessages(); return; }
+    try {
+      const result = await api.request(`/api/rooms/${id}/messages/search?q=${encodeURIComponent(term)}&limit=50`);
+      if (current !== generation || id !== roomId || $('#message-search').value.trim() !== term) return;
+      searchResults = result.messages; searchHasMore = result.hasMore; searchLoaded = true; $('#load-older').hidden = !searchHasMore; $('#load-older').textContent = 'Tải kết quả cũ hơn'; renderMessages();
+    } catch (error) { if (current === generation && id === roomId) notice(error.message); }
+  }
   function onEvent(event) {
     const payload = event.payload;
-    if (event.type === 'system:error') { preservePending(); notice(payload.message); controls(); return; }
+    if (event.type === 'system:error') { preservePending(); notice(payload.message); controls(); if (payload.code === 'ROOM_NOT_FOUND') refreshRooms().catch(() => {}); return; }
     if (payload.roomId !== roomId) return;
     if (event.type === 'room:joined') { joined = true; controls(); history(roomId); }
     if (event.type === 'chat:new') {
-      messages.set(payload.id, payload); renderMessages();
+      messages.set(payload.id, payload);
+      const term = $('#message-search').value.trim();
+      if (term) { clearTimeout(searchTimer); searchTimer = setTimeout(() => searchHistory(term), 100); }
+      else renderMessages();
       if (payload.user.id === user.id && payload.content === pending?.content && payload.roomId === pending.roomId) { pending = null; saveDraft(); uncertain.delete(roomId); notice(); controls(); }
     }
     if (event.type === 'room:presence') renderMembers(payload.users);
@@ -177,14 +245,75 @@ export async function startChat(api, user) {
   function stopTyping() { clearTimeout(typingTimer); if (joined) socket.send('typing:set', { roomId, isTyping: false }); typingAt = 0; }
   function chooseRoom(id) {
     stopTyping(); preservePending(); saveDraft(); request?.abort(); generation++; joined = false; roomId = id;
-    messages.clear(); activeMessageId = null; closeSearch(); renderMessages(); renderMembers([]); $('#typing-indicator').textContent = ''; notice(uncertain.has(id) ? uncertainNotice : ''); cancelReply();
+    messages.clear(); activeMessageId = null; historyHasOlder = false; searchLoaded = false; searchResults = []; $('#load-older').hidden = true; closeSearch(); renderMessages(); renderMembers([]); $('#typing-indicator').textContent = ''; notice(uncertain.has(id) ? uncertainNotice : ''); cancelReply();
     const room = rooms.find(item => item.id === id), name = roomName(room);
-    $('#room-name').textContent = name; $('#room-description').textContent = room.private ? `Nhóm riêng · ${room.memberCount} thành viên` : (descriptions[room.name] ?? 'Không gian dành cho cuộc trò chuyện của bạn.');
+    $('#manage-group').hidden = !room.private || room.direct;
+    $('#room-name').textContent = name; $('#room-description').textContent = room.direct ? 'Trò chuyện riêng · chỉ hai người tham gia' : room.private ? `Nhóm riêng · ${room.memberCount} thành viên` : (descriptions[room.name] ?? 'Không gian dành cho cuộc trò chuyện của bạn.');
     input.placeholder = 'Viết tin nhắn…'; input.value = loadDraft(id); resize();
     document.title = `${name} · Relay`;
     for (const button of $('#room-list').children) button.setAttribute('aria-current', String(Number(button.dataset.roomId) === id));
     savePreference(`room:${user.id}`, String(id)); socket.send('room:join', { roomId }); controls();
   }
+  async function loadGroupManager(roomId) {
+    const data = await api.request(`/api/groups/${roomId}`);
+    $('#manage-group-name').value = data.name; $('#manage-group-count').textContent = `${data.members.length} thành viên`;
+    $('#manage-group-name').disabled = !data.isOwner; $('#rename-group-submit').hidden = !data.isOwner;
+    $('#add-group-member-form').hidden = !data.isOwner; $('#delete-group').hidden = !data.isOwner; $('#leave-group').hidden = data.isOwner;
+    $('#manage-group-hint').textContent = data.isOwner ? 'Bạn là chủ nhóm.' : 'Chủ nhóm: ' + (data.members.find(member => member.id === data.ownerId)?.displayName ?? '');
+    const list = document.createDocumentFragment();
+    for (const member of data.members) {
+      const row = element('li', 'person-row'), info = element('div', 'person-info');
+      info.append(element('strong', '', member.displayName), element('small', '', `@${member.username}${member.id === data.ownerId ? ' · Chủ nhóm' : ''}`));
+      row.append(info);
+      if (data.isOwner && member.id !== data.ownerId) {
+        const remove = element('button', 'social-button', 'Xóa khỏi nhóm'); remove.type = 'button';
+        remove.addEventListener('click', () => manageGroup('remove', { userId: member.id })); row.append(remove);
+      }
+      list.append(row);
+    }
+    $('#manage-group-members').replaceChildren(list);
+    const select = $('#add-group-member'); select.replaceChildren();
+    for (const friend of data.friends) { const option = element('option', '', friend.displayName); option.value = String(friend.id); select.append(option); }
+    $('#add-group-member-submit').disabled = data.friends.length === 0;
+    if (!data.friends.length) { const option = element('option', '', 'Không còn bạn bè có thể thêm'); option.value = ''; select.append(option); }
+  }
+  async function manageGroup(action, extra = {}) {
+    const id = roomId; $('#manage-group-error').hidden = true;
+    try {
+      const result = await api.request('/api/groups/manage', { method: 'POST', body: { roomId: id, action, ...extra } });
+      if (result.deleted || result.left) {
+        $('#manage-group-dialog').close(); const fallback = rooms.find(room => room.id !== id)?.id ?? null; await refreshRooms(fallback); toast(result.deleted ? 'Đã xóa nhóm.' : 'Đã rời nhóm.'); return;
+      }
+      await refreshRooms(id); await loadGroupManager(id);
+    } catch (error) { $('#manage-group-error').textContent = error.message; $('#manage-group-error').hidden = false; }
+  }
+  function groupManagerLoading(loading, retryable = false) {
+    const dialog = $('#manage-group-dialog');
+    dialog.setAttribute('aria-busy', String(loading));
+    $('#manage-group-loading').textContent = loading ? 'Đang tải thông tin nhóm…' : 'Không tải được thông tin nhóm.';
+    $('#manage-group-loading').hidden = !loading && !retryable;
+    $('#retry-manage-group').hidden = loading || !retryable;
+    for (const control of dialog.querySelectorAll('input, select, button:not([data-close-dialog])')) control.disabled = loading || (retryable && control.id !== 'retry-manage-group');
+  }
+  async function openGroupManager() {
+    if (!roomId) return;
+    if (!$('#manage-group-dialog').open) $('#manage-group-dialog').showModal();
+    $('#manage-group-error').hidden = true;
+    groupManagerLoading(true);
+    try { await loadGroupManager(roomId); groupManagerLoading(false); }
+    catch (error) { $('#manage-group-error').textContent = error.message; $('#manage-group-error').hidden = false; groupManagerLoading(false, true); }
+  }
+  $('#manage-group').addEventListener('click', openGroupManager);
+  $('#retry-manage-group').addEventListener('click', openGroupManager);
+  $('#rename-group-form').addEventListener('submit', event => { event.preventDefault(); manageGroup('rename', { name: $('#manage-group-name').value }); });
+  $('#add-group-member-form').addEventListener('submit', event => { event.preventDefault(); const id = Number($('#add-group-member').value); if (id > 0) manageGroup('add', { userId: id }); });
+  $('#leave-group').addEventListener('click', async () => {
+    if (!window.confirm('Rời nhóm này? Bạn sẽ không còn xem được lịch sử hoặc nhận tin nhắn mới.')) return;
+    await manageGroup('leave');
+  });
+  $('#delete-group').addEventListener('click', async () => {
+    if (window.confirm('Xóa nhóm và toàn bộ lịch sử tin nhắn? Thao tác này không thể hoàn tác.')) await manageGroup('delete');
+  });
   input.addEventListener('input', () => {
     saveDraft(); controls(); resize(); clearTimeout(typingTimer);
     if (!joined) return;
@@ -211,11 +340,17 @@ export async function startChat(api, user) {
     $('#logout').disabled = true;
     try {
       await api.request('/api/auth/logout', { method: 'POST', body: {} });
-      for (const room of rooms) { try { sessionStorage.removeItem(draftKey(room.id)); } catch { /* Bộ nhớ bị chặn. */ } }
+      clearDrafts();
       stopTyping(); socket.stop(); location.replace('/login');
     } catch (error) { if (error.status === 401 || error.status === 403) await checkSession(); notice(error.message); $('#logout').disabled = false; }
   });
-  $('#message-search').addEventListener('input', renderMessages);
+  $('#message-search').addEventListener('input', () => {
+    clearTimeout(searchTimer); searchHasMore = false; searchLoaded = false; searchResults = []; renderMessages();
+    const term = $('#message-search').value.trim();
+    $('#load-older').hidden = Boolean(term) || !historyHasOlder;
+    if (term) searchTimer = setTimeout(() => searchHistory(term), 250);
+  });
+  $('#load-older').addEventListener('click', loadOlder);
   $('#messages').addEventListener('scroll', updateJump);
   $('#jump-latest').addEventListener('click', () => { $('#messages').scrollTop = $('#messages').scrollHeight; updateJump(); });
   $('#cancel-reply').addEventListener('click', () => { cancelReply(); input.focus(); });
@@ -247,11 +382,13 @@ export async function startChat(api, user) {
     $('#message-search').focus();
   }
   function closeSearch(restoreFocus = false) {
+    clearTimeout(searchTimer); searchHasMore = false; searchLoaded = false; searchResults = [];
     const hadQuery = Boolean($('#message-search').value);
     $('#message-search').value = '';
     $('#search-panel').hidden = true;
     $('#toggle-search').setAttribute('aria-expanded', 'false');
     if (hadQuery) renderMessages();
+    $('#load-older').hidden = !historyHasOlder;
     if (restoreFocus) $('#toggle-search').focus();
   }
   $('#toggle-tools').addEventListener('click', () => {
@@ -283,11 +420,26 @@ export async function startChat(api, user) {
       $('#emoji-picker').hidden = true; $('#toggle-emoji').setAttribute('aria-expanded', 'false'); cancelReply();
     }
   });
-  $('#export-messages').addEventListener('click', () => {
+  $('#export-messages').addEventListener('click', async () => {
+    if (exportBusy || roomId === null) return;
+    exportBusy = true; $('#export-messages').disabled = true;
+    const id = roomId, all = new Map();
+    notice('Đang tải toàn bộ lịch sử để xuất…');
+    try {
+      let page = await api.request(`/api/rooms/${id}/messages?limit=50`);
+      while (page.length) {
+        for (const message of page) all.set(message.id, message);
+        if (page.length < 50) break;
+        const before = Math.min(...page.map(message => message.id));
+        page = await api.request(`/api/rooms/${id}/messages?limit=50&beforeId=${before}`);
+      }
+      if (id !== roomId) return;
     const room = rooms.find(item => item.id === roomId);
-    const lines = [`Relay — ${roomName(room)}`, `Xuất lúc ${new Date().toLocaleString('vi-VN')}`, 'Chỉ bao gồm tin nhắn đã tải trong phiên hiện tại.', '', ...[...messages.values()].sort((a, b) => a.id - b.id).map(message => `[${new Date(message.createdAt).toLocaleString('vi-VN')}] ${message.user.displayName}: ${message.content}`)];
+    const lines = [`Relay — ${roomName(room)}`, `Xuất lúc ${new Date().toLocaleString('vi-VN')}`, `Toàn bộ ${all.size} tin nhắn trong phòng.`, '', ...[...all.values()].sort((a, b) => a.id - b.id).map(message => `[${new Date(message.createdAt).toLocaleString('vi-VN')}] ${message.user.displayName}: ${message.content}`)];
     const url = URL.createObjectURL(new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/plain;charset=utf-8' }));
-    const link = element('a'); link.href = url; link.download = `relay-phong-${roomId}-${new Date().toISOString().slice(0, 10)}.txt`; document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000); toast('Đã xuất tin nhắn đã tải của phòng này.');
+    const link = element('a'); link.href = url; link.download = `relay-phong-${roomId}-${new Date().toISOString().slice(0, 10)}.txt`; document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000); notice(); toast(`Đã xuất toàn bộ ${all.size} tin nhắn.`);
+    } catch (error) { notice(error.message); }
+    finally { exportBusy = false; $('#export-messages').disabled = messages.size === 0; }
   });
   window.addEventListener('pagehide', () => { preservePending(); saveDraft(); stopTyping(); socket.stop(); clearTimeout(sessionCheck); clearTimeout(toastTimer); });
   window.addEventListener('pageshow', event => { if (event.persisted) location.reload(); });
@@ -300,16 +452,23 @@ export async function startChat(api, user) {
     for (const room of rooms) {
       const button = element('button', 'room-button'); button.type = 'button'; button.dataset.roomId = String(room.id);
       button.setAttribute('aria-current', String(room.id === roomId));
-      button.title = room.private ? `Nhóm riêng · ${room.memberCount} thành viên` : 'Phòng chung';
-      button.append(element('span', 'hash', room.private ? '♧' : '#'), element('span', '', roomName(room)));
+      button.title = room.direct ? `${room.name} · tin nhắn riêng` : room.private ? `${room.name} · nhóm riêng · ${room.memberCount} thành viên` : `${room.name} · phòng chung`;
+      button.append(element('span', 'hash', room.direct ? '↔' : room.private ? '♧' : '#'), element('span', '', roomName(room)));
       button.addEventListener('click', () => chooseRoom(room.id)); fragment.append(button);
     }
     $('#room-list').replaceChildren(fragment); $('#room-count').textContent = String(rooms.length);
     if (selectId !== null) chooseRoom(selectId);
+    else if (roomId !== null && !rooms.some(room => room.id === roomId)) {
+      const fallback = rooms.find(room => room.id === Number(readPreference(`room:${user.id}`))) ?? rooms[0];
+      if (fallback) chooseRoom(fallback.id);
+      else { roomId = null; messages.clear(); renderMessages(); input.disabled = true; $('#send-message').disabled = true; notice('Bạn không còn quyền truy cập phòng này.'); }
+    }
   }
   await refreshRooms();
   startSocial(api, user, refreshRooms);
-  const roomRefresh = setInterval(() => { if (!document.hidden) refreshRooms().catch(() => {}); }, 10000);
+  const roomRefresh = setInterval(() => { if (!document.hidden) refreshRooms().catch(() => {}); }, 3000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshRooms().catch(() => {}); });
+  window.addEventListener('focus', () => refreshRooms().catch(() => {}));
   window.addEventListener('pagehide', () => clearInterval(roomRefresh));
   if (rooms.length) chooseRoom(rooms.find(room => room.id === Number(readPreference(`room:${user.id}`)))?.id ?? rooms[0].id);
   else notice('Chưa có phòng trò chuyện. Hãy tạo nhóm mới.');

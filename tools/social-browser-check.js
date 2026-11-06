@@ -3,7 +3,7 @@ async (page) => {
   const assert = (ok, message) => { if (!ok) throw new Error(message); checks.push(message); };
   if (new URL(page.url()).origin !== base) throw new Error('Run only on isolated test stack localhost:8088');
   const browser = page.context().browser();
-  const bobContext = await browser.newContext({ geolocation: { latitude: 10.777, longitude: 106.7 }, permissions: ['geolocation'] });
+  const bobContext = await browser.newContext();
   const charlieContext = await browser.newContext();
   const bob = await bobContext.newPage(), charlie = await charlieContext.newPage();
   for (const p of [page, bob, charlie]) p.on('pageerror', e => errors.push(e.message));
@@ -33,7 +33,9 @@ async (page) => {
     assert(true, 'Alice sends friend request through UI');
     await login(bob, 'bob');
     await bob.getByRole('button', { name: /♧ Bạn bè/ }).click();
+    assert(await bob.locator('[data-people-mode="nearby"], [data-people-mode="random"], #location-panel').count() === 0, 'Nearby and random features are absent');
     await bob.getByRole('button', { name: 'Lời mời', exact: true }).click();
+    await bob.getByRole('listitem').filter({ hasText: '@alice' }).getByRole('button', { name: 'Chấp nhận' }).waitFor();
     await bob.getByRole('listitem').filter({ hasText: '@alice' }).getByRole('button', { name: 'Chấp nhận' }).click();
     await bob.getByRole('button', { name: 'Bạn bè', exact: true }).click();
     await bob.getByRole('listitem').filter({ hasText: '@alice' }).getByText('✓ Bạn bè', { exact: true }).waitFor();
@@ -65,33 +67,19 @@ async (page) => {
     const csrf = (await (await page.request.get(base + '/api/auth/me')).json()).data.csrfToken;
     const denied = await page.request.post(base + '/api/friends', { headers: { Origin: base, 'X-CSRF-Token': 'wrong' }, data: { userId: 3, action: 'send' } });
     assert(denied.status() === 403, 'Social mutation rejects invalid CSRF token');
-    await page.context().setGeolocation({ latitude: 10.776, longitude: 106.7 });
-    await page.context().grantPermissions(['geolocation'], { origin: base });
-    for (const p of [page, bob]) {
-      await p.getByRole('button', { name: /♧ Bạn bè/ }).click();
-      await p.getByRole('searchbox', { name: 'Tìm bạn bè' }).fill('');
-      await p.getByRole('button', { name: 'Lân cận', exact: true }).click();
-      await p.waitForFunction(() => document.querySelector('#people-list').getAttribute('aria-busy') === 'false');
-      await p.getByRole('button', { name: /^(Chia sẻ vị trí|Cập nhật vị trí)$/ }).click();
-      await p.getByText('Đã bật chia sẻ trong 24 giờ.', { exact: false }).waitFor();
-    }
-    await page.getByRole('button', { name: 'Làm mới danh sách bạn bè' }).click();
-    await page.getByRole('listitem').filter({ hasText: '@bob' }).getByText(/Cách khoảng/).waitFor();
-    assert(true, 'Nearby finds consenting user using browser geolocation');
+    const removedRequestsMode = await page.request.get(`${base}/api/people?mode=requests`);
+    const removedNearbyMode = await page.request.get(`${base}/api/people?mode=nearby`);
+    const removedRandomMode = await page.request.get(`${base}/api/people?mode=random`);
+    const removedLocationEndpoint = await page.request.post(`${base}/api/location`, { headers: { Origin: base, 'X-CSRF-Token': csrf }, data: { enabled: false } });
+    assert(removedRequestsMode.status() === 200 && removedNearbyMode.status() === 400 && removedRandomMode.status() === 400 && removedLocationEndpoint.status() === 404, 'Nearby/random modes and location endpoint are unavailable while invitations remain');
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.screenshot({ path: 'output/playwright/social-desktop.png' });
     for (const width of [390, 320]) {
       await page.setViewportSize({ width, height: 844 });
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth && document.querySelector('#friends-dialog').scrollWidth <= document.querySelector('#friends-dialog').clientWidth), `Friend dialog fits mobile width ${width}`);
     }
-    await page.screenshot({ path: 'output/playwright/social-mobile.png' });
-    await page.getByRole('button', { name: 'Tắt chia sẻ', exact: true }).click();
-    await page.getByText('Đã xóa vị trí đã chia sẻ.', { exact: true }).waitFor();
-    await page.getByText('Bật chia sẻ vị trí để tìm bạn lân cận.', { exact: true }).waitFor();
-    assert(true, 'Disabling sharing removes saved location');
-    await page.getByRole('button', { name: 'Ngẫu nhiên', exact: true }).click();
+    await page.getByRole('button', { name: 'Gợi ý', exact: true }).click();
     await page.getByRole('listitem').filter({ hasText: '@charlie' }).waitFor();
-    assert(await page.getByRole('listitem').count() === 1, 'Random suggests a new user and excludes existing friend');
+    assert(await page.getByRole('listitem').count() === 1, 'Suggestions show a new user and exclude existing friends');
     assert(errors.length === 0, 'No browser JavaScript errors');
     return { checks, groupId: room.id, csrfAvailable: !!csrf };
   } finally { await bobContext.close(); await charlieContext.close(); }

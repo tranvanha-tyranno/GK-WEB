@@ -18,36 +18,36 @@ Lệnh tạo `.env` với khóa phiên ngẫu nhiên, dựng ảnh PHP, cài th�
 | `bob` | `ChatDemo!2026` | Bob Tran |
 | `charlie` | `ChatDemo!2026` | Charlie Le |
 
-Đây là tài khoản giả lập; mật khẩu được băm trong SQLite. Dùng hai hồ sơ trình duyệt hoặc cửa sổ ẩn danh để đăng nhập hai người khác nhau. Các thẻ trong cùng hồ sơ dùng chung cookie và danh tính. Ứng dụng chưa có vai trò quản trị hoặc đăng ký tài khoản.
+Đây là tài khoản giả lập; mật khẩu được băm trong SQLite. Đăng ký tài khoản mới tại **http://localhost:8080/register** (tên đăng nhập 3–32 ký tự, mật khẩu tối thiểu 12 ký tự). Dùng hai hồ sơ trình duyệt hoặc cửa sổ ẩn danh để đăng nhập hai người khác nhau. Các thẻ trong cùng hồ sơ dùng chung cookie và danh tính. Ứng dụng chưa có vai trò quản trị hoặc kiểm duyệt.
 
-## Bạn bè, nhóm riêng và khám phá
+## Bạn bè, nhóm riêng và gợi ý
 
 Thanh bên có **Bạn bè** và **Tạo nhóm**, dùng cùng giao diện sáng/tối hiện tại.
 
-- **Bạn bè**: tìm theo tên hoặc tên đăng nhập (có thể gõ không dấu), gửi/hủy lời mời, chấp nhận/từ chối lời mời đến và hủy kết bạn.
-- **Gợi ý**: ưu tiên số bạn chung, sau đó số nhóm riêng chung. **Ngẫu nhiên** đổi thứ tự những người chưa kết bạn và chưa có lời mời khi nhấn làm mới.
-- **Lân cận**: chủ động cấp quyền và chia sẻ vị trí để tìm người trong 10 km. Cả hai phải bật chia sẻ. Vị trí hết hiệu lực sau 24 giờ; nhấn **Tắt chia sẻ** để xóa ngay. API chỉ trả khoảng cách gần đúng, không trả tọa độ người khác. Trình duyệt cần cho phép định vị trên localhost hoặc HTTPS.
-- **Tạo nhóm**: nhập tên 2–60 ký tự, chọn tối đa 30 người đã kết bạn, hoặc tạo nhóm cho riêng mình. Chỉ người được chọn được thấy nhóm, đọc lịch sử và tham gia WebSocket. Nhóm xuất hiện trên tài khoản thành viên trong khoảng 10 giây. Hủy kết bạn không xóa tư cách thành viên nhóm đã tạo.
+- **Bạn bè**: tìm theo tên hoặc tên đăng nhập (có thể gõ không dấu), gửi/hủy lời mời, xem lời mời đến/đã gửi ở mục **Lời mời**, chấp nhận/từ chối hoặc hủy kết bạn.
+- **Gợi ý**: ưu tiên số bạn chung, sau đó số nhóm riêng chung.
+- **Nhắn tin riêng**: mở Bạn bè, chọn một người đã kết bạn rồi bấm **Nhắn tin**. Cuộc trò chuyện chỉ hiển thị với hai người và tên người nhận được cá nhân hóa.
+- **Tạo và quản lý nhóm**: nhập tên 2–60 ký tự, chọn tối đa 30 người đã kết bạn, hoặc tạo nhóm cho riêng mình. Chủ nhóm có thể đổi tên, thêm/xóa thành viên hoặc xóa nhóm; thành viên có thể rời nhóm. Thành viên bị xóa mất quyền xem lịch sử và socket bị thu hồi. Nhóm chỉ hiện với thành viên.
 
-Bản demo hiện có ba tài khoản nên gợi ý sẽ ít; lân cận chỉ có kết quả khi tài khoản khác cũng chia sẻ vị trí trong vùng. Nhóm hiện hỗ trợ chọn thành viên khi tạo, chưa có quản lý thêm/bớt thành viên sau đó.
+Bản demo hiện có ba tài khoản nên gợi ý sẽ ít. Mục Lân cận và Ngẫu nhiên đã được gỡ. Khi một thành viên mới được thêm, danh sách nhóm làm mới định kỳ và khi người dùng quay lại cửa sổ.
 
-Cập nhật cơ sở dữ liệu đang có mà không xóa hội thoại:
+Cập nhật cơ sở dữ liệu đang có mà không xóa tài khoản, nhóm hoặc hội thoại. Lệnh này cũng xóa bảng và dữ liệu vị trí cũ vì Relay không còn tính năng chia sẻ vị trí:
 
 ```powershell
 docker compose exec -T app php bin/migrate-social.php
 docker compose restart ws
 ```
 
-Cài mới bằng `tools/setup.ps1` đã bao gồm schema này. Kiểm thử quyền riêng tư, quan hệ và khoảng cách nằm trong `tests/Database/SocialRepositoryTest.php`; luồng trình duyệt ba tài khoản ở `tools/social-browser-check.js` chạy trên môi trường riêng cổng 8088.
+Cài mới bằng `tools/setup.ps1` đã bao gồm schema này. Kiểm thử quyền riêng tư, quan hệ và các bộ lọc đã gỡ nằm trong `tests/Database/SocialRepositoryTest.php`; luồng trình duyệt ba tài khoản ở `tools/social-browser-check.js` chạy trên môi trường riêng cổng 8088.
 
 ## Những thao tác giúp làm việc nhanh hơn
 
 - Ba phòng hiển thị bằng tiếng Việt: **Trò chuyện chung**, **Kỹ thuật**, **Nhóm học tập**. Ứng dụng nhớ phòng mở gần nhất theo tài khoản.
-- Tìm trong tin nhắn đã tải bằng nội dung hoặc tên người gửi; có thể gõ không dấu. Nhấn **Ctrl/⌘ + K** để tìm nhanh, **Esc** để xóa bộ lọc.
-- Bản nháp lưu riêng từng tài khoản và phòng trong thẻ trình duyệt hiện tại. Đổi phòng hoặc tải lại trang vẫn có thể tiếp tục soạn; đăng xuất chủ động sẽ xóa bản nháp của tài khoản đó.
+- Tìm nội dung hoặc tên người gửi trong toàn bộ lịch sử của phòng; hỗ trợ gõ không dấu và phân trang kết quả. Nhấn **Ctrl/⌘ + K** để tìm nhanh, **Esc** để xóa bộ lọc. Nút **Tải tin nhắn cũ hơn** đọc lịch sử theo từng trang.
+- Bản nháp lưu riêng từng tài khoản và phòng trong localStorage; đổi phòng, tải lại trang hoặc mở lại thẻ cùng hồ sơ có thể tiếp tục soạn. Đăng xuất xóa bản nháp của tài khoản đó trong trình duyệt.
 - **Trả lời** chèn trích dẫn văn bản tối đa 120 mã ký tự từ tin gốc; phần trích dẫn cũng tính trong giới hạn gửi 500 mã ký tự. **Sao chép** đưa nội dung vào bộ nhớ tạm.
 - Chọn biểu tượng cảm xúc ở ô soạn. **Enter** gửi tin; **Shift + Enter** xuống dòng. Khi mất mạng vẫn có thể soạn, nhưng nút Gửi bị khóa đến khi tham gia lại phòng.
-- **Xuất hội thoại** tải tệp `.txt` UTF-8 của toàn bộ tin đã tải trong phòng hiện tại, kể cả tin bị ẩn bởi tìm kiếm. Đây không phải xuất toàn bộ cơ sở dữ liệu.
+- **Xuất hội thoại** tải tệp `.txt` UTF-8 của toàn bộ lịch sử phòng hiện tại, kể cả tin chưa tải trên màn hình và tin bị ẩn bởi tìm kiếm. Tệp không bao gồm phòng khác.
 - Mở menu **⋯** ở góc phải để đổi sáng/tối, bật **Thu gọn**, xuất hội thoại hoặc xem hướng dẫn. Hai tùy chọn được nhớ trên trình duyệt.
 - Mục **Thành viên** trong menu **⋯** mở danh sách trực tuyến trên cả máy tính và điện thoại. Nút về tin mới nhất xuất hiện khi cuộn lên đọc tin cũ.
 
@@ -105,9 +105,9 @@ Máy chủ lưu tin trước khi phát, gửi lại cho cả người gửi, ki�
 
 Danh sách trực tuyến gộp các socket cùng tài khoản. Trạng thái nhập hết hạn sau 3 giây. Ping/pong loại kết nối không phản hồi sau khoảng 55–56 giây. Phiên được kiểm tra mỗi sự kiện, trước khi giao tin và mỗi giây.
 
-Tự kết nối lại sau 1/2/4/8/10 giây, tham gia lại phòng và gộp lịch sử theo ID. Tin gửi chưa rõ kết quả được giữ để kiểm tra, không tự gửi lại. API lịch sử chỉ khôi phục **50 tin mới nhất**; ngoại tuyến quá lâu có thể thiếu tin cũ. Gộp ID không đảm bảo chỉ lưu hoặc giao đúng một lần trong mọi tình huống.
+Tự kết nối lại sau 1/2/4/8/10 giây, tham gia lại phòng và gộp lịch sử theo ID. Mỗi yêu cầu lịch sử lấy tối đa **50 tin**; nút tải thêm, tìm kiếm toàn phòng và xuất duyệt qua các trang cũ. Tin gửi chưa rõ kết quả được giữ để kiểm tra, không tự gửi lại. Gộp ID không đảm bảo chỉ lưu hoặc giao đúng một lần trong mọi tình huống.
 
-Một tiến trình Workerman giữ trạng thái phòng, nhập và giới hạn trong RAM. Muốn tăng số worker cần trạng thái dùng chung và pub/sub. SQLite ghi đồng bộ; bộ kiểm tra 20 socket chỉ chứng minh phát tin đúng trong phạm vi đó. Chưa có tin nhắn riêng, tải tệp, đăng ký hoặc mở rộng nhiều máy. Văn bản dùng `textContent`, SQL dùng tham số ràng buộc. Nội dung do người dùng gửi được giữ nguyên ngôn ngữ.
+Một tiến trình Workerman giữ trạng thái phòng, nhập và giới hạn trong RAM. Muốn tăng số worker cần trạng thái dùng chung và pub/sub. SQLite ghi đồng bộ; bộ kiểm tra 20 socket chỉ chứng minh phát tin đúng trong phạm vi đó. Chưa có tải tệp, vai trò quản trị, kiểm duyệt hoặc mở rộng nhiều máy. Văn bản dùng `textContent`, SQL dùng tham số ràng buộc. Nội dung do người dùng gửi được giữ nguyên ngôn ngữ.
 
 ## Lệnh kiểm tra
 
@@ -131,7 +131,7 @@ python tools/integration.py
 
 Chạy tuần tự từng bộ tích hợp hoặc đo so sánh vì dùng chung giới hạn theo tài khoản. Khởi động lại dịch vụ WS của **môi trường test** xóa bộ đếm RAM mà không xóa tin. Kết quả tích hợp ở `evidence/logs/integration.json`. Công cụ dùng IPv4 loopback để tránh chờ IPv6 trên Windows và vẫn giữ Origin cấu hình.
 
-API đo `GET /api/benchmark/rooms/{id}/messages?afterId=N` chỉ bật trong môi trường test; nó không thay đổi cam kết khôi phục 50 tin của sản phẩm. Xem `tests/manual-acceptance.md`, `docs/test-cases.md` và `docs/experiment-plan.md`. Log ngày 22/10/2026 là kết quả lịch sử; kiểm tra bản Việt hóa được ghi riêng, không gắn kết quả cũ thành lần chạy mới.
+API đo `GET /api/benchmark/rooms/{id}/messages?afterId=N` chỉ bật trong môi trường test. Sản phẩm có phân trang lịch sử riêng qua `beforeId`. Xem `tests/manual-acceptance.md`, `docs/test-cases.md` và `docs/experiment-plan.md`. Lượt kiểm chứng hồi quy đã lưu (05/11/2026): PHPUnit 40/40, tích hợp 9/9 nhóm, giao diện 14/14 bước; migration DB cũ cũng được kiểm tra. Log ở `evidence/logs/final-run-2026-11-05-*.json` và `.xml`.
 
 ## Dừng và bảo toàn dữ liệu
 
@@ -157,7 +157,7 @@ Các lệnh trên giữ volume dữ liệu; sau `down` dùng `docker compose up 
 | SQLite chỉ đọc | Dùng volume chung; dựng lại nếu thay entrypoint, bảo đảm cả hai tiến trình ghi được WAL/SHM |
 | Người mất mạng vẫn hiện trực tuyến | Đóng bình thường cập nhật ngay; mất mạng đột ngột cần chờ heartbeat |
 | Chạm giới hạn khi demo | Chờ 60 giây; chỉ khởi động lại WS để xóa bộ đếm trong môi trường demo/test có chủ đích |
-| Bản nháp không còn sau đóng cửa sổ | Bản nháp dùng sessionStorage theo thẻ; chế độ riêng tư hoặc chính sách bộ nhớ có thể chặn lưu |
+| Bản nháp không còn sau đóng cửa sổ | Bản nháp dùng localStorage theo tài khoản/phòng; xóa dữ liệu trang, chế độ riêng tư hoặc chính sách bộ nhớ có thể chặn lưu |
 
 ## Triển khai HTTPS và tài liệu
 

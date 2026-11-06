@@ -32,3 +32,16 @@ Hai mươi kết nối là kiểm chức năng phát tin, không phải thông l
 ## Kiểm tra bản tiếng Việt ngày 28/10/2026
 
 Bản sửa chạy lại PHPUnit/cú pháp và các kịch bản trình duyệt liên quan. Kết quả mới ở `evidence/logs/vietnamese-ui.json`, `vietnamese-login.json`, `vietnamese-browser.json` và `vietnamese-validation.json`. Bộ giao diện mới kiểm riêng nháp hai phòng/tải lại, xóa nháp sau echo, tìm không dấu/rỗng, trích dẫn/emoji/501 Unicode, nhớ sáng/tối/thu gọn, xuất TXT, bộ nhớ tạm, soạn ngoại tuyến, phím tắt/trợ giúp, thành viên ở 320/390/768/1024/1440 px và lỗi JS. Xem log để biết các lần chạy thực sự, không dùng log gốc thay kiểm tra mới.
+
+## Hồi quy sau sửa chức năng ngày 05/11/2026
+
+| Lớp | Kết quả | Minh chứng |
+| --- | --- | --- |
+| PHPUnit | ĐẠT: 40 bài, 135 xác nhận | `evidence/logs/final-run-2026-11-05-phpunit.xml` |
+| PHP lint | ĐẠT: 47 tệp cú pháp hợp lệ | `composer lint` |
+| Composer | ĐẠT: `composer validate --strict` | Kết quả chạy 05/11/2026 |
+| HTTP/WebSocket | ĐẠT: 9/9 nhóm tích hợp | `evidence/logs/final-run-2026-11-05-integration.json` |
+| Trình duyệt | ĐẠT: 14/14 bước; 0 lỗi JavaScript | `evidence/logs/final-run-2026-11-05-browser.json` |
+| Migration DB cũ | ĐẠT: tạo bảng thiếu, dữ liệu/phòng cũ còn; health/API 200 | `evidence/logs/final-run-2026-11-05-migration.json` |
+
+Lượt trình duyệt kiểm đăng ký, tin riêng, quyền riêng tư, vòng đời nhóm, lịch sử/phân trang/tìm kiếm/xuất, bản nháp, vị trí toast và khung hình desktop/mobile. Stack 8088 và volume tạm được xóa sau khi chạy; DB demo 8080 không bị reset. Các giới hạn còn mở gồm chưa có tệp đính kèm, vai trò quản trị/kiểm duyệt, TLS công khai và bảo đảm gửi đúng một lần khi mất kết nối.

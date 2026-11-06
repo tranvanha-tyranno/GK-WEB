@@ -13,10 +13,11 @@ final class SocialController
         $social = new SocialRepository($this->app->db);
         if ($path === '/api/people' && $method === 'GET') {
             $mode = $_GET['mode'] ?? 'all'; $search = $_GET['q'] ?? '';
-            if (!is_string($mode) || !in_array($mode, ['all', 'friends', 'requests', 'suggestions', 'nearby', 'random'], true) || !is_string($search) || mb_strlen($search) > 100) { throw new HttpError(400, 'INVALID_QUERY', 'Bộ lọc không hợp lệ.'); }
+            if (!is_string($mode) || !in_array($mode, ['all', 'friends', 'requests', 'suggestions'], true) || !is_string($search) || mb_strlen($search) > 100) { throw new HttpError(400, 'INVALID_QUERY', 'Bộ lọc không hợp lệ.'); }
             JsonResponse::data($social->people($self, $mode, trim($search)));
         }
-        if ($method !== 'POST' || !in_array($path, ['/api/friends', '/api/location', '/api/groups'], true)) { return; }
+        if ($method === 'GET' && preg_match('#\A/api/groups/([1-9][0-9]{0,8})\z#D', $path, $matches)) { JsonResponse::data($social->groupDetails($self, (int)$matches[1])); }
+        if ($method !== 'POST' || !in_array($path, ['/api/friends', '/api/groups', '/api/groups/manage', '/api/direct-messages'], true)) { return; }
         if (strtolower(trim(explode(';', $_SERVER['CONTENT_TYPE'] ?? '')[0])) !== 'application/json') { throw new HttpError(400, 'INVALID_PAYLOAD', 'Yêu cầu phải dùng JSON.'); }
         $raw = file_get_contents('php://input', false, null, 0, 16385);
         if (strlen($raw) > 16384) { throw new HttpError(413, 'PAYLOAD_TOO_LARGE', 'Yêu cầu quá lớn.'); }
@@ -27,7 +28,13 @@ final class SocialController
         if ($path === '/api/friends') {
             if (!is_int($input['userId'] ?? null) || !is_string($input['action'] ?? null)) { throw new HttpError(400, 'INVALID_PAYLOAD', 'Lời mời không hợp lệ.'); }
             $social->friendship($self, $input['userId'], $input['action']);
-        } elseif ($path === '/api/location') { $social->location($self, $input); }
+        } elseif ($path === '/api/direct-messages') {
+            if (!is_int($input['userId'] ?? null)) { throw new HttpError(400, 'INVALID_PAYLOAD', 'Người nhận không hợp lệ.'); }
+            JsonResponse::data($social->openDirectMessage($self, $input['userId']), 201);
+        } elseif ($path === '/api/groups/manage') {
+            if (!is_int($input['roomId'] ?? null) || !is_string($input['action'] ?? null)) { throw new HttpError(400, 'INVALID_PAYLOAD', 'Thao tác nhóm không hợp lệ.'); }
+            JsonResponse::data($social->manageGroup($self, $input['roomId'], $input['action'], $input));
+        }
         else {
             if (!is_string($input['name'] ?? null) || !is_array($input['memberIds'] ?? null) || !array_is_list($input['memberIds'])) { throw new HttpError(400, 'INVALID_PAYLOAD', 'Thông tin nhóm không hợp lệ.'); }
             JsonResponse::data($social->createGroup($self, $input['name'], $input['memberIds']));

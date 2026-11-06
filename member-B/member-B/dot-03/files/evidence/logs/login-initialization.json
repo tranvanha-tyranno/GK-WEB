@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Delayed session/CSRF bootstrap keeps form actions disabled",
+    "Demo-account action waits until ready",
+    "Wrong password shows generic error",
+    "Valid password signs in and connects"
+  ]
+}

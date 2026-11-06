@@ -11,3 +11,20 @@
 
 .social-button.primary:hover:not(:disabled){background:var(--accent-hover)}
 [data-theme=dark] .social-button.primary{font-weight:700}
+
+/* --- Bổ sung từ main: các rule mới mà bản theme xanh chưa có (đã đổi biến màu tím -> xanh) --- */
+.register-link{margin-top:18px;text-align:center;font-size:12px;color:var(--muted)}
+.register-link a{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.social-field select{background:var(--soft);border:1px solid var(--border);color:var(--ink);padding:12px;border-radius:10px;font:inherit;width:100%}
+.group-add-member{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:12px}
+.group-add-member .social-field{margin-bottom:0}
+#manage-group-members{max-height:260px;overflow-y:auto}
+.managed-member-actions{display:flex;gap:8px;align-items:center}
+.social-button.danger{color:#a9324f;border-color:#e7bcc7}
+.social-button.danger:hover{background:#fff1f4}
+@media(max-width:520px){.group-add-member{grid-template-columns:1fr}.social-footer{flex-wrap:wrap}.social-footer>span{width:100%}}
+
+/* --- Sửa lỗi nút trong popup Quản lý nhóm bị ẩn/mờ thất thường --- */
+#manage-group-dialog .social-button.primary{background:var(--accent);color:var(--on-accent);border-color:transparent}
+#manage-group-dialog .social-button:disabled{opacity:.55;cursor:wait}
+#manage-group-dialog .social-button:not([hidden]){visibility:visible}

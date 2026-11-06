@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-11-05T15:17:17.209Z",
+  "checks": [
+    "Registration creates a signed-in user through the UI",
+    "Friend row opens a private one-to-one room",
+    "An outsider cannot read a direct conversation",
+    "Direct message is delivered and visible to both friends",
+    "Group creator is identified as the owner",
+    "Removed group member loses history and returns to an allowed room",
+    "Owner can delete a group and its history",
+    "Group rename, member addition/removal, member leave and owner deletion are available in the UI",
+    "Older history can be paged and an old message can be found by full-history search",
+    "Full-history export downloads a UTF-8 text file",
+    "Draft survives a full page reload",
+    "Toast no longer covers the mobile composer",
+    "Updated chat fits mobile and desktop viewports",
+    "No browser JavaScript errors in the full workflow"
+  ],
+  "errors": [],
+  "screenshotsCapturedAt": "2026-11-05T15:28:04Z",
+  "screenshotSource": "Fresh isolated test database on port 8088; demo accounts only"
+}

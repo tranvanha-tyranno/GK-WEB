@@ -175,3 +175,22 @@ kbd{font-size:10px;color:var(--muted);white-space:nowrap;border:1px solid var(--
  color-scheme:dark
 }
 [data-theme=dark] .send-button,[data-theme=dark] .button-primary{font-weight:700}
+
+/* --- Bổ sung từ main: các rule mới mà bản theme xanh chưa có (đã đổi biến màu tím -> xanh) --- */
+:root{--muted:#736a84;--surface:#fff;--soft:#f6f3fc;--border:#e5dfef;--body:#fff;--ink:#30283f;color-scheme:light;font-family:'Segoe UI',Arial,sans-serif}
+.message.own{background:color-mix(in srgb,var(--soft) 40%,var(--body))}
+.history-load{display:flex;justify-content:center;min-height:0;padding:0 12px}
+.history-load button{margin:8px 0;padding:7px 12px;border:1px solid var(--border);border-radius:999px;background:var(--body);color:var(--muted);font-size:11px}
+.history-load button:hover:not(:disabled){background:var(--soft);color:var(--accent)}
+#toast{bottom:calc(96px + env(safe-area-inset-bottom,0px));max-width:min(90vw,520px);pointer-events:none}
+[data-theme=dark] .room-title p,[data-theme=dark] .room-welcome h2,[data-theme=dark] .message-text{color:var(--ink)}
+[data-theme=dark] .room-button{color:var(--muted)}
+[data-theme=dark] .room-button[aria-current=true]{background:#3c2e53;color:#dfd0ff}
+[data-theme=dark] .room-button:hover,[data-theme=dark] .account-buttons button:hover{background:var(--soft)}
+[data-theme=dark] .connection-pill[data-state=connected]{color:#94dfb9}
+[data-theme=dark] .chat-notice{background:#402730;color:#ffc4cb}
+[data-theme=dark] .send-button,[data-theme=dark] .button-primary,[data-theme=dark] .jump-latest{color:var(--on-accent)}
+[data-theme=dark] .message.own .message-name{color:#cebbff}
+[data-theme=dark] .login-card input:focus{box-shadow:0 0 0 3px #594273}
+[data-theme=dark] .sidebar-note,[data-theme=dark] .sidebar-bottom{border-color:var(--border)}
+.message.own{background:transparent}

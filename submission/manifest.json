@@ -4,8 +4,8 @@
   "date": "2026-10-29",
   "timezone": "Asia/Saigon",
   "language": "vi",
-  "reportPages": 22,
-  "slides": 12,
+  "reportPages": 65,
+  "slides": 19,
   "completedTaskPackages": 21,
   "totalTaskPackages": 28,
   "finalTeamVideo": "CHƯA GHI HÌNH",
@@ -23,28 +23,23 @@
   "files": [
     {
       "file": "report.docx",
-      "bytes": 531170,
-      "sha256": "91d5a31f38a844801277329de6e7cd8e7191821a5adb0ab93b2d38a4b253207b"
+      "bytes": 4078174,
+      "sha256": "1073fa6979bd69011afc29606de1d3ffa68a6681d1adca60adf3bbafd4601f5c"
     },
     {
       "file": "report.pdf",
-      "bytes": 794959,
-      "sha256": "4b82c2027e46490f7ec178f38368633427dbe205baf5ac5ea08b4bddc08e55b9"
+      "bytes": 3037686,
+      "sha256": "5e325b3d5bf99f6325fba901b4d10f52e87d74e667b556493a291c14c48681c3"
     },
     {
-      "file": "slides.pptx",
-      "bytes": 401948,
-      "sha256": "0004cfa3411da13113c1103ab76c849d17b00a4caf9bc6cc0a510cca9e1ef53e"
+      "file": "presentation.pptx",
+      "bytes": 617742,
+      "sha256": "37f4e875249b462e8614a5ece724b9c057b3ae5411a9a293556a4326d667f333"
     },
     {
-      "file": "slides.pdf",
-      "bytes": 330793,
-      "sha256": "b55f2ed606931202980ada4bdd61082d0863b45854108e164e400cf46cb75701"
-    },
-    {
-      "file": "source.zip",
-      "bytes": 1160165,
-      "sha256": "9438c6b63cb8a2bcca7b9a228ef31566d6e2c5b05ccfc0d2becc97fb8880432b"
+      "file": "presentation.pdf",
+      "bytes": 544257,
+      "sha256": "8982fcc92935218ddafd4e7e37c8c692b8485ed4b766f9da72bdabcd20d1ddc5"
     },
     {
       "file": "reference-walkthrough.webm",

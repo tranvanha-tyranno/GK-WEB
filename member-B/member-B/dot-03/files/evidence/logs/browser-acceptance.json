@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-10-21T21:49:45.705Z",
+  "checks": [
+    {
+      "name": "TC-13 browser XSS",
+      "status": "PASS",
+      "detail": "Script payload appears as literal text; no dialog executed."
+    },
+    {
+      "name": "TC-08 offline state",
+      "status": "PASS",
+      "detail": "Composer disabled after network loss."
+    },
+    {
+      "name": "TC-08 rejoin and merge",
+      "status": "PASS",
+      "detail": "Reconnected; restored history has 9 unique message IDs."
+    },
+    {
+      "name": "TC-07 delayed old history",
+      "status": "PASS",
+      "detail": "Slow Engineering request did not replace Study group."
+    },
+    {
+      "name": "TC-09 client Unicode",
+      "status": "PASS",
+      "detail": "501 code-point emoji draft disables send."
+    },
+    {
+      "name": "Responsive UI",
+      "status": "PASS",
+      "detail": "1440x900 and 390x844 without horizontal document overflow."
+    },
+    {
+      "name": "TC-14 same-session browser logout",
+      "status": "PASS",
+      "detail": "Both ordinary tabs returned to login after shared-session revocation."
+    }
+  ]
+}

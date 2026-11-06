@@ -1,0 +1,87 @@
+{
+  "status": "PASS",
+  "source": "Chromium DevTools Protocol network events from the running app",
+  "handshakes": [
+    {
+      "status": 101,
+      "statusText": "Switching Protocol",
+      "headers": {
+        "Upgrade": "websocket",
+        "Connection": "upgrade"
+      }
+    }
+  ],
+  "events": [
+    {
+      "direction": "client-to-server",
+      "type": "room:join",
+      "roomId": 1
+    },
+    {
+      "direction": "server-to-client",
+      "type": "room:joined",
+      "roomId": 1
+    },
+    {
+      "direction": "server-to-client",
+      "type": "room:presence",
+      "roomId": 1
+    },
+    {
+      "direction": "server-to-client",
+      "type": "room:typing",
+      "roomId": 1
+    },
+    {
+      "direction": "client-to-server",
+      "type": "typing:set",
+      "roomId": 1
+    },
+    {
+      "direction": "server-to-client",
+      "type": "room:presence",
+      "roomId": 1
+    },
+    {
+      "direction": "server-to-client",
+      "type": "room:typing",
+      "roomId": 1
+    },
+    {
+      "direction": "client-to-server",
+      "type": "chat:send",
+      "roomId": 1
+    },
+    {
+      "direction": "client-to-server",
+      "type": "typing:set",
+      "roomId": 1
+    },
+    {
+      "direction": "server-to-client",
+      "type": "room:presence",
+      "roomId": 1
+    },
+    {
+      "direction": "server-to-client",
+      "type": "room:typing",
+      "roomId": 1
+    },
+    {
+      "direction": "server-to-client",
+      "type": "chat:new",
+      "roomId": 1,
+      "messageId": 11
+    },
+    {
+      "direction": "server-to-client",
+      "type": "room:presence",
+      "roomId": 1
+    },
+    {
+      "direction": "server-to-client",
+      "type": "room:typing",
+      "roomId": 1
+    }
+  ]
+}

@@ -64,7 +64,7 @@ def main():
  parts=source.split('<!-- PAGE -->')
  intro=parts.pop(0)
  abstract=intro.split('## Tóm tắt',1)[1]
- cover='''<div class="cover"><p class="course">LẬP TRÌNH WEB VÀ ỨNG DỤNG 503073</p><h1>Relay Trò chuyện bằng PHP và WebSocket</h1><h2>WebSocket và giao tiếp thời gian thực</h2><p>Học kỳ 1<br>Năm học 2026 2027</p><p class="cover-space">Thành viên nhóm __________________________________<br><br>Mã sinh viên _____________________________________<br><br>Lớp và nhóm _________________________________<br><br>Giảng viên ______________________________________</p><p>Tháng 10 năm 2026</p></div>'''
+ cover='''<div class="cover"><p class="course">LẬP TRÌNH WEB VÀ ỨNG DỤNG 503073</p><h1>Relay Trò chuyện bằng PHP và WebSocket</h1><h2>WebSocket và giao tiếp thời gian thực</h2><p>Học kỳ 1<br>Năm học 2026 2027</p><p class="cover-space">Thành viên nhóm __________________________________<br><br>Mã sinh viên _____________________________________<br><br>Lớp và nhóm _________________________________<br><br>Giảng viên ______________________________________</p><p>Tháng 11 năm 2026</p></div>'''
  toc='<h1>Mục lục</h1><p>Tóm tắt</p>'+''.join(f'<p>Chương {n} {title}</p>' for n,title in [(1,'Giới thiệu'),(2,'Cơ sở lý thuyết và phân tích so sánh'),(3,'Yêu cầu và thiết kế hệ thống'),(4,'Triển khai kiểm thử và đánh giá'),(5,'Kết luận và hướng phát triển')])+'<p>Tài liệu tham khảo</p><p>Phụ lục A Tái lập và minh chứng</p><h2>Danh mục hình</h2>'
  for title in re.findall(r'!\[(.*?)\]',source):toc+='<p>'+inline(title)+'</p>'
  units=[cover,'<h1>Tóm tắt</h1>'+block(abstract),toc]

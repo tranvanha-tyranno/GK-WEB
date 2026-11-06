@@ -1,10 +1,14 @@
 # Hướng dẫn sử dụng Relay
 
-Mở http://localhost:8080, chọn Alice/Bob/Charlie để điền tài khoản mẫu rồi bấm **Đăng nhập vào không gian chung**. Nút Hiện/Ẩn giúp kiểm tra mật khẩu. Để thử chat hai người, dùng hai hồ sơ trình duyệt hoặc cửa sổ ẩn danh; hai thẻ thông thường dùng chung tài khoản.
+Mở http://localhost:8080, chọn Alice/Bob/Charlie để điền tài khoản mẫu rồi bấm **Đăng nhập vào không gian chung**. Để tạo tài khoản cá nhân, chọn **Tạo tài khoản** hoặc mở http://localhost:8080/register. Tên đăng nhập dài 3–32 ký tự (chữ thường, số, dấu chấm, gạch dưới hoặc gạch ngang); tên hiển thị dài 2–60 ký tự; mật khẩu dài ít nhất 12 ký tự. Nút Hiện/Ẩn giúp kiểm tra mật khẩu. Để thử chat hai người, dùng hai hồ sơ trình duyệt hoặc cửa sổ ẩn danh; hai thẻ thông thường dùng chung tài khoản.
 
 ## Làm việc trong phòng
 
 Chọn Trò chuyện chung để trao đổi chung, Kỹ thuật để thảo luận mã nguồn, Nhóm học tập để ôn bài. Tên phòng, mô tả, danh sách thành viên và tin nhắn cập nhật khi chuyển phòng. Lần mở tiếp theo nhớ phòng gần nhất của tài khoản.
+
+Trong **Bạn bè**, bấm **Nhắn tin** cạnh người đã kết bạn để mở cuộc trò chuyện riêng. Người khác không thể xem tin nhắn đó. Mở **Tạo nhóm**, nhập tên và chọn tối đa 30 người bạn. Chủ nhóm mở **⋯ → Quản lý nhóm** để đổi tên, thêm/xóa thành viên hoặc xóa nhóm. Thành viên có thể rời nhóm. Người bị xóa hoặc đã rời nhóm không còn truy cập được lịch sử.
+
+Trong hộp thoại **Bạn bè**, mục **Lời mời** hiển thị lời mời đến và lời mời đã gửi để chấp nhận, từ chối hoặc hủy. Relay đã gỡ mục **Lân cận** và **Ngẫu nhiên**, đồng thời không yêu cầu quyền truy cập vị trí.
 
 Gõ nội dung rồi nhấn Enter hoặc nút Gửi. Shift + Enter xuống dòng. Bộ đếm bao gồm cả phần trích dẫn nếu đang trả lời. Tối đa 500 mã ký tự Unicode; biểu tượng ghép có thể gồm nhiều mã ký tự. Giới hạn tài khoản là 20 tin/phút trên mọi thẻ.
 
@@ -14,15 +18,15 @@ Nút mặt cười mở tám biểu tượng thông dụng và chèn tại vị 
 
 ## Tìm và xuất tin
 
-Bấm biểu tượng kính lúp ở đầu phòng hoặc nhấn Ctrl/⌘ + K để mở ô tìm kiếm. Tìm theo tên người gửi và nội dung, không cần gõ dấu: `ky thuat` tìm được `kỹ thuật`. Số kết quả hiện phía trên danh sách. Esc xóa bộ lọc và đóng ô tìm kiếm.
+Bấm biểu tượng kính lúp ở đầu phòng hoặc nhấn Ctrl/⌘ + K để mở ô tìm kiếm. Tìm theo tên người gửi và nội dung trong toàn bộ lịch sử phòng, không cần gõ dấu: `ky thuat` tìm được `kỹ thuật`. Kết quả tải theo trang; bấm **Tải thêm kết quả** khi còn kết quả khác. Esc xóa bộ lọc và đóng ô tìm kiếm.
 
-Mở menu **⋯** ở góc phải, chọn **Xuất hội thoại** để tải tệp TXT UTF-8 của các tin đã tải ở phòng hiện tại, theo thứ tự ID. Bộ lọc tìm kiếm không giới hạn tệp xuất. Tệp này chứa tên người gửi và thời gian; cân nhắc nội dung trước khi chia sẻ.
+Mở menu **⋯** ở góc phải, chọn **Xuất hội thoại** để tải tệp TXT UTF-8 của toàn bộ lịch sử phòng hiện tại, theo thứ tự ID. Ứng dụng tải từng trang cũ trước khi tạo tệp. Bộ lọc tìm kiếm không giới hạn tệp xuất. Tệp này chứa tên người gửi và thời gian; cân nhắc nội dung trước khi chia sẻ.
 
-Tìm kiếm/xuất không truy vấn toàn bộ lịch sử máy chủ. Khi vào hoặc nối lại phòng, API trả tối đa 50 tin mới nhất; các tin trực tiếp tiếp tục được thêm trong phiên.
+Khi vào hoặc nối lại phòng, API trả tối đa 50 tin mới nhất. Bấm **Tải tin nhắn cũ hơn** để xem tiếp các tin trước đó; việc tải thêm không thay đổi tin mới đã có trên màn hình.
 
 ## Bản nháp và kết nối
 
-Bản nháp tách theo tài khoản, phòng và thẻ trình duyệt bằng sessionStorage. Đổi phòng hoặc tải lại cùng thẻ có thể khôi phục nội dung. Đóng thẻ/cửa sổ, xóa bộ nhớ hoặc chế độ chặn lưu có thể làm mất bản nháp; khi lưu bị chặn ứng dụng vẫn giữ tạm trong RAM. Đăng xuất qua nút Đăng xuất xóa bản nháp của tài khoản ở thẻ hiện tại.
+Bản nháp tách theo tài khoản và phòng bằng localStorage, nên vẫn có thể khôi phục sau khi tải lại trang hoặc đóng/mở lại thẻ trong cùng hồ sơ trình duyệt. Xóa dữ liệu trang, dùng chế độ riêng tư hoặc chặn lưu có thể làm mất bản nháp; khi lưu bị chặn ứng dụng vẫn giữ tạm trong RAM. Đăng xuất xóa bản nháp của tài khoản trong trình duyệt.
 
 Khi mất mạng, ô soạn vẫn dùng được; nút Gửi bị khóa. Ứng dụng tự thử lại sau 1/2/4/8/10 giây, tham gia lại phòng và gộp tin theo ID. Nếu mất kết nối lúc gửi, tin có thể đã được lưu. Nội dung được giữ để bạn kiểm tra trước khi gửi lại; không có thao tác tự gửi lại.
 

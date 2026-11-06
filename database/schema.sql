@@ -45,9 +45,10 @@ CREATE TABLE IF NOT EXISTS group_members (
     PRIMARY KEY(room_id, user_id)
 );
 CREATE INDEX IF NOT EXISTS group_members_user ON group_members(user_id, room_id);
-CREATE TABLE IF NOT EXISTS user_locations (
-    user_id INTEGER PRIMARY KEY REFERENCES users(id),
-    latitude REAL NOT NULL CHECK(latitude BETWEEN -90 AND 90),
-    longitude REAL NOT NULL CHECK(longitude BETWEEN -180 AND 180),
-    updated_at INTEGER NOT NULL
+CREATE TABLE IF NOT EXISTS direct_chats (
+    room_id INTEGER PRIMARY KEY REFERENCES rooms(id),
+    user_low INTEGER NOT NULL REFERENCES users(id),
+    user_high INTEGER NOT NULL REFERENCES users(id),
+    UNIQUE(user_low, user_high),
+    CHECK(user_low < user_high)
 );

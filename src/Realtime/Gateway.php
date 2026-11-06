@@ -89,6 +89,7 @@ final class Gateway
                 } catch (\Throwable $error) { error_log($error::class . ': websocket heartbeat failed'); $connection->destroy(); }
             }
             $this->hub->expireTyping($now);
+            $this->hub->pruneUnauthorized($this->app->rooms);
             $this->limiter->cleanup($now);
         });
     }
